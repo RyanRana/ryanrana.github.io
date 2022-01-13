@@ -6,4 +6,4 @@ This is my personal site it includes the following pages:
 <li>Articles</li>
 <li>Contact</li>
 
-Template is free to use but the foot note at the bottom of the index page must stay: $copy 2021 Ryan Rana
+Template is free to use but the foot note at the bottom of the index page must stay: © 2021 Ryan Rana
