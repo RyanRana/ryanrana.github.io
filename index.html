@@ -1,94 +1,371 @@
-     <!DOCTYPE html>
-    <html class="no-js">
-      <head>
-        <meta charset="utf-8">
-        <title>Ryan Rana</title>
-        <link rel="icon" 
-      type="image/jpeg" 
-      href="D343F409-4896-409D-99CD-BC68701F352C copy.JPEG">
-        <meta name="description" content="Ryan Rana's personal website and blog.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel='stylesheet' href='https://d33wubrfki0l68.cloudfront.net/css/5567594620e12a2de108310fa1ebf351b67a7e4c/css/main.css'/>
-        <link rel="shortcut icon" href="/img/avatar.png" type="image/x-icon">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Cardo&family=Roboto:ital@0;1&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
-        <meta name="generator" content="Jekyll v4.0.0" />
-        <meta property="og:locale" content="en_US" />
-    </head>
-    <body>
-      <header class="site-header">
-      <div class="branding">
-        <h1 class="site-title underline active">
-          <a href="index.html">Ryan Rana</a>
-        </h1>
-      </div>
-      <nav class="site-nav">
-        <ul>
-              <li>
-                <a class="page-link underline " href="articles.html">Articles </a>
-              </li>
-              <li>
-                <a class="page-link underline " href="expierence.html">Experience </a>
-              </li>
-              <li>
-                <a class="page-link underline " href="projects.html"> Projects</a>
-              </li>
-              <li>
-                <a class="page-link underline " href="contact.html"> Contact</a>
-              </li>
-             <li>
-                <a class="page-link underline " href="resume.pdf"> Resume</a>
-              </li>
-            
-        </ul>
-      </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ryan Rana</title>
+    <link rel="icon" type="image/jpeg" href="D343F409-4896-409D-99CD-BC68701F352C copy.JPEG">
+    <meta name="description" content="Ryan Rana's personal website - Focused on Applied AI and Software Architecture">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/d3-delaunay@6"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-content">
+            <h1 class="site-title">
+                <a href="index.html">ryanrana._</a>
+            </h1>
+            <nav class="site-nav">
+                <ul>
+                    <li><a class="page-link" href="articles.html">01 // articles</a></li>
+                    <li><a class="page-link" href="expierence.html">02 // experience</a></li>
+                    <li><a class="page-link" href="projects.html">03 // projects</a></li>
+                    <li><a class="page-link" href="resume.pdf">04 // resume</a></li>
+                    <li><a class="page-link" href="contact.html">05 // contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-        <div class="content">
-          <div class="home">
-      <div class="title">
-        <h1>About me</h1>
-      </div>
-      <div class="container">
-        <div class="blurb">
-             
-             <br><br>
-   	 Focused on Applied AI and Software Architecture.
-	<br><br>
-	Currently studying CS @ <a href="https://newbrunswick.rutgers.edu/">Rutgers</a> and building <a href="https://www.joinmesh.today/">Mesh</a>. Eager to engage in collaborative ventures with equally passionate people.
-	<br><br>
-	You can find out more by looking through at my <a href="resume.pdf">resume</a>.
-<br><br> 
+    <!-- Main Content -->
+    <main class="content">
+        <div class="container">
+            <div class="homepage-layout">
+                <!-- Left Side - Content Only -->
+                <div class="homepage-content">
+                    <h1 class="main-name">RYAN RANA</h1>
+                    <p class="description">
+                        Focused on Applied AI and Software Architecture.
+                    </p>
+                    <br>
+                    <p class="description">
+                        Currently studying CS @ <a href="https://newbrunswick.rutgers.edu/">Rutgers</a> and building 
+                        <a href="https://www.joinmesh.today/">Mesh</a>. Eager to engage in collaborative ventures 
+                        with equally passionate people.
+                    </p>
+                    <br>
+                    <p class="description">
+                        You can find out more by looking through my <a href="resume.pdf">resume</a>.
+                    </p>
+                </div>
+                
+                <!-- Right Side - Blob Visual Effect -->
+                <div class="blob-container">
+                    <canvas id="blobCanvas"></canvas>
+                </div>
+            </div>
         </div>
-          <div class="avatar">
-          <img src="D343F409-4896-409D-99CD-BC68701F352C copy.JPEG"/>
-               <ul class="social-icons">
+    </main>
 
-<li>
-	<a href="https://ryanrana.github.io/contact.html" title="Email">
-		<i class="fa fa-fw fa-envelope"></i>
-	</a>
-</li>
-<li>
-	<a href="https://github.com/RyanRana" title="Follow on GitHub">
-		<i class="fa fa-fw fa-github"></i>
-	</a>
-</li>
-<li>
-	<a href="https://www.linkedin.com/in/ryan-rana-544b761b3/" title="Follow on LinkedIn">
-		<i class="fa fa-fw fa-linkedin"></i>
-	</a>
-</li>
-      </ul>   
-      </div>
-    </div>
-        </div>
-    <script src='https://d33wubrfki0l68.cloudfront.net/js/7f20625245043f914303fd1f5d7d400ec4aabbfe/js/katex_init.js'></script>
+    <!-- Footer -->
     <footer class="site-footer">
-        <p class="text">&copy; 2025 Ryan Rana</p>
-        <br/>
+        <div class="container">
+            <p>&copy; 2025 Ryan Rana</p>
+        </div>
     </footer>
-      </body>
-    </html>
+
+    <!-- Enhanced JavaScript -->
+    <script>
+
+        // Simple Blob Visual Effect with Natural Color Changes and Breathing
+        (() => {
+            const canvas = document.getElementById('blobCanvas');
+            if (!canvas) return;
+            
+            const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+            const getBlobCount = () => Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+            let BLOB_COUNT = getBlobCount();
+            const PADDING = 15;
+            const cornerSmoothIterations = 3;
+
+            const rand = (a,b) => a + Math.random()*(b-a);
+            const HSL = (h,s,l) => `hsl(${h}, ${s}%, ${l}%)`;
+
+            function centroid(poly) {
+                let x=0,y=0,a=0;
+                for (let i=0, j=poly.length-1; i<poly.length; j=i++) {
+                    const p1 = poly[j], p2 = poly[i];
+                    const f = (p1[0]*p2[1] - p2[0]*p1[1]);
+                    x += (p1[0] + p2[0]) * f;
+                    y += (p1[1] + p2[1]) * f;
+                    a += f;
+                }
+                a *= 0.5;
+                if (a === 0) {
+                    let sx=0, sy=0; for (const p of poly) { sx+=p[0]; sy+=p[1]; }
+                    return [sx/poly.length, sy/poly.length];
+                }
+                return [x/(6*a), y/(6*a)];
+            }
+
+            function chaikin(points, iterations=1) {
+                let pts = points.slice();
+                for (let k=0; k<iterations; k++) {
+                    const out = [];
+                    for (let i=0; i<pts.length; i++) {
+                        const p0 = pts[i];
+                        const p1 = pts[(i+1)%pts.length];
+                        const Q = [0.75*p0[0] + 0.25*p1[0], 0.75*p0[1] + 0.25*p1[1]];
+                        const R = [0.25*p0[0] + 0.75*p1[0], 0.25*p0[1] + 0.75*p1[1]];
+                        out.push(Q, R);
+                    }
+                    pts = out;
+                }
+                return pts;
+            }
+
+            function drawPath(ctx, pts) {
+                if (!pts.length) return;
+                ctx.beginPath();
+                ctx.moveTo(pts[0][0], pts[0][1]);
+                for (let i=1; i<pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+                ctx.closePath();
+            }
+
+            function randomSites(w, h, n) {
+                const sites = [];
+                const TOP_SAFE_ZONE = 75;
+                const BOTTOM_SAFE_ZONE = 75;
+                
+                for (let i=0; i<n; i++) {
+                    const x = rand(PADDING, w-PADDING);
+                    // Keep blobs in the middle area, avoiding top and bottom 75px
+                    const y = rand(TOP_SAFE_ZONE + PADDING, h - BOTTOM_SAFE_ZONE - PADDING);
+                    sites.push([x, y]);
+                }
+                return sites;
+            }
+
+            let state = { polys: [], colors: [] };
+            let mousePos = { x: 0, y: 0 };
+            let animationId = null;
+
+            function resize() {
+                const container = canvas.parentElement;
+                const rect = container.getBoundingClientRect();
+                const w = Math.floor(rect.width);
+                const h = Math.floor(rect.height);
+                canvas.width = w * DPR;
+                canvas.height = h * DPR;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                regenerate();
+                draw();
+            }
+
+            function regenerate() {
+                const w = canvas.width, h = canvas.height;
+                const sites = randomSites(w, h, BLOB_COUNT);
+                const delaunay = d3.Delaunay.from(sites);
+                const vor = delaunay.voronoi([PADDING, PADDING, w-PADDING, h-PADDING]);
+
+                const polys = [];
+                for (let i=0; i<sites.length; i++) {
+                    const cell = vor.cellPolygon(i);
+                    if (!cell) continue;
+                    let poly = cell.map(([x,y]) => [x, y]);
+                    poly = chaikin(poly, cornerSmoothIterations);
+                    const c = centroid(poly);
+                    const inset = 4 * DPR;
+                    poly = poly.map(([x,y]) => {
+                        const vx = x - c[0], vy = y - c[1];
+                        const mag = Math.hypot(vx, vy) || 1;
+                        return [x - (vx/mag)*inset, y - (vy/mag)*inset];
+                    });
+
+                    const hue = Math.floor(rand(0, 360));
+                    polys.push({ 
+                        poly, 
+                        center: c, 
+                        originalCenter: [...c],
+                        originalPoly: poly.map(point => [...point]),
+                        hue,
+                        baseHue: hue,
+                        targetHue: hue,
+                        velocity: { x: 0, y: 0 },
+                        lastRenderedHue: null,
+                        breathPhase: Math.random() * Math.PI * 2,
+                        colorPhase: Math.random() * Math.PI * 2,
+                        colorSpeed: rand(0.005, 0.015)
+                    });
+                }
+
+                state = {
+                    polys,
+                    colors: polys.map(({hue}) => HSL(hue, 70, 75))
+                };
+            }
+
+            function updateNaturalColors() {
+                for (let blob of state.polys) {
+                    blob.colorPhase += blob.colorSpeed;
+                    const colorRange = 30;
+                    const hueOffset = Math.sin(blob.colorPhase) * colorRange;
+                    blob.hue = blob.baseHue + hueOffset;
+                    
+                    if (blob.hue < 0) blob.hue += 360;
+                    if (blob.hue >= 360) blob.hue -= 360;
+                }
+            }
+
+            function updateBreathing() {
+                for (let blob of state.polys) {
+                    blob.breathPhase += 0.012; // Much slower breathing (0.025 → 0.012)
+                    const breathScale = 1 + Math.sin(blob.breathPhase) * 0.08; // Keep exaggerated amplitude
+                    
+                    for (let i = 0; i < blob.poly.length; i++) {
+                        const dx = blob.originalPoly[i][0] - blob.originalCenter[0];
+                        const dy = blob.originalPoly[i][1] - blob.originalCenter[1];
+                        blob.poly[i][0] = blob.center[0] + dx * breathScale;
+                        blob.poly[i][1] = blob.center[1] + dy * breathScale;
+                    }
+                }
+            }
+
+            function updateBlobPositions() {
+                const w = canvas.width;
+                const h = canvas.height;
+                const TOP_SAFE_ZONE = 75;
+                const BOTTOM_SAFE_ZONE = 75;
+                
+                for (let blob of state.polys) {
+                    const dx = mousePos.x - blob.center[0];
+                    const dy = mousePos.y - blob.center[1];
+                    const distance = Math.hypot(dx, dy);
+                    
+                    const AVOIDANCE_RADIUS = 120; // Increased from 80 to prevent touching
+                    const ATTRACTION_RANGE = 300; // Range for attraction
+                    
+                    // Cursor avoidance - strong repulsion when too close
+                    if (distance < AVOIDANCE_RADIUS && distance > 0) {
+                        const avoidanceForce = (AVOIDANCE_RADIUS - distance) / AVOIDANCE_RADIUS * 3.5; // Increased force
+                        blob.velocity.x -= (dx / distance) * avoidanceForce; // Push away from cursor
+                        blob.velocity.y -= (dy / distance) * avoidanceForce;
+                    }
+                    // Attraction when at safe distance
+                    else if (distance < ATTRACTION_RANGE && distance >= AVOIDANCE_RADIUS) {
+                        const attractionForce = (ATTRACTION_RANGE - distance) / ATTRACTION_RANGE * 0.8;
+                        blob.velocity.x += (dx / distance) * attractionForce;
+                        blob.velocity.y += (dy / distance) * attractionForce;
+                    }
+                    
+                    // Boundary forces to keep blobs out of safe zones (unless cursor-triggered)
+                    const topBoundary = TOP_SAFE_ZONE * DPR;
+                    const bottomBoundary = h - (BOTTOM_SAFE_ZONE * DPR);
+                    
+                    // Only apply boundary forces if cursor is not in the safe zone
+                    const cursorInTopZone = mousePos.y < topBoundary;
+                    const cursorInBottomZone = mousePos.y > bottomBoundary;
+                    
+                    if (blob.center[1] < topBoundary && !cursorInTopZone) {
+                        const boundaryForce = (topBoundary - blob.center[1]) / topBoundary * 0.5;
+                        blob.velocity.y += boundaryForce;
+                    }
+                    
+                    if (blob.center[1] > bottomBoundary && !cursorInBottomZone) {
+                        const boundaryForce = (blob.center[1] - bottomBoundary) / (BOTTOM_SAFE_ZONE * DPR) * 0.5;
+                        blob.velocity.y -= boundaryForce;
+                    }
+                    
+                    const returnForce = 0.03;
+                    const backDx = blob.originalCenter[0] - blob.center[0];
+                    const backDy = blob.originalCenter[1] - blob.center[1];
+                    blob.velocity.x += backDx * returnForce;
+                    blob.velocity.y += backDy * returnForce;
+                    
+                    blob.velocity.x *= 0.85;
+                    blob.velocity.y *= 0.85;
+                    blob.center[0] += blob.velocity.x;
+                    blob.center[1] += blob.velocity.y;
+                }
+            }
+
+            function updateColorSpreading() {
+                for (let i = 0; i < state.polys.length; i++) {
+                    const blob1 = state.polys[i];
+                    let hueInfluence = 0;
+                    let influenceCount = 0;
+                    
+                    for (let j = 0; j < state.polys.length; j++) {
+                        if (i === j) continue;
+                        const blob2 = state.polys[j];
+                        const distance = Math.hypot(
+                            blob2.center[0] - blob1.center[0],
+                            blob2.center[1] - blob1.center[1]
+                        );
+                        
+                        if (distance < 60) {
+                            const influence = (60 - distance) / 60 * 0.01;
+                            hueInfluence += blob2.hue * influence;
+                            influenceCount += influence;
+                        }
+                    }
+                    
+                    if (influenceCount > 0) {
+                        const avgInfluence = hueInfluence / influenceCount;
+                        blob1.targetHue = blob1.hue + (avgInfluence - blob1.hue) * 0.05;
+                        blob1.hue += (blob1.targetHue - blob1.hue) * 0.01;
+                    }
+                }
+                
+                for (let i = 0; i < state.polys.length; i++) {
+                    const blob = state.polys[i];
+                    if (Math.abs(blob.hue - blob.lastRenderedHue) > 1 || !blob.lastRenderedHue) {
+                        state.colors[i] = HSL(blob.hue, 70, 75);
+                        blob.lastRenderedHue = blob.hue;
+                    }
+                }
+            }
+
+
+            function draw() {
+                const ctx = canvas.getContext('2d');
+                ctx.save();
+                ctx.scale(DPR, DPR);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i=0; i<state.polys.length; i++) {
+                    const { poly } = state.polys[i];
+                    drawPath(ctx, poly);
+                    ctx.fillStyle = state.colors[i];
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+
+            function animate() {
+                updateNaturalColors();
+                updateBlobPositions();
+                updateBreathing();
+                updateColorSpreading();
+                draw();
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function onMove(e) {
+                const rect = canvas.getBoundingClientRect();
+                // Account for DPR scaling in canvas dimensions
+                mousePos.x = (e.clientX - rect.left) * DPR;
+                mousePos.y = (e.clientY - rect.top) * DPR;
+            }
+
+            window.addEventListener('resize', resize);
+            canvas.addEventListener('mousemove', onMove);
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    resize();
+                    animate();
+                });
+            } else {
+                resize();
+                animate();
+            }
+        })();
+    </script>
+</body>
+</html>
