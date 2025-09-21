@@ -76,10 +76,10 @@
             if (!canvas) return;
             
             const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-            const getBlobCount = () => Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+            const getBlobCount = () => Math.floor(Math.random() * (30 - 3 + 1)) + 3;
             let BLOB_COUNT = getBlobCount();
             const PADDING = 15;
-            const cornerSmoothIterations = 3;
+            const cornerSmoothIterations = 6; // Much rounder (3 → 6)
 
             const rand = (a,b) => a + Math.random()*(b-a);
             const HSL = (h,s,l) => `hsl(${h}, ${s}%, ${l}%)`;
@@ -142,6 +142,7 @@
             let state = { polys: [], colors: [] };
             let mousePos = { x: 0, y: 0 };
             let animationId = null;
+            let explosions = []; // Track active explosions
 
             function resize() {
                 const container = canvas.parentElement;
@@ -169,7 +170,7 @@
                     let poly = cell.map(([x,y]) => [x, y]);
                     poly = chaikin(poly, cornerSmoothIterations);
                     const c = centroid(poly);
-                    const inset = 4 * DPR;
+                    const inset = 8 * DPR; // Larger inset for rounder shapes (4 → 8)
                     poly = poly.map(([x,y]) => {
                         const vx = x - c[0], vy = y - c[1];
                         const mag = Math.hypot(vx, vy) || 1;
@@ -231,6 +232,13 @@
                 const TOP_SAFE_ZONE = 75;
                 const BOTTOM_SAFE_ZONE = 75;
                 
+                // Update explosions (decay over time)
+                explosions = explosions.filter(explosion => {
+                    explosion.strength *= 0.95; // Decay explosion strength
+                    explosion.age += 1;
+                    return explosion.age < 120; // Remove after 2 seconds at 60fps
+                });
+                
                 for (let blob of state.polys) {
                     const dx = mousePos.x - blob.center[0];
                     const dy = mousePos.y - blob.center[1];
@@ -239,15 +247,29 @@
                     const AVOIDANCE_RADIUS = 120; // Increased from 80 to prevent touching
                     const ATTRACTION_RANGE = 300; // Range for attraction
                     
-                    // Cursor avoidance - strong repulsion when too close
+                    // Explosion effects - check all active explosions
+                    for (let explosion of explosions) {
+                        const expDx = blob.center[0] - explosion.x;
+                        const expDy = blob.center[1] - explosion.y;
+                        const expDistance = Math.hypot(expDx, expDy);
+                        
+                        if (expDistance < explosion.radius && expDistance > 0) {
+                            const explosionForce = explosion.strength * (explosion.radius - expDistance) / explosion.radius;
+                            blob.velocity.x += (expDx / expDistance) * explosionForce;
+                            blob.velocity.y += (expDy / expDistance) * explosionForce;
+                            
+                        }
+                    }
+                    
+                    // Cursor avoidance - much stronger repulsion when too close
                     if (distance < AVOIDANCE_RADIUS && distance > 0) {
-                        const avoidanceForce = (AVOIDANCE_RADIUS - distance) / AVOIDANCE_RADIUS * 3.5; // Increased force
+                        const avoidanceForce = (AVOIDANCE_RADIUS - distance) / AVOIDANCE_RADIUS * 6.0; // Much stronger force (3.5 → 6.0)
                         blob.velocity.x -= (dx / distance) * avoidanceForce; // Push away from cursor
                         blob.velocity.y -= (dy / distance) * avoidanceForce;
                     }
-                    // Attraction when at safe distance
+                    // Attraction when at safe distance - stronger pull
                     else if (distance < ATTRACTION_RANGE && distance >= AVOIDANCE_RADIUS) {
-                        const attractionForce = (ATTRACTION_RANGE - distance) / ATTRACTION_RANGE * 0.8;
+                        const attractionForce = (ATTRACTION_RANGE - distance) / ATTRACTION_RANGE * 1.5; // Stronger attraction (0.8 → 1.5)
                         blob.velocity.x += (dx / distance) * attractionForce;
                         blob.velocity.y += (dy / distance) * attractionForce;
                     }
@@ -276,10 +298,11 @@
                     blob.velocity.x += backDx * returnForce;
                     blob.velocity.y += backDy * returnForce;
                     
-                    blob.velocity.x *= 0.85;
-                    blob.velocity.y *= 0.85;
+                    blob.velocity.x *= 0.80; // Less damping for more dramatic movement (0.85 → 0.80)
+                    blob.velocity.y *= 0.80;
                     blob.center[0] += blob.velocity.x;
                     blob.center[1] += blob.velocity.y;
+                    
                 }
             }
 
@@ -297,8 +320,8 @@
                             blob2.center[1] - blob1.center[1]
                         );
                         
-                        if (distance < 60) {
-                            const influence = (60 - distance) / 60 * 0.01;
+                        if (distance < 80) {
+                            const influence = (80 - distance) / 80 * 0.02;
                             hueInfluence += blob2.hue * influence;
                             influenceCount += influence;
                         }
@@ -327,12 +350,26 @@
                 ctx.scale(DPR, DPR);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                for (let i=0; i<state.polys.length; i++) {
-                    const { poly } = state.polys[i];
-                    drawPath(ctx, poly);
+                // Draw blobs as filled shapes with correct coordinate alignment
+                for (let i = 0; i < state.polys.length; i++) {
+                    const blob = state.polys[i];
+                    
+                    // Draw filled polygon in the blob's color
                     ctx.fillStyle = state.colors[i];
-                    ctx.fill();
+                    ctx.beginPath();
+                    const poly = blob.poly;
+                    if (poly.length > 0) {
+                        ctx.moveTo(poly[0][0] / DPR, poly[0][1] / DPR);
+                        for (let j = 1; j < poly.length; j++) {
+                            ctx.lineTo(poly[j][0] / DPR, poly[j][1] / DPR);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                    }
                 }
+
+
+
 
                 ctx.restore();
             }
@@ -346,15 +383,35 @@
                 animationId = requestAnimationFrame(animate);
             }
 
+
             function onMove(e) {
                 const rect = canvas.getBoundingClientRect();
-                // Account for DPR scaling in canvas dimensions
-                mousePos.x = (e.clientX - rect.left) * DPR;
-                mousePos.y = (e.clientY - rect.top) * DPR;
+                // Use exact same calculation as click to eliminate offset
+                mousePos.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+                mousePos.y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            }
+
+            function onClick(e) {
+                const rect = canvas.getBoundingClientRect();
+                // Use same coordinate system for both mouse and explosion
+                const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
+                const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+                
+                // Create explosion at click point
+                explosions.push({
+                    x: clickX,
+                    y: clickY,
+                    radius: 300 * DPR, // Larger blast radius (200 → 300)
+                    strength: 25, // Much stronger explosion (8 → 25)
+                    age: 0
+                });
+
+                
             }
 
             window.addEventListener('resize', resize);
             canvas.addEventListener('mousemove', onMove);
+            canvas.addEventListener('click', onClick);
 
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => {

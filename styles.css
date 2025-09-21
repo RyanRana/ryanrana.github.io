@@ -197,7 +197,7 @@ a:hover {
 .blob-container {
   position: relative;
   width: 100%;
-  height: 600px; /* Increased from 450px */
+  height: 400px;
   border-radius: var(--radius-xl);
   overflow: hidden;
 }
