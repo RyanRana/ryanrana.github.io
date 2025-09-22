@@ -706,97 +706,15 @@ body::after {
   margin-top: var(--spacing-xxl);
 }
 
-/* Hamburger Menu Styles */
-.hamburger-menu {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 30px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 1001;
-}
-
-.hamburger-line {
-  width: 100%;
-  height: 3px;
-  background: var(--text-primary);
-  transition: all 0.3s ease;
-  transform-origin: center;
-}
-
-.hamburger-menu.active .hamburger-line:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
-}
-
-.hamburger-menu.active .hamburger-line:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger-menu.active .hamburger-line:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
-}
-
-/* Mobile Navigation Styles */
-.site-nav.mobile-open {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: slideInFromTop 0.3s ease;
-}
-
-.site-nav.mobile-open ul {
-  flex-direction: column;
-  gap: var(--spacing-lg);
-  text-align: center;
-}
-
-.site-nav.mobile-open .page-link {
-  font-size: 1.5rem;
-  padding: var(--spacing-md) var(--spacing-lg);
-  display: block;
-}
-
-@keyframes slideInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
-  .hamburger-menu {
-    display: flex;
-  }
-  
-  .site-nav {
+  .site-header {
     display: none;
   }
   
-  .site-nav.mobile-open {
-    display: flex;
-  }
-  
   .content {
-    margin-top: 80px;
-    min-height: calc(100vh - 80px);
+    margin-top: 0;
+    min-height: 100vh;
   }
   
   .hero-section {
@@ -830,14 +748,9 @@ body::after {
 }
 
 @media (max-width: 480px) {
-  .hamburger-menu {
-    width: 25px;
-    height: 25px;
-  }
-  
-  .site-nav.mobile-open .page-link {
-    font-size: 1.3rem;
-    padding: var(--spacing-sm) var(--spacing-md);
+  .site-nav ul {
+    flex-direction: column;
+    gap: var(--spacing-sm);
   }
   
   .hero-title {
