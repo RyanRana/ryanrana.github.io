@@ -200,6 +200,9 @@
                 const delaunay = d3.Delaunay.from(sites);
                 const vor = delaunay.voronoi([PADDING, PADDING, w-PADDING, h-PADDING]);
 
+                // Project palette colors (hues)
+                const projectHues = [217, 262, 188, 346, 45, 160]; // Blue, Purple, Cyan, Pink, Orange, Green
+                
                 const polys = [];
                 for (let i=0; i<sites.length; i++) {
                     const cell = vor.cellPolygon(i);
@@ -214,7 +217,7 @@
                         return [x - (vx/mag)*inset, y - (vy/mag)*inset];
                     });
 
-                    const hue = Math.floor(rand(0, 360));
+                    const hue = projectHues[i % projectHues.length];
                     polys.push({ 
                         poly, 
                         center: c, 
