@@ -143,16 +143,54 @@
             let animationId = null;
             let explosions = []; // Track active explosions
 
+            let lastWidth = 0;
+            let lastHeight = 0;
+            
             function resize() {
                 const container = canvas.parentElement;
                 const rect = container.getBoundingClientRect();
                 const w = Math.floor(rect.width);
                 const h = Math.floor(rect.height);
+                
+                // Only regenerate on first load or if dimensions change significantly
+                const shouldRegenerate = lastWidth === 0 || lastHeight === 0;
+                
+                if (!shouldRegenerate && state.polys.length > 0) {
+                    // Scale existing blobs to new canvas size
+                    const scaleX = (w * DPR) / lastWidth;
+                    const scaleY = (h * DPR) / lastHeight;
+                    
+                    for (let blob of state.polys) {
+                        // Scale all polygon points
+                        for (let i = 0; i < blob.poly.length; i++) {
+                            blob.poly[i][0] *= scaleX;
+                            blob.poly[i][1] *= scaleY;
+                        }
+                        // Scale original polygon points
+                        for (let i = 0; i < blob.originalPoly.length; i++) {
+                            blob.originalPoly[i][0] *= scaleX;
+                            blob.originalPoly[i][1] *= scaleY;
+                        }
+                        // Scale center positions
+                        blob.center[0] *= scaleX;
+                        blob.center[1] *= scaleY;
+                        blob.originalCenter[0] *= scaleX;
+                        blob.originalCenter[1] *= scaleY;
+                    }
+                }
+                
                 canvas.width = w * DPR;
                 canvas.height = h * DPR;
                 canvas.style.width = w + 'px';
                 canvas.style.height = h + 'px';
-                regenerate();
+                
+                lastWidth = canvas.width;
+                lastHeight = canvas.height;
+                
+                if (shouldRegenerate) {
+                    regenerate();
+                }
+                
                 draw();
             }
 
