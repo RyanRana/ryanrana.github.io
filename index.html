@@ -128,15 +128,53 @@
                 ctx.closePath();
             }
 
+            function isAbnormalShape(poly) {
+                // Calculate bounding box
+                let minX = Infinity, maxX = -Infinity;
+                let minY = Infinity, maxY = -Infinity;
+                for (const [x, y] of poly) {
+                    minX = Math.min(minX, x);
+                    maxX = Math.max(maxX, x);
+                    minY = Math.min(minY, y);
+                    maxY = Math.max(maxY, y);
+                }
+                
+                const width = maxX - minX;
+                const height = maxY - minY;
+                const aspectRatio = Math.max(width / height, height / width);
+                
+                // Skip cells that are too elongated (aspect ratio > 3:1)
+                return aspectRatio > 3;
+            }
+
             function randomSites(w, h, n) {
                 const sites = [];
                 const TOP_SAFE_ZONE = 75;
                 const BOTTOM_SAFE_ZONE = 75;
+                const MIN_DISTANCE = 50; // Minimum distance between sites to prevent clustering
+                const maxAttempts = 100; // Try up to 100 times to place each site
                 
                 for (let i=0; i<n; i++) {
-                    const x = rand(PADDING, w-PADDING);
-                    // Keep blobs in the middle area, avoiding top and bottom 75px
-                    const y = rand(TOP_SAFE_ZONE + PADDING, h - BOTTOM_SAFE_ZONE - PADDING);
+                    let attempts = 0;
+                    let valid = false;
+                    let x, y;
+                    
+                    while (!valid && attempts < maxAttempts) {
+                        x = rand(PADDING, w-PADDING);
+                        y = rand(TOP_SAFE_ZONE + PADDING, h - BOTTOM_SAFE_ZONE - PADDING);
+                        
+                        // Check distance from all existing sites
+                        valid = true;
+                        for (const site of sites) {
+                            const dist = Math.hypot(x - site[0], y - site[1]);
+                            if (dist < MIN_DISTANCE) {
+                                valid = false;
+                                break;
+                            }
+                        }
+                        attempts++;
+                    }
+                    
                     sites.push([x, y]);
                 }
                 return sites;
@@ -212,9 +250,13 @@
                     const cell = vor.cellPolygon(i);
                     if (!cell) continue;
                     let poly = cell.map(([x,y]) => [x, y]);
+                    
+                    // Skip abnormally shaped cells
+                    if (isAbnormalShape(poly)) continue;
+                    
                     poly = chaikin(poly, cornerSmoothIterations);
                     const c = centroid(poly);
-                    const inset = 10 * DPR; // Balanced inset to prevent touching while maintaining normal shapes (15 → 10)
+                    const inset = 15 * DPR; // Balanced inset to prevent touching while maintaining normal shapes (15 → 10)
                     poly = poly.map(([x,y]) => {
                         const vx = x - c[0], vy = y - c[1];
                         const mag = Math.hypot(vx, vy) || 1;
