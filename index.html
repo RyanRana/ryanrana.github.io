@@ -86,6 +86,7 @@
 
             const rand = (a,b) => a + Math.random()*(b-a);
             const HSL = (h,s,l) => `hsl(${h}, ${s}%, ${l}%)`;
+            const PALETTE = [217, 262, 188, 346, 45, 160];
 
             function centroid(poly) {
                 let x=0,y=0,a=0;
@@ -184,9 +185,6 @@
                 const delaunay = d3.Delaunay.from(sites);
                 const vor = delaunay.voronoi([PADDING, PADDING, w - PADDING, h - PADDING]);
 
-                // Project palette colors (hues)
-                const projectHues = [217, 262, 188, 346, 45, 160]; // Blue, Purple, Cyan, Pink, Orange, Green
-                
                 const polys = [];
                 for (let i=0; i<sites.length; i++) {
                     const cell = vor.cellPolygon(i);
@@ -201,7 +199,7 @@
                         return [x - (vx/mag)*inset, y - (vy/mag)*inset];
                     });
 
-                    const hue = projectHues[i % projectHues.length];
+                    const hue = PALETTE[i % PALETTE.length];
                     polys.push({ 
                         poly, 
                         center: c, 
@@ -227,12 +225,8 @@
             function updateNaturalColors() {
                 for (let blob of state.polys) {
                     blob.colorPhase += blob.colorSpeed;
-                    const colorRange = 30;
-                    const hueOffset = Math.sin(blob.colorPhase) * colorRange;
-                    blob.hue = blob.baseHue + hueOffset;
-                    
-                    if (blob.hue < 0) blob.hue += 360;
-                    if (blob.hue >= 360) blob.hue -= 360;
+                    const hueOffset = Math.sin(blob.colorPhase) * 30;
+                    blob.hue = (blob.baseHue + hueOffset + 360) % 360;
                 }
             }
 
@@ -302,8 +296,8 @@
                             blob2.center[1] - blob1.center[1]
                         );
                         
-                        if (distance < 80) {
-                            const influence = (80 - distance) / 80 * 0.02;
+                        if (distance < 80 * DPR) {
+                            const influence = (80 * DPR - distance) / (80 * DPR) * 0.02;
                             hueInfluence += blob2.hue * influence;
                             influenceCount += influence;
                         }
@@ -328,24 +322,12 @@
 
             function draw() {
                 const ctx = canvas.getContext('2d');
-                ctx.save();
-                ctx.scale(DPR, DPR);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Draw blobs as filled rounded shapes with correct coordinate alignment
                 for (let i = 0; i < state.polys.length; i++) {
-                    const blob = state.polys[i];
-                    
-                    // Draw filled rounded polygon in the blob's color
                     ctx.fillStyle = state.colors[i];
-                    drawRoundedPath(ctx, blob.poly);
+                    drawRoundedPath(ctx, state.polys[i].poly);
                     ctx.fill();
                 }
-
-
-
-
-                ctx.restore();
             }
 
             function animate() {
