@@ -82,7 +82,7 @@
             const getBlobCount = () => Math.floor(Math.random() * (30 - 3 + 1)) + 3;
             let BLOB_COUNT = getBlobCount();
             const PADDING = 15;
-            const cornerSmoothIterations = 6; // Much rounder (3 → 6)
+            const cornerSmoothIterations = 3; // Reduced to prevent abnormal shapes (6 → 3)
 
             const rand = (a,b) => a + Math.random()*(b-a);
             const HSL = (h,s,l) => `hsl(${h}, ${s}%, ${l}%)`;
@@ -214,7 +214,7 @@
                     let poly = cell.map(([x,y]) => [x, y]);
                     poly = chaikin(poly, cornerSmoothIterations);
                     const c = centroid(poly);
-                    const inset = 15 * DPR; // Larger inset to prevent cells from touching (8 → 15)
+                    const inset = 10 * DPR; // Balanced inset to prevent touching while maintaining normal shapes (15 → 10)
                     poly = poly.map(([x,y]) => {
                         const vx = x - c[0], vy = y - c[1];
                         const mag = Math.hypot(vx, vy) || 1;
