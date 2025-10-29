@@ -82,7 +82,7 @@
             const getBlobCount = () => Math.floor(Math.random() * (30 - 3 + 1)) + 3;
             let BLOB_COUNT = getBlobCount();
             const PADDING = 12;
-            const cornerSmoothIterations = 3; // Reduced to prevent abnormal shapes (6 → 3)
+            const cornerSmoothIterations = 5; // More smoothing for blob-like shapes
 
             const rand = (a,b) => a + Math.random()*(b-a);
             const HSL = (h,s,l) => `hsl(${h}, ${s}%, ${l}%)`;
@@ -120,11 +120,18 @@
                 return pts;
             }
 
-            function drawPath(ctx, pts) {
-                if (!pts.length) return;
+            function drawRoundedPath(ctx, pts) {
+                const n = pts.length;
+                if (!n) return;
                 ctx.beginPath();
-                ctx.moveTo(pts[0][0], pts[0][1]);
-                for (let i=1; i<pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+                for (let i = 0; i < n; i++) {
+                    const p1 = pts[i];
+                    const p2 = pts[(i + 1) % n];
+                    const mx = (p1[0] + p2[0]) / 2 / DPR;
+                    const my = (p1[1] + p2[1]) / 2 / DPR;
+                    if (i === 0) ctx.moveTo(mx, my);
+                    ctx.quadraticCurveTo(p1[0] / DPR, p1[1] / DPR, mx, my);
+                }
                 ctx.closePath();
             }
 
@@ -198,9 +205,26 @@
                 draw();
             }
 
+            function lloydRelax(sites, bbox, iterations = 2) {
+                for (let k = 0; k < iterations; k++) {
+                    const vor = d3.Delaunay.from(sites).voronoi(bbox);
+                    const refined = [];
+                    for (let i = 0; i < sites.length; i++) {
+                        const cell = vor.cellPolygon(i);
+                        if (!cell) { refined.push(sites[i]); continue; }
+                        let cx = 0, cy = 0; for (const p of cell) { cx += p[0]; cy += p[1]; }
+                        refined.push([cx / cell.length, cy / cell.length]);
+                    }
+                    sites = refined;
+                }
+                return sites;
+            }
+
             function regenerate() {
                 const w = canvas.width, h = canvas.height;
-                const sites = randomSites(w, h, BLOB_COUNT);
+                let sites = randomSites(w, h, BLOB_COUNT);
+                // Relax sites to avoid thin/weird cells
+                sites = lloydRelax(sites, [PADDING, PADDING, w - PADDING, h - PADDING], 2);
                 const delaunay = d3.Delaunay.from(sites);
                 const vor = delaunay.voronoi([PADDING, PADDING, w-PADDING, h-PADDING]);
 
@@ -214,7 +238,7 @@
                     let poly = cell.map(([x,y]) => [x, y]);
                     poly = chaikin(poly, cornerSmoothIterations);
                     const c = centroid(poly);
-                    const inset = 15 * DPR; // Balanced inset to prevent touching while maintaining normal shapes (15 → 10)
+                    const inset = 18 * DPR; // Slightly larger inset for rounded separation
                     poly = poly.map(([x,y]) => {
                         const vx = x - c[0], vy = y - c[1];
                         const mag = Math.hypot(vx, vy) || 1;
@@ -394,22 +418,14 @@
                 ctx.scale(DPR, DPR);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Draw blobs as filled shapes with correct coordinate alignment
+                // Draw blobs as filled rounded shapes with correct coordinate alignment
                 for (let i = 0; i < state.polys.length; i++) {
                     const blob = state.polys[i];
                     
-                    // Draw filled polygon in the blob's color
+                    // Draw filled rounded polygon in the blob's color
                     ctx.fillStyle = state.colors[i];
-                    ctx.beginPath();
-                    const poly = blob.poly;
-                    if (poly.length > 0) {
-                        ctx.moveTo(poly[0][0] / DPR, poly[0][1] / DPR);
-                        for (let j = 1; j < poly.length; j++) {
-                            ctx.lineTo(poly[j][0] / DPR, poly[j][1] / DPR);
-                        }
-                        ctx.closePath();
-                        ctx.fill();
-                    }
+                    drawRoundedPath(ctx, blob.poly);
+                    ctx.fill();
                 }
 
 
