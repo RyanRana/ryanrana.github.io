@@ -57,7 +57,6 @@
                 
                 <!-- Right Side - Blob Visual Effect -->
                 <div class="blob-container">
-                    <canvas id="blobCanvas"></canvas>
                     <canvas id="c"></canvas>
                 </div>
             </div>
@@ -333,8 +332,10 @@
           }
       
           function resize() {
-            const w = Math.floor(window.innerWidth);
-            const h = Math.floor(window.innerHeight);
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            const w = Math.floor(rect.width);
+            const h = Math.floor(rect.height);
             canvas.width = w * DPR;
             canvas.height = h * DPR;
             canvas.style.width = w + 'px';
@@ -430,7 +431,7 @@
             let mousePos = { x: -1e9, y: -1e9 };
             let animationsRunning = false;
             let explosions = [];
-
+            
             function resize() {
                 const container = canvas.parentElement;
                 const rect = container.getBoundingClientRect();
@@ -440,7 +441,7 @@
                 canvas.height = h * DPR;
                 canvas.style.width = w + 'px';
                 canvas.style.height = h + 'px';
-                regenerate();
+                    regenerate();
                 draw();
             }
 
@@ -466,7 +467,7 @@
                 sites = lloydRelax(sites, [PADDING, PADDING, w - PADDING, h - PADDING], 2);
                 const delaunay = d3.Delaunay.from(sites);
                 const vor = delaunay.voronoi([PADDING, PADDING, w - PADDING, h - PADDING]);
-
+                
                 const polys = [];
                 for (let i=0; i<sites.length; i++) {
                     const cell = vor.cellPolygon(i);
@@ -608,7 +609,7 @@
                 for (let i = 0; i < state.polys.length; i++) {
                     ctx.fillStyle = state.colors[i];
                     drawRoundedPath(ctx, state.polys[i].poly);
-                    ctx.fill();
+                        ctx.fill();
                 }
             }
 
