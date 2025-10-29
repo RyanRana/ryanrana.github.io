@@ -209,7 +209,7 @@ a:hover {
 /* Right Side - Blob Visual Effect */
 .blob-container {
   position: relative;
-  width: 100%;
+  width: 600px;
   height: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
