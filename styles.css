@@ -210,7 +210,7 @@ a:hover {
 .blob-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
 }

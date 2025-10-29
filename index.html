@@ -38,20 +38,20 @@
                 <div class="homepage-content">
                     <h1 class="main-name">Ryan Rana</h1>
                     <p class="description">
-                        Interested in agentic AI and scalable software architecture.
+                        Interested in agentic AI & scalable software architecture.
                     </p>
                     <br>
                     <p class="description">
-                        Currently studying CS @ <a href="https://newbrunswick.rutgers.edu/">Rutgers</a> and coding @ 
-                        <a href="https://www.undergraduation.com/">UnderGraduation</a>
+                        Currently studying CS @ <a href="https://newbrunswick.rutgers.edu/">Rutgers</a> & coding @ 
+                        <a href="https://www.undergraduation.com/">Undergraduation</a>
                     </p>
                     <br>
                     <p class="description">
-                        Happiest skiing, golfing, and at Chipotle building <a href="https://github.com/RyanRana">software</a> that solves problems.
+                        Happiest skiing, golfing, eating Chipotle, and building <a href="https://github.com/RyanRana">software</a> that helps people.
                     </p>
                     <br>
                     <p class="description">
-                        Eager to <a href="contact.html">engage</a> with those who brainstorm over breakfast.
+                        If you love imagining what’s possible and then building it,we’ll get along well.
                     </p>
                 </div>
                 
@@ -214,7 +214,7 @@
                     let poly = cell.map(([x,y]) => [x, y]);
                     poly = chaikin(poly, cornerSmoothIterations);
                     const c = centroid(poly);
-                    const inset = 8 * DPR; // Larger inset for rounder shapes (4 → 8)
+                    const inset = 15 * DPR; // Larger inset to prevent cells from touching (8 → 15)
                     poly = poly.map(([x,y]) => {
                         const vx = x - c[0], vy = y - c[1];
                         const mag = Math.hypot(vx, vy) || 1;
