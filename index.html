@@ -78,8 +78,8 @@
           const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
       
           // Page-specific parameters
-          const CELL_MIN = 18;
-          const CELL_MAX = 24;
+          const CELL_MIN = 12; // fewer cells → larger blobs
+          const CELL_MAX = 18;
           const PALETTE = [217, 262, 188, 346, 45, 160]; // default pastel-ish hues
       
           const PADDING = 12 * DPR;
