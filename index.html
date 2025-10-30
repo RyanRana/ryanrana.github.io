@@ -57,7 +57,7 @@
                 
                 <!-- Right Side - Blob Visual Effect -->
                 <div class="blob-container">
-                    <canvas id="blobCanvas"></canvas>
+                    <canvas id="c"></canvas>
                 </div>
             </div>
         </div>
@@ -69,417 +69,287 @@
             <p>&copy; 2025 Ryan Rana</p>
         </div>
     </footer>
-
-    <!-- Enhanced JavaScript -->
     <script>
-
-        // Simple Blob Visual Effect with Natural Color Changes and Breathing
         (() => {
-            const canvas = document.getElementById('blobCanvas');
-            if (!canvas) return;
-            
-            const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-const CELL_MIN = 18;
-const CELL_MAX = 24;
-// const PADDING = 8;
-const PADDING = 12 * DPR;
-            const cornerSmoothIterations = 5; // more rounded cells
-
-            const rand = (a,b) => a + Math.random()*(b-a);
-            const HSL = (h,s,l) => `hsl(${h}, ${s}%, ${l}%)`;
-
-            function centroid(poly) {
-                let x=0,y=0,a=0;
-                for (let i=0, j=poly.length-1; i<poly.length; j=i++) {
-                    const p1 = poly[j], p2 = poly[i];
-                    const f = (p1[0]*p2[1] - p2[0]*p1[1]);
-                    x += (p1[0] + p2[0]) * f;
-                    y += (p1[1] + p2[1]) * f;
-                    a += f;
+          const canvas = document.getElementById('c');
+          if (!canvas) return;
+      
+          const ctx = canvas.getContext('2d');
+          const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      
+          // Page-specific parameters
+          const CELL_MIN = 18;
+          const CELL_MAX = 24;
+          const PALETTE = [217, 262, 188, 346, 45, 160]; // default pastel-ish hues
+      
+          const PADDING = 12 * DPR;
+          const cornerSmoothIterations = 5;
+      
+          const rand = (a, b) => a + Math.random() * (b - a);
+          const HSL = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`;
+      
+          function centroid(poly) {
+            let x = 0, y = 0, a = 0;
+            for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+              const p1 = poly[j], p2 = poly[i];
+              const f = (p1[0] * p2[1] - p2[0] * p1[1]);
+              x += (p1[0] + p2[0]) * f;
+              y += (p1[1] + p2[1]) * f;
+              a += f;
+            }
+            a *= 0.5;
+            if (a === 0) {
+              let sx = 0, sy = 0; for (const p of poly) { sx += p[0]; sy += p[1]; }
+              return [sx / poly.length, sy / poly.length];
+            }
+            return [x / (6 * a), y / (6 * a)];
+          }
+      
+          function chaikin(points, iterations = 1) {
+            let pts = points.slice();
+            for (let k = 0; k < iterations; k++) {
+              const out = [];
+              for (let i = 0; i < pts.length; i++) {
+                const p0 = pts[i];
+                const p1 = pts[(i + 1) % pts.length];
+                const Q = [0.75 * p0[0] + 0.25 * p1[0], 0.75 * p0[1] + 0.25 * p1[1]];
+                const R = [0.25 * p0[0] + 0.75 * p1[0], 0.25 * p0[1] + 0.75 * p1[1]];
+                out.push(Q, R);
+              }
+              pts = out;
+            }
+            return pts;
+          }
+      
+          function drawRoundedPath(ctx, pts) {
+            const n = pts.length; if (!n) return;
+            ctx.beginPath();
+            for (let i = 0; i < n; i++) {
+              const p1 = pts[i];
+              const p2 = pts[(i + 1) % n];
+              const mx = (p1[0] + p2[0]) / 2 / DPR;
+              const my = (p1[1] + p2[1]) / 2 / DPR;
+              if (i === 0) ctx.moveTo(mx, my);
+              ctx.quadraticCurveTo(p1[0] / DPR, p1[1] / DPR, mx, my);
+            }
+            ctx.closePath();
+          }
+      
+          function randomSites(w, h, n) {
+            const sites = [];
+            for (let i = 0; i < n; i++) {
+              sites.push([rand(PADDING, w - PADDING), rand(PADDING, h - PADDING)]);
+            }
+            return sites;
+          }
+      
+          function lloydRelax(sites, bbox, iterations = 2) {
+            for (let k = 0; k < iterations; k++) {
+              const vor = d3.Delaunay.from(sites).voronoi(bbox);
+              const refined = [];
+              for (let i = 0; i < sites.length; i++) {
+                const cell = vor.cellPolygon(i);
+                if (!cell) { refined.push(sites[i]); continue; }
+                let cx = 0, cy = 0; for (const p of cell) { cx += p[0]; cy += p[1]; }
+                refined.push([cx / cell.length, cy / cell.length]);
+              }
+              sites = refined;
+            }
+            return sites;
+          }
+      
+          let state = { polys: [], colors: [] };
+          let mousePos = { x: -1e9, y: -1e9 };
+          let explosions = [];
+      
+          function regenerate() {
+            const w = canvas.width, h = canvas.height;
+            const count = Math.floor(rand(CELL_MIN, CELL_MAX + 1));
+            let sites = randomSites(w, h, count);
+            sites = lloydRelax(sites, [PADDING, PADDING, w - PADDING, h - PADDING], 2);
+      
+            const delaunay = d3.Delaunay.from(sites);
+            const vor = delaunay.voronoi([PADDING, PADDING, w - PADDING, h - PADDING]);
+      
+            const polys = [];
+            for (let i = 0; i < sites.length; i++) {
+              const cell = vor.cellPolygon(i);
+              if (!cell) continue;
+              let poly = cell.map(([x, y]) => [x, y]);
+              poly = chaikin(poly, cornerSmoothIterations);
+              const c = centroid(poly);
+              const inset = 18 * DPR;
+              poly = poly.map(([x, y]) => {
+                const vx = x - c[0], vy = y - c[1];
+                const mag = Math.hypot(vx, vy) || 1;
+                return [x - (vx / mag) * inset, y - (vy / mag) * inset];
+              });
+      
+              const hue = PALETTE[i % PALETTE.length];
+              polys.push({
+                poly,
+                center: c.slice(),
+                originalCenter: c.slice(),
+                originalPoly: poly.map(p => p.slice()),
+                hue,
+                baseHue: hue,
+                targetHue: hue,
+                velocity: { x: 0, y: 0 },
+                breathPhase: Math.random() * Math.PI * 2,
+                colorPhase: Math.random() * Math.PI * 2,
+                colorSpeed: rand(0.005, 0.015),
+                lastRenderedHue: null
+              });
+            }
+      
+            state = { polys, colors: polys.map(({ hue }) => HSL(hue, 70, 75)) };
+          }
+      
+          function updateNaturalColors() {
+            for (let blob of state.polys) {
+              blob.colorPhase += blob.colorSpeed;
+              const hueOffset = Math.sin(blob.colorPhase) * 30;
+              blob.hue = (blob.baseHue + hueOffset + 360) % 360;
+            }
+          }
+      
+          function updateBreathing() {
+            for (let blob of state.polys) {
+              blob.breathPhase += 0.012;
+              const s = 1 + Math.sin(blob.breathPhase) * 0.08;
+              for (let i = 0; i < blob.poly.length; i++) {
+                const dx = blob.originalPoly[i][0] - blob.originalCenter[0];
+                const dy = blob.originalPoly[i][1] - blob.originalCenter[1];
+                blob.poly[i][0] = blob.center[0] + dx * s;
+                blob.poly[i][1] = blob.center[1] + dy * s;
+              }
+            }
+          }
+      
+          function updateBlobPositions() {
+            const w = canvas.width, h = canvas.height;
+      
+            explosions = explosions.filter(ex => { ex.strength *= 0.95; ex.age += 1; return ex.age < 120; });
+      
+            for (let blob of state.polys) {
+              const dx = mousePos.x - blob.center[0];
+              const dy = mousePos.y - blob.center[1];
+              const dist = Math.hypot(dx, dy);
+      
+              const AVOIDANCE_RADIUS = 120 * DPR;
+              const ATTRACTION_RANGE = 300 * DPR;
+      
+              for (let ex of explosions) {
+                const exdx = blob.center[0] - ex.x;
+                const exdy = blob.center[1] - ex.y;
+                const exd = Math.hypot(exdx, exdy);
+                if (exd < ex.radius && exd > 0) {
+                  const f = ex.strength * (ex.radius - exd) / ex.radius;
+                  blob.velocity.x += (exdx / exd) * f;
+                  blob.velocity.y += (exdy / exd) * f;
                 }
-                a *= 0.5;
-                if (a === 0) {
-                    let sx=0, sy=0; for (const p of poly) { sx+=p[0]; sy+=p[1]; }
-                    return [sx/poly.length, sy/poly.length];
+              }
+      
+              if (dist < AVOIDANCE_RADIUS && dist > 0) {
+                const f = (AVOIDANCE_RADIUS - dist) / AVOIDANCE_RADIUS * 6.0;
+                blob.velocity.x -= (dx / dist) * f;
+                blob.velocity.y -= (dy / dist) * f;
+              } else if (dist < ATTRACTION_RANGE && dist >= AVOIDANCE_RADIUS) {
+                const f = (ATTRACTION_RANGE - dist) / ATTRACTION_RANGE * 1.5;
+                blob.velocity.x += (dx / dist) * f;
+                blob.velocity.y += (dy / dist) * f;
+              }
+      
+              const returnForce = 0.03;
+              const bdx = blob.originalCenter[0] - blob.center[0];
+              const bdy = blob.originalCenter[1] - blob.center[1];
+              blob.velocity.x += bdx * returnForce;
+              blob.velocity.y += bdy * returnForce;
+      
+              // keep inside bounds
+              blob.center[0] = Math.max(PADDING, Math.min(w - PADDING, blob.center[0] + (blob.velocity.x *= 0.80)));
+              blob.center[1] = Math.max(PADDING, Math.min(h - PADDING, blob.center[1] + (blob.velocity.y *= 0.80)));
+            }
+          }
+      
+          function updateColorSpreading() {
+            for (let i = 0; i < state.polys.length; i++) {
+              const a = state.polys[i];
+              let sum = 0, weight = 0;
+              for (let j = 0; j < state.polys.length; j++) {
+                if (i === j) continue;
+                const b = state.polys[j];
+                const d = Math.hypot(b.center[0] - a.center[0], b.center[1] - a.center[1]);
+                if (d < 80 * DPR) {
+                  const wgt = (80 * DPR - d) / (80 * DPR) * 0.02;
+                  sum += b.hue * wgt; weight += wgt;
                 }
-                return [x/(6*a), y/(6*a)];
+              }
+              if (weight > 0) {
+                const avg = sum / weight;
+                a.targetHue = a.hue + (avg - a.hue) * 0.05;
+                a.hue += (a.targetHue - a.hue) * 0.01;
+              }
             }
-
-            function chaikin(points, iterations=1) {
-                let pts = points.slice();
-                for (let k=0; k<iterations; k++) {
-                    const out = [];
-                    for (let i=0; i<pts.length; i++) {
-                        const p0 = pts[i];
-                        const p1 = pts[(i+1)%pts.length];
-                        const Q = [0.75*p0[0] + 0.25*p1[0], 0.75*p0[1] + 0.25*p1[1]];
-                        const R = [0.25*p0[0] + 0.75*p1[0], 0.25*p0[1] + 0.75*p1[1]];
-                        out.push(Q, R);
-                    }
-                    pts = out;
-                }
-                return pts;
+            for (let i = 0; i < state.polys.length; i++) {
+              const blob = state.polys[i];
+              if (Math.abs(blob.hue - blob.lastRenderedHue) > 1 || !blob.lastRenderedHue) {
+                state.colors[i] = HSL(blob.hue, 70, 75);
+                blob.lastRenderedHue = blob.hue;
+              }
             }
-
-            function drawRoundedPath(ctx, pts, DPR) {
-                const n = pts.length; if (!n) return;
-                ctx.beginPath();
-                for (let i = 0; i < n; i++) {
-                    const p1 = pts[i];
-                    const p2 = pts[(i + 1) % n];
-                    const mx = (p1[0] + p2[0]) / 2 / DPR;
-                    const my = (p1[1] + p2[1]) / 2 / DPR;
-                    if (i === 0) ctx.moveTo(mx, my);
-                    ctx.quadraticCurveTo(p1[0] / DPR, p1[1] / DPR, mx, my);
-                }
-                ctx.closePath();
+          }
+      
+          function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < state.polys.length; i++) {
+              ctx.fillStyle = state.colors[i];
+              drawRoundedPath(ctx, state.polys[i].poly);
+              ctx.fill();
             }
-
-            function drawPath(ctx, pts) {
-                if (!pts.length) return;
-                ctx.beginPath();
-                ctx.moveTo(pts[0][0], pts[0][1]);
-                for (let i=1; i<pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-                ctx.closePath();
-            }
-
-            function randomSites(w, h, n) {
-  const sites = [];
-  for (let i = 0; i < n; i++) {
-    sites.push([rand(PADDING, w - PADDING), rand(PADDING, h - PADDING)]);
-  }
-  return sites;
-}
-
-            function lloydRelax(sites, bbox, iterations = 2) {
-                for (let k = 0; k < iterations; k++) {
-                    const vor = d3.Delaunay.from(sites).voronoi(bbox);
-                    const refined = [];
-                    for (let i = 0; i < sites.length; i++) {
-                        const cell = vor.cellPolygon(i);
-                        if (!cell) { refined.push(sites[i]); continue; }
-                        let cx = 0, cy = 0;
-                        for (const p of cell) { cx += p[0]; cy += p[1]; }
-                        refined.push([cx / cell.length, cy / cell.length]);
-                    }
-                    sites = refined;
-                }
-                return sites;
-            }
-
-            let state = { polys: [], colors: [] };
-            let mousePos = { x: 0, y: 0 };
-            let animationId = null;
-            let explosions = []; // Track active explosions
-
-            let lastWidth = 0;
-            let lastHeight = 0;
-            
-            function resize() {
-                const container = canvas.parentElement;
-                const rect = container.getBoundingClientRect();
-                const w = Math.floor(rect.width);
-                const h = Math.floor(rect.height);
-                
-                // Only regenerate on first load or if dimensions change significantly
-                const shouldRegenerate = lastWidth === 0 || lastHeight === 0;
-                
-                if (!shouldRegenerate && state.polys.length > 0) {
-                    // Scale existing blobs to new canvas size
-                    const scaleX = (w * DPR) / lastWidth;
-                    const scaleY = (h * DPR) / lastHeight;
-                    
-                    for (let blob of state.polys) {
-                        // Scale all polygon points
-                        for (let i = 0; i < blob.poly.length; i++) {
-                            blob.poly[i][0] *= scaleX;
-                            blob.poly[i][1] *= scaleY;
-                        }
-                        // Scale original polygon points
-                        for (let i = 0; i < blob.originalPoly.length; i++) {
-                            blob.originalPoly[i][0] *= scaleX;
-                            blob.originalPoly[i][1] *= scaleY;
-                        }
-                        // Scale center positions
-                        blob.center[0] *= scaleX;
-                        blob.center[1] *= scaleY;
-                        blob.originalCenter[0] *= scaleX;
-                        blob.originalCenter[1] *= scaleY;
-                    }
-                }
-                
-                canvas.width = w * DPR;
-                canvas.height = h * DPR;
-                canvas.style.width = w + 'px';
-                canvas.style.height = h + 'px';
-                
-                lastWidth = canvas.width;
-                lastHeight = canvas.height;
-                
-                if (shouldRegenerate) {
-                    regenerate();
-                }
-                
-                draw();
-            }
-
-            function regenerate() {
-                const w = canvas.width, h = canvas.height;
-  const count = Math.floor(rand(CELL_MIN, CELL_MAX + 1));
-  let sites = randomSites(w, h, count);
-  sites = lloydRelax(sites, [PADDING, PADDING, w - PADDING, h - PADDING], 2);
-                const delaunay = d3.Delaunay.from(sites);
-                const vor = delaunay.voronoi([PADDING, PADDING, w - PADDING, h - PADDING]);
-
-                // Project palette colors (hues)
-                const projectHues = [217, 262, 188, 346, 45, 160];
-                
-                const polys = [];
-                for (let i=0; i<sites.length; i++) {
-                    const cell = vor.cellPolygon(i);
-                    if (!cell) continue;
-                    let poly = cell.map(([x,y]) => [x, y]);
-                    poly = chaikin(poly, cornerSmoothIterations);
-                    const c = centroid(poly);
-                    const inset = 18 * DPR; // larger inset for softer, blob-like shapes
-                    poly = poly.map(([x,y]) => {
-                        const vx = x - c[0], vy = y - c[1];
-                        const mag = Math.hypot(vx, vy) || 1;
-                        return [x - (vx/mag)*inset, y - (vy/mag)*inset];
-                    });
-
-                    const hue = projectHues[i % projectHues.length];
-                    polys.push({ 
-                        poly, 
-                        center: c, 
-                        originalCenter: [...c],
-                        originalPoly: poly.map(point => [...point]),
-                        hue,
-                        baseHue: hue,
-                        targetHue: hue,
-                        velocity: { x: 0, y: 0 },
-                        lastRenderedHue: null,
-                        breathPhase: Math.random() * Math.PI * 2,
-                        colorPhase: Math.random() * Math.PI * 2,
-                        colorSpeed: rand(0.005, 0.015)
-                    });
-                }
-
-                state = {
-                    polys,
-                    colors: polys.map(({hue}) => HSL(hue, 70, 75))
-                };
-            }
-
-            function updateNaturalColors() {
-                for (let blob of state.polys) {
-                    blob.colorPhase += blob.colorSpeed;
-                    const colorRange = 30;
-                    const hueOffset = Math.sin(blob.colorPhase) * colorRange;
-                    blob.hue = blob.baseHue + hueOffset;
-                    
-                    if (blob.hue < 0) blob.hue += 360;
-                    if (blob.hue >= 360) blob.hue -= 360;
-                }
-            }
-
-            function updateBreathing() {
-                for (let blob of state.polys) {
-                    blob.breathPhase += 0.012; // Much slower breathing (0.025 → 0.012)
-                    const breathScale = 1 + Math.sin(blob.breathPhase) * 0.08; // Keep exaggerated amplitude
-                    
-                    for (let i = 0; i < blob.poly.length; i++) {
-                        const dx = blob.originalPoly[i][0] - blob.originalCenter[0];
-                        const dy = blob.originalPoly[i][1] - blob.originalCenter[1];
-                        blob.poly[i][0] = blob.center[0] + dx * breathScale;
-                        blob.poly[i][1] = blob.center[1] + dy * breathScale;
-                    }
-                }
-            }
-
-            function updateBlobPositions() {
-                const w = canvas.width;
-                const h = canvas.height;
-                const TOP_SAFE_ZONE = 75;
-                const BOTTOM_SAFE_ZONE = 75;
-                
-                // Update explosions (decay over time)
-                explosions = explosions.filter(explosion => {
-                    explosion.strength *= 0.95; // Decay explosion strength
-                    explosion.age += 1;
-                    return explosion.age < 120; // Remove after 2 seconds at 60fps
-                });
-                
-                for (let blob of state.polys) {
-                    const dx = mousePos.x - blob.center[0];
-                    const dy = mousePos.y - blob.center[1];
-                    const distance = Math.hypot(dx, dy);
-                    
-                    const AVOIDANCE_RADIUS = 120; // Increased from 80 to prevent touching
-                    const ATTRACTION_RANGE = 300; // Range for attraction
-                    
-                    // Explosion effects - check all active explosions
-                    for (let explosion of explosions) {
-                        const expDx = blob.center[0] - explosion.x;
-                        const expDy = blob.center[1] - explosion.y;
-                        const expDistance = Math.hypot(expDx, expDy);
-                        
-                        if (expDistance < explosion.radius && expDistance > 0) {
-                            const explosionForce = explosion.strength * (explosion.radius - expDistance) / explosion.radius;
-                            blob.velocity.x += (expDx / expDistance) * explosionForce;
-                            blob.velocity.y += (expDy / expDistance) * explosionForce;
-                            
-                        }
-                    }
-                    
-                    // Cursor avoidance - much stronger repulsion when too close
-                    if (distance < AVOIDANCE_RADIUS && distance > 0) {
-                        const avoidanceForce = (AVOIDANCE_RADIUS - distance) / AVOIDANCE_RADIUS * 6.0; // Much stronger force (3.5 → 6.0)
-                        blob.velocity.x -= (dx / distance) * avoidanceForce; // Push away from cursor
-                        blob.velocity.y -= (dy / distance) * avoidanceForce;
-                    }
-                    // Attraction when at safe distance - stronger pull
-                    else if (distance < ATTRACTION_RANGE && distance >= AVOIDANCE_RADIUS) {
-                        const attractionForce = (ATTRACTION_RANGE - distance) / ATTRACTION_RANGE * 1.5; // Stronger attraction (0.8 → 1.5)
-                        blob.velocity.x += (dx / distance) * attractionForce;
-                        blob.velocity.y += (dy / distance) * attractionForce;
-                    }
-                    
-                    // Boundary forces to keep blobs out of safe zones (unless cursor-triggered)
-                    const topBoundary = TOP_SAFE_ZONE * DPR;
-                    const bottomBoundary = h - (BOTTOM_SAFE_ZONE * DPR);
-                    
-                    // Only apply boundary forces if cursor is not in the safe zone
-                    const cursorInTopZone = mousePos.y < topBoundary;
-                    const cursorInBottomZone = mousePos.y > bottomBoundary;
-                    
-                    if (blob.center[1] < topBoundary && !cursorInTopZone) {
-                        const boundaryForce = (topBoundary - blob.center[1]) / topBoundary * 0.5;
-                        blob.velocity.y += boundaryForce;
-                    }
-                    
-                    if (blob.center[1] > bottomBoundary && !cursorInBottomZone) {
-                        const boundaryForce = (blob.center[1] - bottomBoundary) / (BOTTOM_SAFE_ZONE * DPR) * 0.5;
-                        blob.velocity.y -= boundaryForce;
-                    }
-                    
-                    const returnForce = 0.03;
-                    const backDx = blob.originalCenter[0] - blob.center[0];
-                    const backDy = blob.originalCenter[1] - blob.center[1];
-                    blob.velocity.x += backDx * returnForce;
-                    blob.velocity.y += backDy * returnForce;
-                    
-                    blob.velocity.x *= 0.80; // Less damping for more dramatic movement (0.85 → 0.80)
-                    blob.velocity.y *= 0.80;
-                    blob.center[0] += blob.velocity.x;
-                    blob.center[1] += blob.velocity.y;
-                    
-                }
-            }
-
-            function updateColorSpreading() {
-                for (let i = 0; i < state.polys.length; i++) {
-                    const blob1 = state.polys[i];
-                    let hueInfluence = 0;
-                    let influenceCount = 0;
-                    
-                    for (let j = 0; j < state.polys.length; j++) {
-                        if (i === j) continue;
-                        const blob2 = state.polys[j];
-                        const distance = Math.hypot(
-                            blob2.center[0] - blob1.center[0],
-                            blob2.center[1] - blob1.center[1]
-                        );
-                        
-                        if (distance < 80) {
-                            const influence = (80 - distance) / 80 * 0.02;
-                            hueInfluence += blob2.hue * influence;
-                            influenceCount += influence;
-                        }
-                    }
-                    
-                    if (influenceCount > 0) {
-                        const avgInfluence = hueInfluence / influenceCount;
-                        blob1.targetHue = blob1.hue + (avgInfluence - blob1.hue) * 0.05;
-                        blob1.hue += (blob1.targetHue - blob1.hue) * 0.01;
-                    }
-                }
-                
-                for (let i = 0; i < state.polys.length; i++) {
-                    const blob = state.polys[i];
-                    if (Math.abs(blob.hue - blob.lastRenderedHue) > 1 || !blob.lastRenderedHue) {
-                        state.colors[i] = HSL(blob.hue, 70, 75);
-                        blob.lastRenderedHue = blob.hue;
-                    }
-                }
-            }
-
-
-            function draw() {
-                const ctx = canvas.getContext('2d');
-                ctx.save();
-                ctx.scale(DPR, DPR);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                for (let i = 0; i < state.polys.length; i++) {
-                    const blob = state.polys[i];
-                    ctx.fillStyle = state.colors[i];
-                    drawRoundedPath(ctx, blob.poly, DPR);
-                    ctx.fill();
-                }
-
-                ctx.restore();
-            }
-
-            function animate() {
-                updateNaturalColors();
-                updateBlobPositions();
-                updateBreathing();
-                updateColorSpreading();
-                draw();
-                animationId = requestAnimationFrame(animate);
-            }
-
-
-            function onMove(e) {
-                const rect = canvas.getBoundingClientRect();
-                // Use exact same calculation as click to eliminate offset
-                mousePos.x = (e.clientX - rect.left) * (canvas.width / rect.width);
-                mousePos.y = (e.clientY - rect.top) * (canvas.height / rect.height);
-            }
-
-            function onClick(e) {
-                const rect = canvas.getBoundingClientRect();
-                // Use same coordinate system for both mouse and explosion
-                const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
-                const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
-                
-                // Create explosion at click point
-                explosions.push({
-                    x: clickX,
-                    y: clickY,
-                    radius: 300 * DPR, // Larger blast radius (200 → 300)
-                    strength: 25, // Much stronger explosion (8 → 25)
-                    age: 0
-                });
-
-                
-            }
-
-            window.addEventListener('resize', resize);
-            canvas.addEventListener('mousemove', onMove);
-            canvas.addEventListener('click', onClick);
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => {
-                    resize();
-                    animate();
-                });
-            } else {
-                resize();
-                animate();
-            }
+          }
+      
+          function animate() {
+            updateNaturalColors();
+            updateBlobPositions();
+            updateBreathing();
+            updateColorSpreading();
+            draw();
+            requestAnimationFrame(animate);
+          }
+      
+          function onMove(e) {
+            const rect = canvas.getBoundingClientRect();
+            mousePos.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            mousePos.y = (e.clientY - rect.top) * (canvas.height / rect.height);
+          }
+      
+          function onClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            explosions.push({ x, y, radius: 300 * DPR, strength: 25, age: 0 });
+          }
+      
+          function resize() {
+            const w = Math.floor(window.innerWidth);
+            const h = Math.floor(window.innerHeight);
+            canvas.width = w * DPR;
+            canvas.height = h * DPR;
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+            regenerate();
+            draw();
+          }
+      
+          window.addEventListener('resize', resize);
+          canvas.addEventListener('mousemove', onMove);
+          canvas.addEventListener('click', onClick);
+      
+          resize();
+          requestAnimationFrame(animate);
         })();
-    </script>
+        </script>
+   
 </body>
 </html>
