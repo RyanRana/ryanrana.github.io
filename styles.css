@@ -860,18 +860,15 @@ a:hover {
     max-width: 100%;
   }
 
-/* Homepage Layout */
-.homepage-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spacing-xxxl);
-  align-items: center;
-  min-height: calc(100vh - 100px);
-  padding: var(--spacing-xxxl) 0;
-  position: relative;
-}
+  /* Homepage Layout (stack on mobile) */
+  .homepage-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    align-items: flex-start;
+    min-height: auto;
+    padding: var(--spacing-xl) 0 var(--spacing-xxl);
+  }
 
-  
   .homepage-content {
     padding-right: 0;
     padding: 0 var(--spacing-lg);
@@ -880,8 +877,9 @@ a:hover {
   .blob-container {
     height: 300px;
     order: -1;
-    width: 100%;
+    width: 100vw;
     margin: 0;
+    margin-left: calc(-50vw + 50%);
     border-radius: 0;
   }
 
