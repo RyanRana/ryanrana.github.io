@@ -242,6 +242,38 @@ a:hover {
   opacity: 0.8;
 }
 
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--white);
+  border: 2px solid var(--gray-300);
+  border-radius: 50%;
+  color: var(--gray-700);
+  font-size: 1.25rem;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  background: var(--nebula-blue);
+  border-color: var(--nebula-blue);
+  color: var(--white);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  opacity: 1;
+}
+
 /* Page Titles */
 .page-title {
   font-size: 3rem;

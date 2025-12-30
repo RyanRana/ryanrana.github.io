@@ -49,7 +49,6 @@
                     <li><a class="page-link" href="expierence.html">experience</a></li>
                     <li><a class="page-link" href="projects.html">projects</a></li>
                     <li><a class="page-link" href="resume.pdf">resume</a></li>
-                    <li><a class="page-link" href="contact.html">contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -67,7 +66,7 @@
                 <!-- Right Column - Description -->
                 <div class="description-column">
                     <p class="description">
-                        trying to solve problems with agentic llms, vlms, robots & scalable systems. i love building & learning.
+                        trying to solve meaningful problems with agentic llms, vlms, robots & scalable systems. i love building & learning.
                     </p>
                     <br>
                     <p class="description">
@@ -83,6 +82,27 @@
                     <p class="description">
                       if u love turning <a href="https://www.linkedin.com/in/ryanrana/">good conversations</a> into projects, companies or investments, lets talk!
                     </p>
+                    <br>
+                    <div class="social-icons">
+                        <a href="mailto:ryanrana04@gmail.com" class="social-icon" title="ryanrana04@gmail.com" id="emailIcon">
+                            <i class="fas fa-envelope" id="emailIconInner"></i>
+                        </a>
+                        <a href="tel:+19088734657" class="social-icon" title="Call">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ryanrana/" target="_blank" rel="noopener noreferrer" class="social-icon" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/RyanRana" target="_blank" rel="noopener noreferrer" class="social-icon" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://ryanranas.medium.com/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Medium">
+                            <i class="fab fa-medium"></i>
+                        </a>
+                        <a href="https://www.instagram.com/_ryanrana_/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,6 +142,36 @@
             document.addEventListener('mousemove', updateMousePosition);
             requestAnimationFrame(animate);
         })();
+
+        // Email icon with copy to clipboard functionality
+        const emailIcon = document.getElementById('emailIcon');
+        const emailIconInner = document.getElementById('emailIconInner');
+        
+        if (emailIcon && emailIconInner) {
+            emailIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = 'ryanrana04@gmail.com';
+                
+                // Try to copy to clipboard
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(email).then(() => {
+                        // Change icon to checkmark
+                        emailIconInner.className = 'fas fa-check';
+                        
+                        // Revert back to envelope after 2 seconds
+                        setTimeout(() => {
+                            emailIconInner.className = 'fas fa-envelope';
+                        }, 2000);
+                    }).catch(() => {
+                        // Fallback to mailto if clipboard fails
+                        window.location.href = 'mailto:' + email;
+                    });
+                } else {
+                    // Fallback to mailto for older browsers
+                    window.location.href = 'mailto:' + email;
+                }
+            });
+        }
     </script>
 </body>
 </html>
