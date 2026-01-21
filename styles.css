@@ -1024,16 +1024,16 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gray-100);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--nebula-blue);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--nebula-purple);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Morphing Gradient Background */

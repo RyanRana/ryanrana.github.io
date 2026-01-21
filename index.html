@@ -36,6 +36,13 @@
             <div class="g6"></div>
             <div class="g7"></div>
             <div class="g8"></div>
+            <div class="g9"></div>
+            <div class="g10"></div>
+            <div class="g11"></div>
+            <div class="g12"></div>
+            <div class="g13"></div>
+            <div class="g14"></div>
+            <div class="g15"></div>
             <div class="interactive" id="interactiveRef"></div>
         </div>
     </div>
@@ -121,24 +128,34 @@
     <!-- Randomize Blob Colors, Positions, and Sizes -->
     <script>
         (() => {
-            // Vibrant color palette
+            // Soft, airy color palette - greens, blues, oranges, and cloudish tones
             const colorPalette = [
-                '255, 107, 107',   // Coral Red
-                '255, 159, 64',    // Orange
-                '255, 205, 86',    // Yellow
-                '75, 192, 192',    // Teal
-                '54, 162, 235',    // Blue
-                '153, 102, 255',   // Purple
-                '255, 99, 132',    // Pink
-                '255, 87, 51',     // Red Orange
-                '46, 213, 115',    // Green
-                '0, 210, 211',     // Cyan
-                '255, 71, 87',     // Hot Pink
-                '72, 219, 251',    // Sky Blue
-                '160, 100, 247',   // Violet
-                '255, 177, 66',    // Amber
-                '89, 98, 255',     // Indigo
-                '255, 121, 198',   // Rose
+                '176, 224, 230',   // Powder Blue
+                '173, 216, 230',   // Light Blue
+                '135, 206, 235',   // Sky Blue
+                '152, 251, 152',   // Pale Green
+                '144, 238, 144',   // Light Green
+                '175, 238, 238',   // Pale Turquoise
+                '176, 196, 222',   // Light Steel Blue
+                '169, 223, 191',   // Mint Green
+                '158, 202, 225',   // Soft Blue
+                '198, 226, 255',   // Baby Blue
+                '189, 252, 201',   // Light Mint
+                '162, 210, 223',   // Cloudy Blue
+                '181, 234, 215',   // Seafoam
+                '190, 227, 219',   // Pale Aqua
+                '204, 235, 197',   // Pale Lime
+                '220, 237, 200',   // Tea Green
+                '188, 212, 230',   // Cloudy Sky
+                '200, 230, 201',   // Soft Green
+                '179, 229, 252',   // Light Sky
+                '225, 245, 254',   // Alice Blue
+                '255, 218, 185',   // Peach
+                '255, 228, 196',   // Bisque
+                '255, 239, 213',   // Papaya Whip
+                '255, 222, 173',   // Light Orange
+                '250, 214, 165',   // Soft Peach
+                '255, 235, 205',   // Blanched Almond
             ];
 
             // Function to get random color from palette
@@ -169,11 +186,11 @@
             }
 
             // Randomize individual blob positions and sizes
-            const blobs = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8'];
+            const blobs = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11', 'g12', 'g13', 'g14', 'g15'];
             blobs.forEach(blobClass => {
                 const blob = document.querySelector(`.${blobClass}`);
                 if (blob) {
-                    const size = randomSize(50, 120);
+                    const size = randomSize(80, 150);
                     blob.style.width = `${size}%`;
                     blob.style.height = `${size}%`;
                     
@@ -184,7 +201,7 @@
                     
                     // Assign random color from palette
                     const color = paletteColor();
-                    blob.style.background = `radial-gradient(circle at center, rgba(${color}, 0.8) 0, rgba(${color}, 0) 50%)`;
+                    blob.style.background = `radial-gradient(circle at center, rgba(${color}, 0.9) 0, rgba(${color}, 0) 50%)`;
                     blob.style.mixBlendMode = 'hard-light';
                     blob.style.position = 'absolute';
                     
