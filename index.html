@@ -33,6 +33,9 @@
             <div class="g3"></div>
             <div class="g4"></div>
             <div class="g5"></div>
+            <div class="g6"></div>
+            <div class="g7"></div>
+            <div class="g8"></div>
             <div class="interactive" id="interactiveRef"></div>
         </div>
     </div>
@@ -66,7 +69,7 @@
                 <!-- Right Column - Description -->
                 <div class="description-column">
                     <p class="description">
-                        trying to solve meaningful problems with agentic llms, vlms, robots & scalable systems. i love building & learning.
+                        trying to solve meaningful problems with agents, vlms, robots & systems. i love building & learning.
                     </p>
                     <br>
                     <p class="description">
@@ -111,9 +114,93 @@
     <!-- Footer -->
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 Ryan Rana</p>
+            <p>&copy; 2026 Ryan Rana</p>
         </div>
     </footer>
+
+    <!-- Randomize Blob Colors, Positions, and Sizes -->
+    <script>
+        (() => {
+            // Vibrant color palette
+            const colorPalette = [
+                '255, 107, 107',   // Coral Red
+                '255, 159, 64',    // Orange
+                '255, 205, 86',    // Yellow
+                '75, 192, 192',    // Teal
+                '54, 162, 235',    // Blue
+                '153, 102, 255',   // Purple
+                '255, 99, 132',    // Pink
+                '255, 87, 51',     // Red Orange
+                '46, 213, 115',    // Green
+                '0, 210, 211',     // Cyan
+                '255, 71, 87',     // Hot Pink
+                '72, 219, 251',    // Sky Blue
+                '160, 100, 247',   // Violet
+                '255, 177, 66',    // Amber
+                '89, 98, 255',     // Indigo
+                '255, 121, 198',   // Rose
+            ];
+
+            // Function to get random color from palette
+            function paletteColor() {
+                return colorPalette[Math.floor(Math.random() * colorPalette.length)];
+            }
+
+            // Function to generate random size between min and max percentage
+            function randomSize(min = 60, max = 120) {
+                return Math.floor(Math.random() * (max - min + 1) + min);
+            }
+
+            // Function to generate random position across full screen
+            function randomFullScreenPosition() {
+                return Math.floor(Math.random() * 100);
+            }
+
+            // Randomize gradient wrapper colors and sizes
+            const gradientWrapper = document.getElementById('gradientWrapper');
+            if (gradientWrapper) {
+                gradientWrapper.style.setProperty('--color1', paletteColor());
+                gradientWrapper.style.setProperty('--color2', paletteColor());
+                gradientWrapper.style.setProperty('--color3', paletteColor());
+                gradientWrapper.style.setProperty('--color4', paletteColor());
+                gradientWrapper.style.setProperty('--color5', paletteColor());
+                gradientWrapper.style.setProperty('--color-interactive', paletteColor());
+                gradientWrapper.style.setProperty('--circle-size', `${randomSize()}%`);
+            }
+
+            // Randomize individual blob positions and sizes
+            const blobs = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8'];
+            blobs.forEach(blobClass => {
+                const blob = document.querySelector(`.${blobClass}`);
+                if (blob) {
+                    const size = randomSize(50, 120);
+                    blob.style.width = `${size}%`;
+                    blob.style.height = `${size}%`;
+                    
+                    // Position blobs throughout the full screen
+                    blob.style.top = `${randomFullScreenPosition()}%`;
+                    blob.style.left = `${randomFullScreenPosition()}%`;
+                    blob.style.transform = `translate(-50%, -50%)`;
+                    
+                    // Assign random color from palette
+                    const color = paletteColor();
+                    blob.style.background = `radial-gradient(circle at center, rgba(${color}, 0.8) 0, rgba(${color}, 0) 50%)`;
+                    blob.style.mixBlendMode = 'hard-light';
+                    blob.style.position = 'absolute';
+                    
+                    // Random animation with varied speeds
+                    const animations = [
+                        'moveVertical 30s ease infinite',
+                        'moveInCircle 25s ease infinite',
+                        'moveHorizontal 35s ease infinite',
+                        'moveVertical 40s ease infinite',
+                        'moveInCircle 20s reverse infinite'
+                    ];
+                    blob.style.animation = animations[Math.floor(Math.random() * animations.length)];
+                }
+            });
+        })();
+    </script>
 
     <!-- Morphing Gradient Mouse Interaction -->
     <script>
