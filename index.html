@@ -75,12 +75,32 @@
 
                 <!-- Right Column - Description -->
                 <div class="description-column">
+                    <div class="enter-reveal" id="enterReveal">
+                        <div class="enter-prompt terminal-block" id="enterPrompt">
+                            <div class="terminal-step" data-step="0">
+                                <span class="prompt-prefix">&gt;</span> <span class="t-keyword">const</span> <span class="t-var">res</span> <span class="t-punct">=</span> <span class="t-keyword">await</span> <span class="t-fn">fetch</span><span class="t-punct">(</span><span class="t-string">'/me'</span><span class="t-punct">);</span><span class="cursor" aria-hidden="true"></span>
+                            </div>
+                            <div class="terminal-output" data-step="0"><span class="t-ok">200 OK</span></div>
+                            <div class="terminal-step" data-step="1">
+                                <span class="prompt-prefix">&gt;</span> <span class="t-keyword">const</span> <span class="t-punct">{</span> <span class="t-var">name</span><span class="t-punct">,</span> <span class="t-var">status</span> <span class="t-punct">}</span> <span class="t-punct">=</span> <span class="t-keyword">await</span> <span class="t-var">res</span><span class="t-punct">.</span><span class="t-fn">json</span><span class="t-punct">();</span><span class="cursor" aria-hidden="true"></span>
+                            </div>
+                            <div class="terminal-output terminal-output-json" data-step="1">{ "name": "Ryan Rana", "status": "wired in" }</div>
+                            <div class="terminal-step" data-step="2">
+                                <span class="prompt-prefix">&gt;</span> <span class="t-var">console</span><span class="t-punct">.</span><span class="t-fn">log</span><span class="t-punct">(</span><span class="t-string">&#96;${<span class="t-var">full_bio</span>}&#96;</span><span class="t-punct">);</span><span class="cursor" aria-hidden="true"></span>
+                            </div>
+                            <div class="terminal-output" data-step="2"></div>
+                            <div class="terminal-step terminal-step-final" data-step="3">
+                                <span class="prompt-prefix">&gt;</span> <span class="t-comment">// Press Enter to render full response</span><span class="cursor" aria-hidden="true"></span>
+                            </div>
+                            <button type="button" class="enter-btn" id="enterBtn" aria-label="Press Enter">↵ Enter</button>
+                        </div>
+                        <div class="revealable-content" id="revealableContent">
                     <p class="description">
-                        trying to solve meaningful problems with agents, vlms, robots & systems. i love building & learning.
+                        i'm interested in solving problems with agents, VLMs, robots & scalable systems. as a swe, i prioritize technical depth and high agency for improvement.
                     </p>
                     <br>
                     <p class="description">
-                        cs @ <a href="https://newbrunswick.rutgers.edu/">Rutgers</a> & swe @
+                        cs @ Rutgers & swe @
                         <a href="https://centrenhealth.com/">Centren</a>, prev cto @ <a href="https://www.joinmesh.today/">Mesh</a> & making other <a href="https://github.com/RyanRana">cool stuff</a>. 
                     </p>
                  
@@ -109,9 +129,17 @@
                         <a href="https://ryanranas.medium.com/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Medium">
                             <i class="fab fa-medium"></i>
                         </a>
+                        <a href="https://x.com/ryanrana0" target="_blank" rel="noopener noreferrer" class="social-icon social-icon-svg" title="X (Twitter)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://news.ycombinator.com/user?id=ryanrana" target="_blank" rel="noopener noreferrer" class="social-icon" title="Hacker News">
+                            <i class="fa-brands fa-y-combinator"></i>
+                        </a>
                         <a href="https://www.instagram.com/_ryanrana_/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
+                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,34 +156,13 @@
     <!-- Randomize Blob Colors, Positions, and Sizes -->
     <script>
         (() => {
-            // Soft, airy color palette - greens, blues, oranges, and cloudish tones
+            // Tropical Sunrise - gold, tangerine, sky blue, seafoam, arctic white
             const colorPalette = [
-                '176, 224, 230',   // Powder Blue
-                '173, 216, 230',   // Light Blue
-                '135, 206, 235',   // Sky Blue
-                '152, 251, 152',   // Pale Green
-                '144, 238, 144',   // Light Green
-                '175, 238, 238',   // Pale Turquoise
-                '176, 196, 222',   // Light Steel Blue
-                '169, 223, 191',   // Mint Green
-                '158, 202, 225',   // Soft Blue
-                '198, 226, 255',   // Baby Blue
-                '189, 252, 201',   // Light Mint
-                '162, 210, 223',   // Cloudy Blue
-                '181, 234, 215',   // Seafoam
-                '190, 227, 219',   // Pale Aqua
-                '204, 235, 197',   // Pale Lime
-                '220, 237, 200',   // Tea Green
-                '188, 212, 230',   // Cloudy Sky
-                '200, 230, 201',   // Soft Green
-                '179, 229, 252',   // Light Sky
-                '225, 245, 254',   // Alice Blue
-                '255, 218, 185',   // Peach
-                '255, 228, 196',   // Bisque
-                '255, 239, 213',   // Papaya Whip
-                '255, 222, 173',   // Light Orange
-                '250, 214, 165',   // Soft Peach
-                '255, 235, 205',   // Blanched Almond
+                '255, 159, 28',   // Amber Glow
+                '255, 191, 105',  // Honey Bronze
+                '255, 255, 255',  // White
+                '203, 243, 240',  // Frozen Water
+                '46, 196, 182',   // Light Sea Green
             ];
 
             // Function to get random color from palette
@@ -201,7 +208,7 @@
                     
                     // Assign random color from palette
                     const color = paletteColor();
-                    blob.style.background = `radial-gradient(circle at center, rgba(${color}, 0.9) 0, rgba(${color}, 0) 50%)`;
+                    blob.style.background = `radial-gradient(circle at center, rgba(${color}, 0.5) 0, rgba(${color}, 0) 50%)`;
                     blob.style.mixBlendMode = 'hard-light';
                     blob.style.position = 'absolute';
                     
@@ -246,6 +253,48 @@
             document.addEventListener('mousemove', updateMousePosition);
             requestAnimationFrame(animate);
         })();
+
+        // Press Enter to reveal content (multi-step API-style)
+        const enterReveal = document.getElementById('enterReveal');
+        const enterPrompt = document.getElementById('enterPrompt');
+        const enterBtn = document.getElementById('enterBtn');
+        let terminalStep = 0;
+        const maxStep = 4;
+
+        function setStep(step) {
+            if (!enterPrompt) return;
+            document.querySelectorAll('.terminal-step, .terminal-output').forEach(el => {
+                const s = parseInt(el.getAttribute('data-step'), 10);
+                el.classList.toggle('visible', s <= step && (el.classList.contains('terminal-output') ? s < step : true));
+            });
+            document.querySelectorAll('.terminal-step').forEach(el => {
+                const s = parseInt(el.getAttribute('data-step'), 10);
+                el.classList.toggle('has-cursor', s === step);
+            });
+            enterBtn.classList.toggle('visible', true);
+        }
+
+        function advanceTerminal() {
+            if (enterReveal.classList.contains('revealed')) return;
+            if (terminalStep < maxStep - 1) {
+                terminalStep++;
+                setStep(terminalStep);
+            } else {
+                enterReveal.classList.add('revealed');
+                try { sessionStorage.setItem('enterRevealed', '1'); } catch (e) {}
+            }
+        }
+
+        if (enterReveal && sessionStorage.getItem('enterRevealed') === '1') {
+            enterReveal.classList.add('revealed');
+        } else if (enterPrompt) {
+            setStep(0);
+        }
+
+        if (enterBtn) enterBtn.addEventListener('click', advanceTerminal);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && enterReveal && !enterReveal.classList.contains('revealed')) advanceTerminal();
+        });
 
         // Email icon with copy to clipboard functionality
         const emailIcon = document.getElementById('emailIcon');

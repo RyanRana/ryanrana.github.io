@@ -45,6 +45,7 @@
   /* Transitions */
   --transition: 0.3s ease;
   --transition-slow: 0.8s ease;
+
 }
 
 /* Reset and Base Styles */
@@ -235,11 +236,31 @@ a:hover {
 .description a {
   color: var(--nebula-blue);
   font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.description a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
 }
 
 .description a:hover {
-  color: var(--nebula-blue);
-  opacity: 0.8;
+  color: var(--nebula-cyan);
+}
+
+.description a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 /* Social Icons */
@@ -272,6 +293,131 @@ a:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
   opacity: 1;
+}
+
+.social-icon-svg {
+  color: var(--gray-700);
+}
+
+.social-icon-svg svg {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: currentColor;
+}
+
+.social-icon-svg:hover svg {
+  fill: currentColor;
+}
+
+/* Press Enter to reveal */
+.enter-reveal {
+  position: relative;
+}
+
+.enter-prompt.terminal-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--gray-800);
+}
+
+.terminal-step,
+.terminal-output {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-height 0.3s ease;
+}
+
+.terminal-step.visible,
+.terminal-output.visible {
+  opacity: 1;
+  max-height: 4em;
+}
+
+.terminal-output {
+  padding-left: 1.5rem;
+  color: var(--gray-700);
+  font-size: 1.05rem;
+}
+
+.terminal-step .cursor {
+  display: none;
+  width: 0.55em;
+  height: 0.9em;
+  background: var(--gray-600);
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+.terminal-step.has-cursor .cursor {
+  display: inline-block;
+}
+
+.prompt-prefix {
+  color: var(--nebula-blue);
+  font-weight: 500;
+  margin-right: 0.25rem;
+}
+
+/* Terminal: base text, few accents only */
+.terminal-block .t-keyword,
+.terminal-block .t-var,
+.terminal-block .t-fn,
+.terminal-block .t-punct,
+.terminal-block .t-comment {
+  color: inherit;
+}
+
+.terminal-block .t-string { color: var(--gray-600); }   /* subtle accent - strings */
+.terminal-output .t-ok { color: var(--nebula-blue); font-weight: 600; }  /* accent - 200 OK */
+.terminal-output.terminal-output-json { color: var(--gray-700); }
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.enter-btn {
+  align-self: flex-start;
+  margin-top: var(--spacing-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--gray-200);
+  border: 2px solid var(--gray-400);
+  border-radius: var(--radius-sm);
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.enter-btn:hover {
+  background: var(--nebula-blue);
+  border-color: var(--nebula-blue);
+  color: var(--white);
+}
+
+.revealable-content {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease, max-height 0.6s ease;
+}
+
+.enter-reveal.revealed .enter-prompt {
+  display: none;
+}
+
+.enter-reveal.revealed .revealable-content {
+  opacity: 1;
+  visibility: visible;
+  max-height: 1200px;
 }
 
 /* Page Titles */
@@ -1207,7 +1353,7 @@ a:hover {
   position: absolute;
   background: radial-gradient(
       circle at center,
-      rgba(var(--color1), 0.8) 0,
+      rgba(var(--color1), 0.5) 0,
       rgba(var(--color1), 0) 50%
     ) no-repeat;
   mix-blend-mode: var(--blending);
@@ -1217,14 +1363,14 @@ a:hover {
   left: calc(50% - var(--circle-size) / 2);
   transform-origin: center center;
   animation: moveVertical 30s ease infinite;
-  opacity: 1;
+  opacity: 0.85;
 }
 
 .sui-morphing-gradient .g2 {
   position: absolute;
   background: radial-gradient(
       circle at center,
-      rgba(var(--color2), 0.8) 0,
+      rgba(var(--color2), 0.5) 0,
       rgba(var(--color2), 0) 50%
     ) no-repeat;
   mix-blend-mode: var(--blending);
@@ -1234,14 +1380,14 @@ a:hover {
   left: calc(50% - var(--circle-size) / 2);
   transform-origin: calc(50% - 400px);
   animation: moveInCircle 20s reverse infinite;
-  opacity: 1;
+  opacity: 0.85;
 }
 
 .sui-morphing-gradient .g3 {
   position: absolute;
   background: radial-gradient(
       circle at center,
-      rgba(var(--color3), 0.8) 0,
+      rgba(var(--color3), 0.5) 0,
       rgba(var(--color3), 0) 50%
     ) no-repeat;
   mix-blend-mode: var(--blending);
@@ -1251,14 +1397,14 @@ a:hover {
   left: calc(50% - var(--circle-size) / 2 - 500px);
   transform-origin: calc(50% + 400px);
   animation: moveInCircle 40s linear infinite;
-  opacity: 1;
+  opacity: 0.85;
 }
 
 .sui-morphing-gradient .g4 {
   position: absolute;
   background: radial-gradient(
       circle at center,
-      rgba(var(--color4), 0.8) 0,
+      rgba(var(--color4), 0.5) 0,
       rgba(var(--color4), 0) 50%
     ) no-repeat;
   mix-blend-mode: var(--blending);
@@ -1268,14 +1414,14 @@ a:hover {
   left: calc(50% - var(--circle-size) / 2);
   transform-origin: calc(50% - 200px);
   animation: moveHorizontal 40s ease infinite;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .sui-morphing-gradient .g5 {
   position: absolute;
   background: radial-gradient(
       circle at center,
-      rgba(var(--color5), 0.8) 0,
+      rgba(var(--color5), 0.5) 0,
       rgba(var(--color5), 0) 50%
     ) no-repeat;
   mix-blend-mode: var(--blending);
@@ -1285,14 +1431,14 @@ a:hover {
   left: calc(50% - var(--circle-size));
   transform-origin: calc(50% - 800px) calc(50% + 200px);
   animation: moveInCircle 20s ease infinite;
-  opacity: 1;
+  opacity: 0.85;
 }
 
 .sui-morphing-gradient .interactive {
   position: absolute;
   background: radial-gradient(
       circle at center,
-      rgba(var(--color-interactive), 0.8) 0,
+      rgba(var(--color-interactive), 0.5) 0,
       rgba(var(--color-interactive), 0) 50%
     ) no-repeat;
   mix-blend-mode: var(--blending);
@@ -1300,7 +1446,7 @@ a:hover {
   height: 100%;
   top: -50%;
   left: -50%;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .gradients-container {
