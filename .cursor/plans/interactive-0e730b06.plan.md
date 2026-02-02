@@ -1,4 +1,31 @@
-<!-- 0e730b06-e3dc-4e9c-b893-7c728f7f7edf e66b99aa-bfc0-4508-8414-a54651dca42d -->
+---
+name: Replace Voronoi blobs with an interactive kaleidoscope
+overview: ""
+todos:
+  - id: f44d5ac7-525b-4580-963f-e333be2e0306
+    content: Remove D3 import and Voronoi/blob code from index.html
+    status: pending
+  - id: 2703c6e0-6fe6-4ba6-914c-60f9db6abcd1
+    content: Add kaleidoscope constants, resize and animation loop
+    status: pending
+  - id: e33c664e-fa4f-42fe-863f-d09da0927ef0
+    content: Implement wedge clipping, rotation, and mirroring per sector
+    status: pending
+  - id: 01467ac2-e8f9-4994-8428-56d50e01d7af
+    content: Implement smooth radial base shape generator
+    status: pending
+  - id: 239a1f27-89c2-4e47-8989-39ddebe29914
+    content: Add mousemove/mouseleave to drive rotation and scale
+    status: pending
+  - id: 11cf6f8e-39dc-48f0-9a06-6e25c0f7fe9e
+    content: Fill with palette-based radial gradients and hue phasing
+    status: pending
+  - id: 018971ba-5577-40b1-bbc3-f0a27f10e9d9
+    content: Test devices and tune points/sectors for 60fps
+    status: pending
+isProject: false
+---
+
 # Replace Voronoi blobs with an interactive kaleidoscope
 
 ## What we’ll build
@@ -183,13 +210,3 @@
 - Hover near the center yields light scaling/rotation; stronger toward edges.
 - Smooth 60fps on desktop; no external dependencies.
 - Colors cycle slowly yet remain within the existing palette vibe.
-
-### To-dos
-
-- [ ] Remove D3 import and Voronoi/blob code from index.html
-- [ ] Add kaleidoscope constants, resize and animation loop
-- [ ] Implement wedge clipping, rotation, and mirroring per sector
-- [ ] Implement smooth radial base shape generator
-- [ ] Add mousemove/mouseleave to drive rotation and scale
-- [ ] Fill with palette-based radial gradients and hue phasing
-- [ ] Test devices and tune points/sectors for 60fps

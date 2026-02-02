@@ -1,0 +1,176 @@
+[
+  {
+    "title": "From Random Idea (AI) to 600 Users (and Shutdown) in 4 Months",
+    "date": "Jan 24, 2026",
+    "url": "https://ryanranas.medium.com/from-random-idea-ai-to-600-users-and-shutdown-in-4-months-974d4cb76848",
+    "excerpt": "I've always been drawn to those who pave their own paths and become innovators, creators, and leaders. As a CS major, the dream of coming up with a breakthrough idea and turning it into a business is a real one — one I tried to make a reality this past summer. 4 months after the first line of code was written, Mesh at joinmesh.today had 600 users, and we stopped building it. This is simply my experience trying to start something early in college, something that may be relatable to a lot of people."
+  },
+  {
+    "title": "The 40× Curve: How AI's Exponential Efficiency Is Rewriting the Future",
+    "date": "Mar 23, 2025",
+    "url": "https://ryanranas.medium.com/how-will-ais-exponential-efficiency-reshape-society-by-2030-and-beyond-178518ea3fcf",
+    "excerpt": "Imagine a world where artificial intelligence becomes 40 times more efficient every year — not just better, but smarter, cheaper, and faster, all at once. Decisions that once took days now take seconds. Entire industries are rewritten. Economies surge. And jobs? Many vanish, while new ones emerge at lightning speed. This isn't science fiction — it's the logical conclusion of compounding technological growth. Just as Moore's Law revolutionized hardware, AI is now riding its own exponential curve — one far steeper and more transformative."
+  },
+  {
+    "title": "How I developed a AI tool to help small business owners \"make it\"",
+    "date": "Feb 3, 2025",
+    "url": "https://ryanranas.medium.com/how-i-developed-a-ai-tool-to-help-small-business-owners-make-it-13903fb7984c",
+    "excerpt": "In the world of business, having a robust plan is essential for success. However, creating and analyzing a comprehensive business plan can be a daunting task. To address this challenge, I developed PLANA: Plan Learning, Analysis, and Advisory. This innovative tool is designed to assist entrepreneurs, business analysts, and investors by leveraging the power of multiple machine learning models to provide a thorough analysis of business plans."
+  },
+  {
+    "title": "Are There Any Two Pages on Wikipedia That Can't Be Connected?",
+    "date": "Feb 2, 2025",
+    "url": "https://medium.com/@rutgersusacs/are-there-any-two-pages-on-wikipedia-that-cant-be-connected-970f32ae1326",
+    "excerpt": "Wikipedia is by far the most accessible way to get knowledge about anything because each page hyperlinks to many other pages. They connect articles across various topics, enabling users to traverse from one page to another in just a few clicks. This phenomenon is exemplified by the popular \"Wiki Game,\" where players attempt to navigate between two seemingly unrelated pages using as few clicks as possible. But have you ever wondered if any two pages on Wikipedia can't be connected?"
+  },
+  {
+    "title": "Creating Frameworks to Balance Developer Metrics to Increase Long-Term Value",
+    "date": "Jan 21, 2025",
+    "url": "https://ryanranas.medium.com/6929b6f5c0d2",
+    "excerpt": "Developer productivity metrics must balance speed, quality, and innovation, as over-prioritization of one objective undermines the others, leading to inefficiencies and decreased long-term value. In the fast-paced world of software development, teams are constantly pressured to deliver more — faster, better, and more creatively. However, achieving excellence in speed, quality, and innovation simultaneously is akin to solving an unsolvable trilemma."
+  },
+  {
+    "title": "How to always maximize your KPI",
+    "date": "Jan 8, 2025",
+    "url": "https://ryanranas.medium.com/how-to-always-maximize-your-works-kpi-a11a117d84e0",
+    "excerpt": "KPI stands for Key Performance Indicator, and every project and team has a different metric for their KPI. As a member of the developer productivity team, you should focus on improving the productivity and efficiency of developers in rapidly iterating products rather than the uptime of your internal development tool."
+  },
+  {
+    "title": "Why it is important to build personal coding projects and how to solve problems",
+    "date": "Jul 31, 2024",
+    "url": "https://ryanranas.medium.com/why-it-is-important-to-build-personal-coding-projects-and-how-to-solve-problems-493e77013641",
+    "excerpt": "I've been a developer for several years. Between freelancing, working at startups, and being an engineer for an established company, the most important thing I have to do to benefit me as a developer is work on personal programming projects. It opened my mind up creatively and congenially in ways that never would have been possible in any other way. I didn't get into programming to analyze meaningless data for a Fortune 500. I got into programming to turn my ideas into reality and make the things I want to make."
+  },
+  {
+    "title": "Training Software to Think: How Learned Latent Variables Reveal Fundamental Reasoning Skills",
+    "date": "May 22, 2024",
+    "url": "https://ryanranas.medium.com/training-software-to-think-how-learned-latent-variables-reveal-fundamental-reasoning-skills-f33dcefb8d2d",
+    "excerpt": "Can we train software to think solely by observing behavior? This question lies at the core of Artificial Intelligence (AI) research. Let's consider an example: suppose we aim to develop AI software for constructing houses. Typically, houses are built by a team of human builders utilizing various tools. In order to build our software, we can observe the decisions made by humans and attempt to utilize imitation learning algorithms to map robot observations to the building decisions made by humans."
+  },
+  {
+    "title": "Lessons Learned from 3 Years of Organizing Hackathons",
+    "date": "May 7, 2024",
+    "url": "https://ryanranas.medium.com/lessons-learned-from-3-years-of-organizing-hackathons-b61b8c7e0c61",
+    "excerpt": "In my sophomore year of high school, inspired by the pandemic's challenges, friends and I revived our dormant Computer Science club by launching \"Hills Hacks,\" a student-organized hackathon. We pretty much started from scratch with no direction or model to build off of and a group of underclassman highschoolers yields little no experience either. Over three years, we navigated hurdles, honed leadership skills, and fostered community engagement."
+  },
+  {
+    "title": "Is OpenAI inherently biased?",
+    "date": "April 3, 2024",
+    "url": "https://ryanranas.medium.com/is-openai-inherently-biased-05d42f2449c5",
+    "excerpt": "Nearly everyone has heard of and used ChatGPT, the world's generative AI engine, however, have we stopped and considered the responses given by OpenAI's software to be inherently biased?"
+  },
+  {
+    "title": "Why Startups? A Discussion on the Beauty of Startup Culture",
+    "date": "Jan 29, 2024",
+    "url": "https://ryanranas.medium.com/16198094de7cb",
+    "excerpt": "1976 at 2066 Crist Dr, Los Altos, California: In the garage of the house found at this address, a 21-year-old college dropout and his friend started a company. The work done in this garage changed the way people use technology forever. Jobs and Wozniak started out building the Apple I; the first product released by Apple. Years later, The iPhone, was released becoming a household product and impacting almost every facet of our lives."
+  },
+  {
+    "title": "HELIOS: How we Built a Wearable Haptic for the Assistance of the Visually Impaired",
+    "date": "Jan 7, 2024",
+    "url": "https://ryanranas.medium.com/helios-how-we-built-awearable-haptic-for-the-assistance-of-the-visually-impaired-082e1eb1f65e",
+    "excerpt": "Visually impaired individuals face numerous challenges in their daily lives, particularly in sensing and securing objects within their surroundings. This research paper proposes the development of a wearable haptic device, Helios, aimed at assisting visually impaired individuals in sensing, recognizing, and securing different objects in their environment. By leveraging natural language processing and computer vision techniques, Helios aims to create a closed circuit system situated on the user's wrist."
+  },
+  {
+    "title": "Facing Reality: Will AI replace or enhance you as a developer?",
+    "date": "Sep 22, 2023",
+    "url": "https://ryanranas.medium.com/will-ai-replace-or-enhance-you-as-a-developer-fc958aae3144",
+    "excerpt": "This is a PSA for all developers. The developer mindset and culture now and last year have completely changed and that's because of the expansive and rapid-fire release of powerful AI tools: tools that are able to do what software developers can do faster and better."
+  },
+  {
+    "title": "Using NLP to prevent flooding: Around-The-Pipe Audio Based Water Tracker for Home Residents",
+    "date": "Aug 5, 2023",
+    "url": "https://medium.com/@ryanranas/using-nlp-to-prevent-flooding-around-the-pipe-audio-based-water-tracker-for-home-residents-a3980d3be263",
+    "excerpt": "A low-cost device can track water flow through pipes without interfering with pipes at a 98.3% accuracy using Neural Networks. This is better than traditional methods because it does not interfere with pipes, it is cheap, it has an easy setup, the accuracy is near 100%, the algorithm can always be improved and changed, it has a possibility for future expansion, and the data is easily obtainable and expandable."
+  },
+  {
+    "title": "How Computational Linguistics can be used to help the visually impaired to enjoy sports entertainment",
+    "date": "Jul 31, 2023",
+    "url": "https://ryanranas.medium.com/how-computational-linguistics-can-be-used-to-allow-the-visually-impaired-to-enjoy-sports-dd616ce56b07",
+    "excerpt": "Using Computational Linguistics we have designed a project that can summarize basketball games by taking the real-time game tape and processing it into an AI-generated commentary that blind fans can use to still enjoy the exciting world of sports entertainment."
+  },
+  {
+    "title": "How We Used Sentiment Analysis to Learn More About our Politicians: Congress Connect",
+    "date": "Jul 27, 2023",
+    "url": "https://ryanranas.medium.com/how-we-used-sentiment-analysis-to-learn-more-about-our-politicians-e1b2a3116e5a",
+    "excerpt": "Congress Connect is an app that allows people to learn about congressmen's views on various subjects, based on their tweets using sentiment analysis and machine learning."
+  },
+  {
+    "title": "The Simplest Guide to Natural Language Processing",
+    "date": "Jul 21, 2023",
+    "url": "https://ryanranablog.medium.com/the-simplest-guide-to-natural-language-processing-374fed07b70f",
+    "excerpt": "Natural Language Processing is all about teaching computers to understand, interpret, and generate human language. It involves several techniques from linguistics, computer science, and machine learning. NLP enables computers to process, analyze, and extract valuable information from text data."
+  },
+  {
+    "title": "The Simplest Guide to Support Vector Machines",
+    "date": "Aug 21, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-support-vector-machines-cf380568c3a6",
+    "excerpt": "Support Vector Machines (SVM) are one the most frequently used machine learning models, and definitely essential for any ML developer's toolkit. The goal of this article isn't just to simply teach you what SVM's are but also how to build one with python."
+  },
+  {
+    "title": "How to build a Document Scanner with OpenCV and Python",
+    "date": "Aug 18, 2021",
+    "url": "https://theryanrana.medium.com/how-to-build-a-document-scanner-with-opencv-and-python-e8e2e7c48c77",
+    "excerpt": "Have you ever tried to take a picture of your math homework or a receipt and your iPhone scans the paper as a pdf instead of a regular image? Well, that is actually a really interesting application of Computer Vision and Python, which is the tool we will be building today. Due to the rising online workload, sending a digitalized version of a document by email or other means is becoming increasingly common."
+  },
+  {
+    "title": "The Simplest Guide to Naive Bayes Classifiers",
+    "date": "Aug 15, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-naive-bayes-classifiers-b57c170cc9e9",
+    "excerpt": "The Naive Bayes algorithm is one of the most commonly used machine learning algorithms out there. The goal of this article is to not only teach you how Naive Bayes works but also how to build one with Python."
+  },
+  {
+    "title": "The Simplest Guide to Building a Stock Backtester in Python",
+    "date": "Aug 11, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-building-a-stock-backtester-in-python-eeb920f18258",
+    "excerpt": "When it comes to stocks, a backtester is an essential tool. Backtesting is a method of determining the practicality of a trading strategy by examining how it would perform using previous data. If you came up with a strategy, would you automatically trust it? No, you would want to test it, and historical data helps that. The main issue with backtesting is that it is a lot of work and takes a long to do manually, so that is why it would be smart to build one with Python."
+  },
+  {
+    "title": "The Simplest Guide to the Random Forest Algorithm",
+    "date": "Aug 19, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-the-random-forest-algorithm-c635cf9c2868",
+    "excerpt": "In my previous article on Decision Trees, I covered everything about Decision Trees and how to build one with Python. The Random Forest Algorithm is a successor to Decision Trees as it is composed of many trees. In this article, I explain not only how a Random Forest works but also how to build one."
+  },
+  {
+    "title": "The Simplest Guide to Decision Trees",
+    "date": "Aug 9, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-decision-trees-d3032dda497a",
+    "excerpt": "The Decision Tree Algorithm is one of the best machine learning models that exist, and fortunately, it is also very easy to build in python. The goal of this article is to not only understand how Decision Trees work but also how to create one of your own."
+  },
+  {
+    "title": "The Simplest Guide to Logistic Regression",
+    "date": "Aug 5, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-logistic-regression-fd5d912fa181",
+    "excerpt": "Logistic Regression is one of the best and easiest machine learning models that exist. In this article, we will cover not only how a Logistic Regression(LR) works but also code one with python using scikit-learn."
+  },
+  {
+    "title": "The Simplest Guide to Linear Regression",
+    "date": "Jul 26, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-linear-regression-e8b93e1f76de",
+    "excerpt": "Linear algebra is extremely important in the topic of computer science and especially machine learning. Linear regression is a simple supervised machine learning model directly built off linear algebra. The goal of this article is not to give you a math lesson but instead walk you through the algebra that makes up a regression model and then how to build one in python."
+  },
+  {
+    "title": "How to Start a Machine Learning Project",
+    "date": "Jul 25, 2021",
+    "url": "https://theryanrana.medium.com/how-to-start-a-machine-learning-project-caf08b68f0d5",
+    "excerpt": "This article is directed at anyone interested in the practical application of machine learning and/or anyone thinking about starting a project of their own. The goal of this is to provide a chronological checklist of all the steps in taking on a project like this as well as a detailed explanation of each of the identified stages involved."
+  },
+  {
+    "title": "The Simplest Guide to K-Means Clustering",
+    "date": "Jul 25, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-k-means-clustering-and-python-fb42195ef829",
+    "excerpt": "K-Means Clustering is one of the best segmentation models in Machine Learning. It may be the best-unsupervised method there is. This article is a guide through not only what K-Means Clustering is but also how to build one with python."
+  },
+  {
+    "title": "A simplified explanation of Computer Vision",
+    "date": "Jul 21, 2021",
+    "url": "https://theryanrana.medium.com/a-simplified-explanation-of-computer-vision-62f0dac0509d",
+    "excerpt": "An Article that walks the reader through the conceptual logic of each of the 3 levels to Computer Vision, Classification, Recognition, and Segmentation. It also includes original visuals to please the user."
+  },
+  {
+    "title": "The Simplest Guide to Neural Networks",
+    "date": "Jul 19, 2021",
+    "url": "https://theryanrana.medium.com/the-simplest-guide-to-neural-networks-5faa74dd01d5",
+    "excerpt": "An article post that informs the reader of general information regarding Neural Networks as well as how to build one with Python. The problem set takes in practice hours and working hours to predict ones performance in a football game, but the coding is highly flexible so it can be implemented in many different ways."
+  }
+]

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Articles - Ryan Rana</title>
+    <link rel="icon" type="image/jpeg" href="D343F409-4896-409D-99CD-BC68701F352C copy.JPEG">
+    <meta name="description" content="Ryan Rana's articles on AI, software development, and technology">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-content">
+            <h1 class="site-title">
+                <a href="../index.html">ryanrana._</a>
+            </h1>
+            <nav class="site-nav">
+                <ul>
+                    <li><a class="page-link active" href="articles.html">articles</a></li>
+                    <li><a class="page-link" href="expierence.html">experience</a></li>
+                    <li><a class="page-link" href="projects.html">projects</a></li>
+                    <li><a class="page-link" href="../my_resume.pdf">resume</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content">
+        <div class="articles-container">
+            <div class="container">
+                <h1 class="page-title">Articles</h1>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="articleSearch" placeholder="search topics" class="search-input">
+                        <button id="clearSearch" class="clear-search" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="posts-grid" id="articlesGrid">
+                    <!-- Articles loaded dynamically from content/articles.json -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Ryan Rana</p>
+        </div>
+    </footer>
+
+    <!-- Article Expand/Collapse Styles -->
+    <style>
+        .post-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            padding-bottom: var(--spacing-md);
+        }
+        
+        .post-header:hover {
+            opacity: 0.9;
+        }
+        
+        .expand-icon {
+            color: var(--gray-400);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, color 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 0.5rem;
+        }
+        
+        .post-header:hover .expand-icon {
+            color: var(--nebula-blue);
+        }
+        
+        .expand-icon.rotated {
+            transform: rotate(180deg);
+        }
+        
+        .post-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .post-teaser {
+            transition: all 0.2s ease;
+        }
+    </style>
+
+    <!-- Article Toggle Functionality -->
+    <script>
+        function toggleArticle(element) {
+            const article = element.closest('.post-teaser');
+            const content = article.querySelector('.post-content');
+            const icon = element.querySelector('.expand-icon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.classList.add('rotated');
+            } else {
+                content.style.display = 'none';
+                icon.classList.remove('rotated');
+            }
+        }
+    </script>
+
+    <!-- Search Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('articleSearch');
+            const clearButton = document.getElementById('clearSearch');
+            const articlesGrid = document.getElementById('articlesGrid');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const articles = articlesGrid.querySelectorAll('.post-teaser');
+                
+                if (searchTerm === '' || searchTerm.length < 2) {
+                    articles.forEach(article => {
+                        article.style.display = 'block';
+                    });
+                    clearButton.style.display = 'none';
+                    return;
+                }
+
+                let visibleCount = 0;
+                
+                articles.forEach(article => {
+                    const title = article.querySelector('.post-title a').textContent.toLowerCase();
+                    const excerpt = article.querySelector('.post-excerpt p').textContent.toLowerCase();
+                    const meta = article.querySelector('.post-meta').textContent.toLowerCase();
+                    
+                    const matches = title.includes(searchTerm) || 
+                                  excerpt.includes(searchTerm) || 
+                                  meta.includes(searchTerm);
+                    
+                    if (matches) {
+                        article.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        article.style.display = 'none';
+                    }
+                });
+
+                clearButton.style.display = searchTerm ? 'block' : 'none';
+                
+                let noResultsMsg = document.getElementById('noResults');
+                if (visibleCount === 0 && searchTerm) {
+                    if (!noResultsMsg) {
+                        noResultsMsg = document.createElement('div');
+                        noResultsMsg.id = 'noResults';
+                        noResultsMsg.className = 'no-results';
+                        noResultsMsg.innerHTML = `
+                            <p>No articles found matching "<strong>${searchTerm}</strong>"</p>
+                            <p>Try different keywords or <button onclick="clearSearch()" class="clear-link">clear search</button></p>
+                        `;
+                        articlesGrid.appendChild(noResultsMsg);
+                    }
+                } else if (noResultsMsg) {
+                    noResultsMsg.remove();
+                }
+            }
+
+            function clearSearch() {
+                searchInput.value = '';
+                performSearch();
+                searchInput.focus();
+            }
+
+            searchInput.addEventListener('input', performSearch);
+            clearButton.addEventListener('click', clearSearch);
+            
+            window.clearSearch = clearSearch;
+        });
+    </script>
+    
+    <!-- Content Loader Scripts -->
+    <script src="../scripts/content-loader.js"></script>
+    <script src="../scripts/render-articles.js"></script>
+    
+    <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

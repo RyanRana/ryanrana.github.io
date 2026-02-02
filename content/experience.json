@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Software Engineer",
+    "company": "Centren Health",
+    "date": "Nov 2025 - Present",
+    "location": "New York, New York, United States · Hybrid",
+    "description": "Digital twins for clinical applications."
+  },
+  {
+    "title": "Software Engineer Intern",
+    "company": "Undergraduation.com",
+    "date": "Oct 2025 - Nov 2025",
+    "location": "Boston, Massachusetts, United States · Hybrid",
+    "description": "New features and infrastructure development."
+  },
+  {
+    "title": "CTO",
+    "company": "Mesh",
+    "date": "Jun 2025 - Sep 2025",
+    "location": "New York, New York, United States",
+    "description": "Led technical development and grew platform to 600 users."
+  },
+  {
+    "title": "Possibilities Summit",
+    "company": "Goldman Sachs",
+    "date": "Jan 2025 - Jun 2025",
+    "location": "",
+    "description": "Selected from ~15% acceptance rate out of 8,000 applicants."
+  },
+  {
+    "title": "Co President",
+    "company": "HillsHacks",
+    "date": "Sep 2021 - Feb 2024",
+    "location": "Warren, New Jersey, United States",
+    "description": "Organized hackathon with 120+ attendees annually and led 4 workshops."
+  },
+  {
+    "title": "Software Engineer",
+    "company": "Populus Fantasy",
+    "date": "Jul 2023 - Dec 2023",
+    "location": "Austin, Texas, United States · Hybrid",
+    "description": "UI/UX development and deployment for platform with 4,500 users."
+  },
+  {
+    "title": "Tech Team",
+    "company": "MEGA League",
+    "date": "Sep 2023 - Nov 2023",
+    "location": "",
+    "description": "Backend development and infrastructure."
+  },
+  {
+    "title": "Student Software Engineer Program",
+    "company": "JPMorgan Chase & Co.",
+    "date": "Jul 2023 - Aug 2023",
+    "location": "",
+    "description": "Learned data optimization and financial systems development."
+  },
+  {
+    "title": "President",
+    "company": "Stem In Place",
+    "date": "Jun 2020 - Aug 2023",
+    "location": "",
+    "description": "Started as teacher and grew organization to 1,500 students and 40 instructors."
+  },
+  {
+    "title": "Software Engineer Intern",
+    "company": "Datanexxt",
+    "date": "May 2022 - Sep 2022",
+    "location": "New York City Metropolitan Area",
+    "description": "Cloud migration solutions and infrastructure development."
+  },
+  {
+    "title": "Instructor",
+    "company": "Code Ninjas",
+    "date": "Jun 2021",
+    "location": "Greenbrook, New Jersey · On-site",
+    "description": "Python and web development instruction."
+  },
+  {
+    "title": "Lead Instructor",
+    "company": "Bricks 4 Kidz",
+    "date": "Jun 2019 - Jun 2021",
+    "location": "Clark, New Jersey, United States · On-site",
+    "description": "Python programming and EV3 robotics instruction."
+  }
+]

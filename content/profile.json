@@ -1,0 +1,25 @@
+{
+  "name": "Ryan Rana",
+  "title": "Software Engineer & AI Enthusiast",
+  "bio": [
+    "i'm interested in solving problems with agents, VLMs, robots & scalable systems. as a swe, i prioritize technical depth and high agency for improvement.",
+    "i'm doing cs @ Rutgers & i'm a med swe @ <a href=\"https://centrenhealth.com/\">Centren Health</a>, prev co-founder @ <a href=\"https://www.joinmesh.today/\">Mesh</a>. I also built a lot of other cool <a href=\"https://github.com/RyanRana\">software</a> over many domains in the past 6 years.",
+    "when Claude can't debug my slop, i like to <a href=\"https://ryanranas.medium.com/\">write</a>, ski, <a href=\"pages/wood.html\">craft</a> & eat Chipotle. i'm always seeking geniune collobaration and connection."
+  ],
+  "social": {
+    "email": "ryanrana04@gmail.com",
+    "phone": "+19088734657",
+    "linkedin": "https://www.linkedin.com/in/ryanrana/",
+    "github": "https://github.com/RyanRana",
+    "medium": "https://ryanranas.medium.com/",
+    "twitter": "https://x.com/ryanrana0",
+    "hackernews": "https://news.ycombinator.com/user?id=ryanrana",
+    "instagram": "https://www.instagram.com/_ryanrana_/"
+  },
+  "links": {
+    "centrenHealth": "https://centrenhealth.com/",
+    "mesh": "https://www.joinmesh.today/",
+    "writing": "https://ryanranas.medium.com/",
+    "projects": "https://github.com/RyanRana"
+  }
+}

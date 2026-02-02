@@ -1,0 +1,21 @@
+{
+  "title": "Woodworking Projects",
+  "description": "A collection of woodworking projects and crafts",
+  "images": [
+    {
+      "src": "../pics/IMG_0632.jpg",
+      "alt": "Woodworking Project 1",
+      "description": ""
+    },
+    {
+      "src": "../pics/IMG_0638.jpg",
+      "alt": "Woodworking Project 2",
+      "description": ""
+    },
+    {
+      "src": "../pics/Screen Shot 2024-07-31 at 1.44.03 PM copy.png",
+      "alt": "Woodworking Project 3",
+      "description": ""
+    }
+  ]
+}
