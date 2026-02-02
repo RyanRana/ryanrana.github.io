@@ -15,17 +15,33 @@ async function renderHomeContent() {
         // Update bio paragraphs
         const revealableContent = document.getElementById('revealableContent');
         if (revealableContent && profile.bio) {
-            // Note: We're allowing HTML in bio for links - content is trusted
             const bioHtml = profile.bio.map(paragraph => `
-                <p class="description">${paragraph}</p>
+                <p class="description">${parseBioText(paragraph)}</p>
                 <br>
             `).join('');
+
+            // Generate references section if available
+            let referencesHtml = '';
+            if (profile.references && profile.references.length > 0) {
+                referencesHtml = `
+                    <div class="references" style="display: flex; flex-direction: column; gap: 0.wrem; margin-top: 0.2rem; margin-bottom: 1.5rem;">
+                        ${profile.references.map(ref => `
+                            <div class="reference-item" id="ref-${ref.number}" style="display: none;">
+                                <p style="margin: 0; color: rgba(80, 80, 80, 0.95); line-height: 1.7; font-size: 1.1rem;">
+                                    <strong style="color: #3b82f6; font-size: 1.1rem;">${ref.number}.</strong> ${parseBioText(ref.description)}
+                                </p>
+                                <br>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
 
             // Find the social icons section
             const socialIcons = revealableContent.querySelector('.social-icons');
             
-            // Replace content before social icons
-            revealableContent.innerHTML = bioHtml + (socialIcons ? socialIcons.outerHTML : '');
+            // Replace content: bio + references + social icons
+            revealableContent.innerHTML = bioHtml + referencesHtml + (socialIcons ? socialIcons.outerHTML : '');
         }
 
         // Update social links (they're already in HTML, but we could update them dynamically if needed)
@@ -76,6 +92,50 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+/**
+ * Parse bio/ref text: [text](url) → link, [n] → clickable superscript
+ */
+function parseBioText(text) {
+    const refLinkStyle = 'color: #3b82f6; text-decoration: none;';
+    const superscript = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+    
+    function toSup(n) {
+        return String(n).split('').map(d => superscript[parseInt(d)] || d).join('');
+    }
+    
+    // 1. Links: [text](url)
+    let result = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    
+    // 2. Refs: [n] → clickable superscript
+    result = result.replace(/\[(\d+)\]/g, (_, n) =>
+        `<a href="#" onclick="toggleRef(${n}); return false;" style="${refLinkStyle}">${toSup(n)}</a>`
+    );
+    
+    return result;
+}
+
+/**
+ * Toggle reference visibility - only show one at a time
+ */
+function toggleRef(refNumber) {
+    // Hide all references first
+    const allRefs = document.querySelectorAll('.reference-item');
+    allRefs.forEach(ref => {
+        ref.style.display = 'none';
+    });
+    
+    // Show the clicked reference
+    const refElement = document.getElementById(`ref-${refNumber}`);
+    if (refElement) {
+        refElement.style.display = 'block';
+        // Smooth scroll to reference
+        refElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+// Make toggleRef globally available
+window.toggleRef = toggleRef;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {

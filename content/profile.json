@@ -2,9 +2,91 @@
   "name": "Ryan Rana",
   "title": "Software Engineer & AI Enthusiast",
   "bio": [
-    "i'm interested in solving problems with agents, VLMs, robots & scalable systems. as a swe, i prioritize technical depth and high agency for improvement.",
-    "i'm doing cs @ Rutgers & i'm a med swe @ <a href=\"https://centrenhealth.com/\">Centren Health</a>, prev co-founder @ <a href=\"https://www.joinmesh.today/\">Mesh</a>. I also built a lot of other cool <a href=\"https://github.com/RyanRana\">software</a> over many domains in the past 6 years.",
-    "when Claude can't debug my slop, i like to <a href=\"https://ryanranas.medium.com/\">write</a>, ski, <a href=\"pages/wood.html\">craft</a> & eat Chipotle. i'm always seeking geniune collobaration and connection."
+    "i'm interested in solving problems with agents[1], VLMs[4], robots[5] & scalable systems[6]. as a swe, i prioritize technical depth[7] and high agency[8] for improvement.",
+    "i'm doing cs @ Rutgers[9] & i'm a med swe @ [Centren Health](https://centrenhealth.com/)[10], prev co-founder @ [Mesh](https://www.joinmesh.today/)[11]. I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[12].",
+    "when Claude[13] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[14], ski[15], [craft](pages/wood.html) & eat Chipotle[16]. i'm always seeking geniune collobaration and connection."
+  ],
+  "references": [
+    {
+      "number": "1",
+      "title": "agents",
+      "description": "built multi-step agent systems with memory, iterative feedback, rag & domain-specific constraints like Osler[2] for hospitalists, Aura[3] for enterprise."
+    },
+    {
+      "number": "2",
+      "title": "Osler",
+      "description": "hospitalist agent that handles onboarding and live workflow. adapts to all types of data and tools, runs under real hospital rules."
+    },
+    {
+      "number": "3",
+      "title": "Aura",
+      "description": "internal enterprise agent platform that interacts with Snowflake. modular agents, shared toolbelt, composable workflows."
+    },
+    {
+      "number": "4",
+      "title": "VLMs",
+      "description": "been studying mainly for robotics but also confidential surveillance assignments."
+    },
+    {
+      "number": "5",
+      "title": "robots",
+      "description": "studying deformables, not just sim. Also doing generative serial chains as a side project."
+    },
+    {
+      "number": "6",
+      "title": "scalable systems",
+      "description": "if scale, no fail."
+    },
+    {
+      "number": "7",
+      "title": "technical depth",
+      "description": "learning things from ground up. reasoning from first principles."
+    },
+    {
+      "number": "8",
+      "title": "high agency",
+      "description": "operating without blanket instructions, figuring it out by engineering."
+    },
+    {
+      "number": "9",
+      "title": "cs @ Rutgers",
+      "description": " 2nd year; taking physics and discrete 2 this semester yet most skills come from outside class."
+    },
+    {
+      "number": "10",
+      "title": "Centren Health",
+      "description": "doing clinical transformers, PK/PD modeling, S3-backed pipelines."
+    },
+    {
+      "number": "11",
+      "title": "Mesh",
+      "description": "ai-powered collaborative knowledge system for teams; reached 600 users."
+    },
+    {
+      "number": "12",
+      "title": "past 6 years",
+      "description": "started in middle school with Python Turtle."
+    },
+    {
+      "number": "13",
+      "title": "Claude",
+      "description": "Opus is a game changer."
+    },
+    {
+      "number": "14",
+      "title": "write",
+      "description": "expressing thoughts regarding programming, and life as I see it."
+    },
+    {
+      "number": "15",
+      "title": "ski",
+      "description": "time spent completely offline. mainly Camelback, PA."
+    },
+    {
+      "number": "16",
+      "title": "Chipotle",
+      "description": "followed by Tacoria then Guac Time (NB based)."
+    }
   ],
   "social": {
     "email": "ryanrana04@gmail.com",

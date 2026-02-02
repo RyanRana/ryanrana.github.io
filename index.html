@@ -93,6 +93,7 @@
                                 <span class="prompt-prefix">&gt;</span> <span class="t-comment">// press enter to render full response</span><span class="cursor" aria-hidden="true"></span>
                             </div>
                             <button type="button" class="enter-btn" id="enterBtn" aria-label="Press Enter">↵ Enter</button>
+                            <button type="button" class="skip-btn" id="skipBtn" aria-label="Skip" style="background: transparent; border: none; color: rgba(239, 68, 68, 0.8); padding: 0.5rem 0; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; margin-top: 0.5rem; display: block; text-align: left;">skip</button>
                         </div>
                         <div class="revealable-content" id="revealableContent">
                     <p class="description">
@@ -275,6 +276,9 @@
             if (terminalStep < maxStep - 1) {
                 terminalStep++;
                 setStep(terminalStep);
+                // Hide skip button after first enter press
+                const skipBtn = document.getElementById('skipBtn');
+                if (skipBtn) skipBtn.style.display = 'none';
             } else {
                 enterReveal.classList.add('revealed');
                 try { sessionStorage.setItem('enterRevealed', '1'); } catch (e) {}
@@ -288,6 +292,22 @@
         }
 
         if (enterBtn) enterBtn.addEventListener('click', advanceTerminal);
+        
+        // Skip button functionality
+        const skipBtn = document.getElementById('skipBtn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', function() {
+                enterReveal.classList.add('revealed');
+                try { sessionStorage.setItem('enterRevealed', '1'); } catch (e) {}
+            });
+            skipBtn.addEventListener('mouseenter', function() {
+                this.style.color = 'rgba(239, 68, 68, 1)';
+            });
+            skipBtn.addEventListener('mouseleave', function() {
+                this.style.color = 'rgba(239, 68, 68, 0.8)';
+            });
+        }
+        
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && enterReveal && !enterReveal.classList.contains('revealed')) advanceTerminal();
         });
