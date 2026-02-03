@@ -263,25 +263,30 @@ a:hover {
   transform-origin: left;
 }
 
-/* Social Icons */
+/* Social Icons - all on 1 line, size adjusts for viewport */
 .social-icons {
   display: flex;
-  gap: var(--spacing-lg);
+  flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  width: 100%;
 }
 
 .social-icon {
   display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  aspect-ratio: 1;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  max-width: 48px;
+  margin: 0 auto;
   background: var(--white);
   border: 2px solid var(--gray-300);
   border-radius: 50%;
   color: var(--gray-700);
-  font-size: 1.25rem;
+  font-size: clamp(0.7rem, 2.2vw, 1.25rem);
   transition: all var(--transition);
   text-decoration: none;
 }
@@ -301,8 +306,8 @@ a:hover {
 
 .social-icon-svg svg {
   display: block;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1em;
+  height: 1em;
   fill: currentColor;
 }
 
@@ -320,11 +325,9 @@ a:hover {
   flex-direction: column;
   gap: 0.35rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(0.4rem, 2.5vw, 1.1rem);
+  font-size: 1.1rem;
   line-height: 1.6;
   color: var(--gray-800);
-  overflow-x: auto;
-  max-width: 100%;
 }
 
 .terminal-step,
@@ -333,7 +336,6 @@ a:hover {
   max-height: 0;
   overflow: hidden;
   transition: opacity 0.25s ease, max-height 0.3s ease;
-  white-space: nowrap;
 }
 
 .terminal-step.visible,
@@ -345,7 +347,7 @@ a:hover {
 .terminal-output {
   padding-left: 1.5rem;
   color: var(--gray-700);
-  font-size: clamp(0.38rem, 2.4vw, 1.05rem);
+  font-size: 1.05rem;
 }
 
 .terminal-step .cursor {
