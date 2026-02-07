@@ -1,5 +1,11 @@
 [
   {
+    "title": "Cyphe",
+    "url": "https://github.com/RyanRana/cyphe/tree/main",
+    "description": "contextualized yet personalized, horizonless encyclopedia",
+    "skills": ["GNN", "Anti-Hallucination", "System Architecture", "API"]
+  },
+  {
     "title": "Excalidraw AI",
     "url": "https://excalidrawai2.vercel.app/",
     "description": "generate and edit flowcharts with AI.",
