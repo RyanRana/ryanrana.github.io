@@ -2,14 +2,14 @@
   {
     "title": "Cyphe",
     "url": "https://github.com/RyanRana/cyphe/tree/main",
-    "description": "contextualized yet personalized, horizonless encyclopedia",
-    "skills": ["GNN", "Anti-Hallucination", "System Architecture", "API"]
+    "description": "contextual yet personalized, horizonless encyclopedia. we developed a model that weaves llm content with wikipedia, twitter, reddit and memes while tracking user engagment to provide infinite addictive science content via app. ",
+    "skills": ["GNN", "Anti-Hallucination", "System Architecture", "React"]
   },
   {
     "title": "Excalidraw AI",
     "url": "https://excalidrawai2.vercel.app/",
     "description": "generate and edit flowcharts with AI.",
-    "skills": ["AI", "Excalidraw", "Diagramming", "Vercel"]
+    "skills": ["LLM", "JSON", "Diagramming", "Vercel"]
   },
   {
     "title": "Reforest NYC",
