@@ -1,7 +1,7 @@
 [
   {
     "title": "Cyphe",
-    "url": "https://github.com/RyanRana/cyphe/tree/main",
+    "url": "https://github.com/RyanRana/cyphe/",
     "description": "contextual yet personalized, horizonless encyclopedia. we developed a model that weaves llm content with wikipedia, twitter, reddit and memes while tracking user engagment to provide infinite addictive science content via app. ",
     "skills": ["GNN", "Anti-Hallucination", "System Architecture", "React"]
   },
