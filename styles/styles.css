@@ -109,7 +109,6 @@ a:hover {
   right: 0;
   z-index: 1000;
   background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
   padding: var(--spacing-lg) 0;
   transition: all var(--transition);
 }
@@ -156,25 +155,9 @@ a:hover {
   border-radius: var(--radius-sm);
 }
 
-.page-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--nebula-blue);
-  transition: width var(--transition);
-}
-
 .page-link:hover,
 .page-link.active {
   color: var(--nebula-blue);
-}
-
-.page-link:hover::after,
-.page-link.active::after {
-  width: 100%;
 }
 
 /* Main Content */
@@ -756,7 +739,7 @@ a:hover {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-xxl);
   width: 100%;
   margin: 0 auto;
