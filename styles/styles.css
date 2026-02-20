@@ -325,9 +325,11 @@ a:hover {
   flex-direction: column;
   gap: 0.35rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1.1rem;
+  font-size: clamp(0.6rem, 1.8vw + 0.5rem, 1.1rem);
   line-height: 1.6;
   color: var(--gray-800);
+  min-width: 0;
+  overflow-x: auto;
 }
 
 .terminal-step,
@@ -336,6 +338,7 @@ a:hover {
   max-height: 0;
   overflow: hidden;
   transition: opacity 0.25s ease, max-height 0.3s ease;
+  white-space: nowrap;
 }
 
 .terminal-step.visible,
@@ -347,7 +350,7 @@ a:hover {
 .terminal-output {
   padding-left: 1.5rem;
   color: var(--gray-700);
-  font-size: 1.05rem;
+  font-size: clamp(0.55rem, 1.6vw + 0.45rem, 1.05rem);
 }
 
 .terminal-step .cursor {
