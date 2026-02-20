@@ -2,169 +2,181 @@
   {
     "title": "Cyphe",
     "url": "https://github.com/RyanRana/cyphe/",
-    "description": "contextual yet personalized, horizonless encyclopedia. we developed a model that weaves llm content with wikipedia, twitter, reddit and memes while tracking user engagment to provide infinite addictive science content via app. ",
-    "skills": ["GNN", "Anti-Hallucination", "System Architecture", "React"]
+    "description": "horizonless encyclopedia that weaves llm content with wikipedia, twitter, reddit and memes while tracking engagement.",
+    "skills": ["GNN", "hallucination mitigation", "system design", "React"]
+  },
+  {
+    "title": "Shoulders",
+    "url": "https://github.com/RyanRana/shoulders",
+    "description": "low-latency security agents.",
+    "skills": ["Python", "agents", "tool use", "orchestration", "low-latency"]
+  },
+  {
+    "title": "Trace",
+    "url": "https://github.com/RyanRana/trace",
+    "description": "24/7 supply chain and payment agent.",
+    "skills": ["Node.js", "supply chain APIs", "payment orchestration"]
   },
   {
     "title": "Excalidraw AI",
     "url": "https://excalidrawai2.vercel.app/",
-    "description": "generate and edit flowcharts with AI.",
-    "skills": ["LLM", "JSON", "Diagramming", "Vercel"]
+    "description": "generate and edit flowcharts with ai.",
+    "skills": ["LLM", "JSON schema", "canvas API", "Vercel"]
   },
   {
     "title": "Reforest NYC",
     "url": "https://github.com/RyanRana/reforest-nyc",
-    "description": "Community-centered geospatial platform for optimizing urban reforestation with interactive mapping, environmental impact visualization, and collaborative planning across NYC.",
-    "skills": ["Python", "Geospatial", "Data Visualization", "GIS", "Environmental"]
+    "description": "geospatial platform for urban reforestation in nyc with interactive mapping and impact visualization.",
+    "skills": ["Python", "GeoJSON", "Shapely", "Mapbox", "GIS"]
   },
   {
     "title": "Robot Deformables",
     "url": "https://github.com/RyanRana/robot-deformables",
-    "description": "Robotics research platform using multi-modal reinforcement learning, computer vision, and haptic feedback for training robots to manipulate deformable objects.",
-    "skills": ["Python", "Reinforcement Learning", "Robotics", "Computer Vision", "Simulation"]
+    "description": "multi-modal rl and haptic feedback for training robots to manipulate deformable objects.",
+    "skills": ["Python", "PyTorch", "RL", "OpenCV", "simulation"]
   },
   {
     "title": "Really Cheap Flight Finder",
     "url": "https://github.com/RyanRana/reallycheapflightfinderbro",
-    "description": "Flight search platform using graph-based algorithms and multi-city route optimization to find the cheapest flight combinations with automated deal alerts.",
-    "skills": ["TypeScript", "Algorithms", "API Integration", "Web Scraping", "Optimization"]
+    "description": "graph-based flight search with multi-city route optimization and deal alerts.",
+    "skills": ["TypeScript", "graph algorithms", "REST APIs", "scraping", "optimization"]
   },
   {
     "title": "Osler",
     "url": "https://lnkd.in/eMXXMj2E",
-    "description": "3rd Place at RuHealthHack - AI-powered hospitalist onboarding app with RAG system for hospital guidelines, scheduling, and administrative tools using Google Gemini.",
-    "skills": ["Python", "Flask", "RAG", "Vector DB", "Google Gemini", "AWS"]
+    "description": "rag-based hospitalist onboarding app with guidelines, scheduling and admin tools using gemini (3rd place ruhealthhack).",
+    "skills": ["Python", "Flask", "RAG", "vector DB", "Gemini API", "AWS"]
   },
   {
     "title": "Aura",
     "url": "https://github.com/RyanRana/Aura",
-    "description": "Enterprise AI analytics platform with conversational intelligence for retail management, featuring Snowflake integration and predictive analytics for inventory and sales forecasting.",
-    "skills": ["Python", "Snowflake", "LLM", "SQL", "Analytics"]
+    "description": "conversational ai analytics for retail with snowflake and predictive inventory forecasting.",
+    "skills": ["Python", "Snowflake", "LLM", "SQL", "time-series"]
   },
   {
     "title": "Mesh",
     "url": "https://www.joinmesh.today/",
-    "description": "1st Place at Rutgers X Fiserv - Knowledge management platform transforming unstructured data into queryable knowledge graphs with AI-powered semantic search.",
-    "skills": ["React", "OAuth2", "Vector DB", "AI", "Real-time"]
+    "description": "knowledge graph platform with semantic search (1st place rutgers x fiserv).",
+    "skills": ["React", "OAuth2", "vector DB", "semantic search", "real-time sync"]
   },
   {
     "title": "Vault",
     "url": "https://github.com/RyanRana/vault",
-    "description": "Secure team collaboration platform with AES-256 encrypted messaging, role-based access control, and audit logging for enterprise compliance.",
-    "skills": ["Python", "Flask", "AES-256", "RBAC", "Security"]
+    "description": "encrypted team messaging with aes-256, rbac and audit logging for compliance.",
+    "skills": ["Python", "Flask", "AES-256-GCM", "RBAC", "audit logs"]
   },
   {
     "title": "Contextualized-Multi-Modal-RAG-Feedback-Loop",
     "url": "https://github.com/RyanRana/Contextualized-Multi-Modal-RAG-Feedback-Loop",
-    "description": "Advanced RAG system with self-healing feedback loops using GPT-4 for personalized query optimization and improved search accuracy through contextual learning.",
-    "skills": ["Python", "GPT-4", "RAG", "ML", "NLP"]
+    "description": "rag with self-healing feedback loops and gpt-4 for query optimization.",
+    "skills": ["Python", "GPT-4", "RAG", "fine-tuning", "NLP"]
   },
   {
     "title": "BATMAN: Protect your City",
     "url": "https://github.com/RyanRana/BATMAN-Protect-Your-City",
-    "description": "Civic intelligence platform with real-time crime mapping, incident reporting, and automated SMS alerts to enhance public safety awareness.",
-    "skills": ["Node.js", "MongoDB", "Geospatial", "SMS API", "Real-time"]
+    "description": "real-time crime mapping and incident reporting with sms alerts for public safety.",
+    "skills": ["Node.js", "MongoDB", "geospatial queries", "Twilio API", "WebSockets"]
   },
   {
     "title": "GIST",
     "url": "https://github.com/RyanRana/GIST-GitHub-Intelligent-Summary-Tool",
-    "description": "GitHub repository analysis tool using OpenAI for automated code analysis, dependency mapping, and documentation generation to streamline repository assessment.",
-    "skills": ["Python", "GitHub API", "OpenAI", "Web Scraping", "NLP"]
+    "description": "github repo analysis with openai for code analysis, dependency mapping and doc generation.",
+    "skills": ["Python", "GitHub API", "OpenAI API", "AST parsing", "NLP"]
   },
   {
     "title": "PLANA",
     "url": "https://github.com/RyanRana/PLANA",
-    "description": "AI-powered business plan analysis platform with financial modeling, automated SWOT analysis, and predictive forecasting for strategic recommendations.",
-    "skills": ["Python", "ML", "NLP", "Financial Modeling", "Analytics"]
+    "description": "business plan analysis with financial modeling, swot and predictive forecasting.",
+    "skills": ["Python", "scikit-learn", "NLP", "financial modeling", "forecasting"]
   },
   {
     "title": "GPT 3.5 4 Devs",
     "url": "https://github.com/RyanRana/GPT-3.5-4-Devs",
-    "description": "Open-source GPT enhancement framework with modular architecture for AI-powered task automation, featuring web scraping, document processing, and Streamlit dashboard.",
-    "skills": ["Python", "OpenAI", "Web Scraping", "Streamlit", "APIs"]
+    "description": "modular gpt framework for task automation with scraping, doc processing and streamlit.",
+    "skills": ["Python", "OpenAI API", "Beautiful Soup", "Streamlit", "REST"]
   },
   {
     "title": "Helios",
     "url": "https://github.com/RyanRana/Helios",
-    "description": "AI-powered haptic navigation device using computer vision and NLP for object detection and spatial guidance to assist visually impaired users.",
-    "skills": ["Python", "OpenCV", "NLP", "Haptics", "Embedded"]
+    "description": "haptic navigation device with computer vision and nlp for visually impaired users.",
+    "skills": ["Python", "OpenCV", "NLP", "haptic drivers", "embedded"]
   },
   {
     "title": "ARGlasses",
     "url": "https://github.com/RyanRana/ARGlasses",
-    "description": "Augmented reality iOS app for virtual eyewear try-on using ARKit with real-time face tracking and photorealistic 3D rendering.",
-    "skills": ["Swift", "ARKit", "Computer Vision", "3D Rendering", "iOS"]
+    "description": "arkit ios app for virtual eyewear try-on with face tracking and 3d rendering.",
+    "skills": ["Swift", "ARKit", "face tracking", "Metal", "iOS"]
   },
   {
     "title": "Cone",
     "url": "https://github.com/RyanRana/Cone",
-    "description": "PHP application for sharing social media and contact information via QR codes with automatic generation and shareable links.",
-    "skills": ["Web", "PHP"]
+    "description": "php app for sharing social and contact info via qr codes with shareable links.",
+    "skills": ["PHP", "QR generation", "REST"]
   },
   {
     "title": "Inexpensive Enhanced One Factor Authentication",
     "url": "https://github.com/RyanRana/Inexpensive-Enhanced-One-Factor-Authenication",
-    "description": "Logistic regression model that predicts malicious login attempts to enhance authentication security without traditional two-factor methods.",
-    "skills": ["Python", "Machine Learning", "Security"]
+    "description": "logistic regression model to predict malicious logins and enhance auth without 2fa.",
+    "skills": ["Python", "scikit-learn", "logistic regression", "auth APIs"]
   },
   {
     "title": "ELO Algorithm Based NFL Predictor",
     "url": "https://github.com/RyanRana/ELO-algoritham-based-NFL-predictor",
-    "description": "ELO ranking system that analyzes historical NFL data to rank teams and predict game outcomes.",
-    "skills": ["Python", "Sports Analytics"]
+    "description": "elo ranking on historical nfl data to rank teams and predict outcomes.",
+    "skills": ["Python", "pandas", "ELO algorithm", "statistical modeling"]
   },
   {
     "title": "Congress Connect",
     "url": "https://github.com/RyanRana/Congress-Connect",
-    "description": "iOS app using sentiment analysis and machine learning to analyze congressional tweets and reveal politicians' views on various subjects.",
-    "skills": ["Swift", "Sentiment Analysis", "UI/UX"]
+    "description": "ios app using sentiment analysis on congressional tweets to surface politicians' views.",
+    "skills": ["Swift", "sentiment analysis", "Twitter API", "UIKit"]
   },
   {
     "title": "Around-The-Pipe Audio Based Water Tracker for Home Residents",
     "url": "https://www.researchsquare.com/article/rs-1328449/v1",
-    "description": "Published research using supervised machine learning and audio analysis to measure real-time water flow through household pipes.",
-    "skills": ["NLP", "AI", "Python", "Research"]
+    "description": "research on supervised ml and audio analysis for real-time water flow measurement in pipes.",
+    "skills": ["Python", "scikit-learn", "audio signal processing", "research"]
   },
   {
     "title": "CourseTurtle",
     "url": "https://courseturtle.com",
-    "description": "Educational startup platform that simplifies course schedule analysis and sharing for students and teachers with accessible data visualization.",
-    "skills": ["Web", "PHP"]
+    "description": "platform for course schedule analysis and sharing for students and teachers.",
+    "skills": ["PHP", "MySQL", "data viz"]
   },
   {
     "title": "QuickEstimate",
     "url": "https://github.com/RyanRana/QuickEstimate-2021",
-    "description": "3rd Place 2021 Congressional App Challenge - iOS app using computer vision to scan and price household items for insurance estimation.",
-    "skills": ["Swift", "CV", "UI/UX", "Python"]
+    "description": "ios app using computer vision to scan and price household items for insurance (3rd place 2021 congressional app challenge).",
+    "skills": ["Swift", "Core ML", "Vision framework", "Python backend"]
   },
   {
     "title": "WHRHS New Tab Extension",
     "url": "https://chrome.google.com/webstore/detail/whrhs-new-tab-extension/dponcomikmfcehfdibimlemklifnlhgh",
-    "description": "Chrome extension pre-installed on 2000+ WHRHS student Chromebooks providing a custom new tab experience.",
-    "skills": ["Web", "UI/UX"]
+    "description": "chrome extension for custom new tab experience on 2000+ student chromebooks.",
+    "skills": ["JavaScript", "Chrome Extension API", "DOM"]
   },
   {
     "title": "The Power of Artificial Intelligence",
     "url": "https://www.youtube.com/watch?v=xyKOGYZgiZU",
-    "description": "TedX talk on the applications and future of Artificial Intelligence.",
-    "skills": ["Public Speaking", "AI"]
+    "description": "tedx talk on applications and future of artificial intelligence.",
+    "skills": ["public speaking", "AI"]
   },
   {
     "title": "Virtual Note",
     "url": "https://github.com/RyanRana/Virtual-Note",
-    "description": "3rd Place 2019 Repl.IT Competition - Web-based music composition tool for intuitive digital music creation.",
-    "skills": ["Web", "Music"]
+    "description": "web-based music composition tool (3rd place 2019 repl.it).",
+    "skills": ["Web Audio API", "JavaScript", "canvas"]
   },
   {
     "title": "Business Meeting Summarizer",
     "url": "https://github.com/RyanRana/Buisness-Meeting-Summarizer",
-    "description": "NLP-powered tool that converts meeting audio to text and generates extractive summaries to condense key discussion points.",
-    "skills": ["NLP", "Sentiment Analysis", "Python"]
+    "description": "nlp tool that transcribes meeting audio and generates extractive summaries.",
+    "skills": ["Python", "speech-to-text", "NLP", "summarization"]
   },
   {
     "title": "Insem Camera Foot Traffic Counter",
     "url": "https://github.com/RyanRana/Insem-Camera-Foot-Traffic-Counter",
-    "description": "Computer vision project using YOLO to detect and count people in real-time from public security camera feeds for foot traffic analysis.",
-    "skills": ["CV", "Python", "YOLO"]
+    "description": "yolo-based person detection and counting from security camera feeds for foot traffic.",
+    "skills": ["Python", "YOLO", "OpenCV", "real-time inference"]
   }
 ]

@@ -2,8 +2,9 @@
   "name": "Ryan Rana",
   "title": "Software Engineer & AI Enthusiast",
   "bio": [
-    "i'm interested in solving problems with agents[1], VLMs[4], robots[5] & scalable systems[6]. as a swe, i prioritize technical depth[7] and high agency[8] for improvement.",
-    "i'm doing cs @ Rutgers[9] & i'm a med swe @ [Centren Health](https://centrenhealth.com/)[10], prev co-founder @ [Mesh](https://www.joinmesh.today/)[11]. I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[12].",
+    "i pip installed Python turtle in 2020; now i'm interested in solving problems with agents[1], VLMs[4], robots[5] & scalable systems[6].",
+    "currently cs @ Rutgers[9]. previously co-founded [Mesh](https://www.joinmesh.today/)[10] & engineered @ [Centren Health](https://centrenhealth.com/)[11].",
+    " I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[12].",
     "when Claude[13] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[14], ski[15], [craft](pages/wood.html) & eat Chipotle[16]. i'm always seeking geniune collobaration and connection."
   ],
   "references": [
@@ -54,13 +55,13 @@
     },
     {
       "number": "10",
-      "title": "Centren Health",
-      "description": "doing clinical transformers, PK/PD modeling, S3-backed pipelines."
+      "title": "Mesh",
+      "description": "internal ai knowledge system for teams; reached 600 users."
     },
     {
       "number": "11",
-      "title": "Mesh",
-      "description": "internal ai knowledge system for teams; reached 600 users."
+      "title": "Centren Health",
+      "description": "formerly engineered there; clinical transformers, PK/PD modeling, S3-backed pipelines."
     },
     {
       "number": "12",

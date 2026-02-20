@@ -198,10 +198,9 @@
                     blob.style.width = `${size}%`;
                     blob.style.height = `${size}%`;
                     
-                    // Position blobs throughout the full screen
+                    // Position blobs throughout the full screen (centering done in keyframes)
                     blob.style.top = `${randomFullScreenPosition()}%`;
                     blob.style.left = `${randomFullScreenPosition()}%`;
-                    blob.style.transform = `translate(-50%, -50%)`;
                     
                     // Assign random color from palette
                     const color = paletteColor();
