@@ -2,16 +2,16 @@
   "name": "Ryan Rana",
   "title": "Software Engineer & AI Enthusiast",
   "bio": [
-    "i pip installed Python turtle in 2020; now i'm interested in solving problems with agents[1], VLMs[4], robots[5] & scalable systems[6].",
-    "currently cs @ Rutgers[9]. previously co-founded [Mesh](https://www.joinmesh.today/)[10] & engineered @ [Centren Health](https://centrenhealth.com/)[11].",
+    "i pip installed Python turtle in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers[4], agent tooling[1], robots[5] & scalable systems[6].",
+    "currently cs @ Rutgers[9] & swe @ [3E8 Robotics](https://www.3e8robotics.com/)[17]. previously swe @ [Centren Health](https://centrenhealth.com/)[11], founder @ [Mesh](https://www.joinmesh.today/)[10].",
     " I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[12].",
     "when Claude[13] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[14], ski[15], [craft](pages/wood.html) & eat Chipotle[16]. i'm always seeking geniune collobaration and connection."
   ],
   "references": [
     {
       "number": "1",
-      "title": "agents",
-      "description": "built multi-step agent systems with memory, iterative feedback, rag & domain-specific constraints like Osler[2] for hospitalists, Aura[3] for enterprise."
+      "title": "agent tooling",
+      "description": "multi-step agent systems with memory, iterative feedback, rag & domain-specific constraints—e.g. Osler[2] for hospitalists, Aura[3] for enterprise."
     },
     {
       "number": "2",
@@ -25,8 +25,8 @@
     },
     {
       "number": "4",
-      "title": "VLMs",
-      "description": "been studying mainly for robotics[5] but also confidential surveillance assignments (looking to meet others working)."
+      "title": "multi-modal transformers",
+      "description": "vision-language and multi-modal models; studying for robotics[5] and applied use cases (looking to meet others working in this space)."
     },
     {
       "number": "5",
@@ -56,12 +56,12 @@
     {
       "number": "10",
       "title": "Mesh",
-      "description": "internal ai knowledge system for teams; reached 600 users."
+      "description": "founded; internal ai knowledge system for teams; reached 600 users."
     },
     {
       "number": "11",
       "title": "Centren Health",
-      "description": "formerly engineered there; clinical transformers, PK/PD modeling, S3-backed pipelines."
+      "description": "engineered there; clinical transformers, PK/PD modeling, S3-backed pipelines."
     },
     {
       "number": "12",
@@ -87,6 +87,11 @@
       "number": "16",
       "title": "Chipotle",
       "description": "followed by Tacoria then Guac Time (NB based)."
+    },
+    {
+      "number": "17",
+      "title": "3E8 Robotics",
+      "description": "autonomous multi-floor delivery robots; elevator navigation, payload delivery. backed by Founders Inc., based in Silicon Valley."
     }
   ],
   "social": {
@@ -102,6 +107,7 @@
   "links": {
     "centrenHealth": "https://centrenhealth.com/",
     "mesh": "https://www.joinmesh.today/",
+    "3e8Robotics": "https://www.3e8robotics.com/",
     "writing": "https://ryanranas.medium.com/",
     "projects": "https://github.com/RyanRana"
   }

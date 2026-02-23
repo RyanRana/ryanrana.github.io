@@ -24,7 +24,7 @@ async function renderHomeContent() {
             let referencesHtml = '';
             if (profile.references && profile.references.length > 0) {
                 referencesHtml = `
-                    <div class="references" style="display: flex; flex-direction: column; gap: 0.wrem; margin-top: 0.2rem; margin-bottom: 1.5rem;">
+                    <div class="references" style="display: flex; flex-direction: column; gap: 0.2rem; margin-top: 0.2rem; margin-bottom: 1.5rem;">
                         ${profile.references.map(ref => `
                             <div class="reference-item" id="ref-${ref.number}" style="display: none;">
                                 <p style="margin: 0; color: rgba(80, 80, 80, 0.95); line-height: 1.7; font-size: 1.1rem;">
@@ -94,22 +94,15 @@ function escapeHtml(text) {
 }
 
 /**
- * Parse bio/ref text: [text](url) → link, [n] → clickable superscript
+ * Parse bio/ref text: [text](url) → link, [n] → clickable ref link (bracket style)
  */
 function parseBioText(text) {
-    const refLinkStyle = 'color: #3b82f6; text-decoration: none;';
-    const superscript = '⁰¹²³⁴⁵⁶⁷⁸⁹';
-    
-    function toSup(n) {
-        return String(n).split('').map(d => superscript[parseInt(d)] || d).join('');
-    }
-    
     // 1. Links: [text](url)
     let result = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
     
-    // 2. Refs: [n] → clickable superscript
+    // 2. Refs: [n] → clickable ref link, same look as terminal text
     result = result.replace(/\[(\d+)\]/g, (_, n) =>
-        `<a href="#" onclick="toggleRef(${n}); return false;" style="${refLinkStyle}">${toSup(n)}</a>`
+        `<a href="#" class="ref-link" onclick="toggleRef(${n}); return false;" data-ref="${n}">[${n}]</a>`
     );
     
     return result;
