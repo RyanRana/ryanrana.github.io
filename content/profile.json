@@ -3,7 +3,7 @@
     "title": "x",
     "bio": [
       "i pip installed pygame[1] in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers[2], agent tooling[3], robots[4] & scalable systems[5].",
-      "currently studying cs @ Rutgers[6] & sweing @ [3E8 Robotics](https://www.3e8robotics.com/)[7]. previously swed @ [Centren Health](https://centrenhealth.com/)[8], founded [Mesh](https://www.joinmesh.today/)[9]. I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[10].",
+      "i'm studying cs @ Rutgers[6] & sweing @ [3E8 Robotics](https://www.3e8robotics.com/)[7], i previously sweid @ [Centren Health](https://centrenhealth.com/)[8] & founded [Mesh](https://www.joinmesh.today/)[9]. i built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[10].",
       "when Claude[11] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[12], ski[13], [craft](pages/wood.html)[14] & eat Chipotle[15]. i'm always seeking geniune collobaration and connection."
     ],
     "references": [
@@ -25,7 +25,7 @@
       {
         "number": "2",
         "title": "multi-modal transformers",
-        "description": "i built custom transformers and other models in medtech, surveillance, robotics, fintech, and supply chain."
+        "description": "built vlms, mlms, slms. improved llms. really deep diving in vlms right now."
       },
       {
         "number": "4",
