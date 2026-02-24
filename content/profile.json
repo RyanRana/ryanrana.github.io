@@ -2,7 +2,7 @@
   "name": "Ryan Rana",
   "title": "Software Engineer & AI Enthusiast",
   "bio": [
-    "i pip installed Python turtle in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers[4], agent tooling[1], robots[5] & scalable systems[6].",
+    "i pip installed pygame[18] in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers[4], agent tooling[1], robots[5] & scalable systems[6].",
     "currently cs @ Rutgers[9] & swe @ [3E8 Robotics](https://www.3e8robotics.com/)[17]. previously swe @ [Centren Health](https://centrenhealth.com/)[11], founder @ [Mesh](https://www.joinmesh.today/)[10].",
     " I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[12].",
     "when Claude[13] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[14], ski[15], [craft](pages/wood.html) & eat Chipotle[16]. i'm always seeking geniune collobaration and connection."
@@ -92,6 +92,11 @@
       "number": "17",
       "title": "3E8 Robotics",
       "description": "autonomous multi-floor delivery robots; elevator navigation, payload delivery. backed by Founders Inc., based in Silicon Valley."
+    },
+    {
+      "number": "18",
+      "title": "pygame",
+      "description": "i started by making GUI games in PyGame, followed by HTML5 games, only to return to python with much more ambitious ideas in artificial intelligence."
     }
   ],
   "social": {
