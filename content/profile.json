@@ -1,114 +1,115 @@
 {
-  "name": "Ryan Rana",
-  "title": "Software Engineer & AI Enthusiast",
-  "bio": [
-    "i pip installed pygame[18] in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers[4], agent tooling[1], robots[5] & scalable systems[6].",
-    "currently studying cs @ Rutgers[9] & sweing @ [3E8 Robotics](https://www.3e8robotics.com/)[17]. previously swed @ [Centren Health](https://centrenhealth.com/)[11], founded [Mesh](https://www.joinmesh.today/)[10]. I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[12].",
-    "when Claude[13] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[14], ski[15], [craft](pages/wood.html)[19] & eat Chipotle[16]. i'm always seeking geniune collobaration and connection."
-  ],
-  "references": [
-    {
-      "number": "1",
-      "title": "agent tooling",
-      "description": "multi-step agent systems with memory, iterative feedback, rag & domain-specific constraints — e.g. Osler[2] for hospitalists, Aura[3] for enterprise."
+    "name": "Ryan Rana",
+    "title": "x",
+    "bio": [
+      "i pip installed pygame[1] in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers[2], agent tooling[3], robots[4] & scalable systems[5].",
+      "currently studying cs @ Rutgers[6] & sweing @ [3E8 Robotics](https://www.3e8robotics.com/)[7]. previously swed @ [Centren Health](https://centrenhealth.com/)[8], founded [Mesh](https://www.joinmesh.today/)[9]. I also built a lot of other cool [software](https://github.com/RyanRana) over many domains in the past 6 years[10].",
+      "when Claude[11] can't debug my slop, i like to [write](https://ryanranas.medium.com/)[12], ski[13], [craft](pages/wood.html)[14] & eat Chipotle[15]. i'm always seeking geniune collobaration and connection."
+    ],
+    "references": [
+      {
+        "number": "3",
+        "title": "agent tooling",
+        "description": "multi-step agent systems with memory, iterative feedback, rag & domain-specific constraints — e.g. Osler[16] for hospitalists, Aura[17] for enterprise."
+      },
+      {
+        "number": "16",
+        "title": "Osler",
+        "description": "hospitalist agent that handles onboarding and live workflow. adapts to all types of data and tools, runs under real hospital rules."
+      },
+      {
+        "number": "17",
+        "title": "Aura",
+        "description": "internal enterprise agent platform that interacts with Snowflake. modular agents, shared toolbelt, composable workflows."
+      },
+      {
+        "number": "2",
+        "title": "multi-modal transformers",
+        "description": "vision-language and multi-modal models; studying for robotics[5] and applied use cases (looking to meet others working in this space)."
+      },
+      {
+        "number": "4",
+        "title": "robots",
+        "description": "studying deformables, not just sim. Also doing generative serial chains as a side project (looking to meet others working)."
+      },
+      {
+        "number": "5",
+        "title": "scalable systems",
+        "description": "must know skill. I practice this in all work."
+      },
+     
+      {
+        "number": "6",
+        "title": "cs @ Rutgers",
+        "description": "in my 2nd year. most skills still come from outside the classroom."
+      },
+      {
+        "number": "9",
+        "title": "Mesh",
+        "description": "over 2025 summer, my friend and i built a collaborative ai internal knowledge platform; reached 600 users."
+      },
+      {
+        "number": "8",
+        "title": "Centren Health",
+        "description": "worked on very exciting things, including clinical transformers, PK/PD modeling, S3-backed pipelines. based in NYC."
+      },
+      {
+        "number": "10",
+        "title": "past 6 years",
+        "description": "never took a tutorial. what i've made is what i know, whatever i havent made yet, i'm going to learn how."
+      },
+      {
+        "number": "11",
+        "title": "Claude",
+        "description": "ORCHESTRATION."
+      },
+      {
+        "number": "12",
+        "title": "write",
+        "description": "updating my blog irregularly since summer 2021. includes my thoughts regarding interesting technology, ai (tech & philosophy), programming & life."
+      },
+      {
+        "number": "13",
+        "title": "ski",
+        "description": "time spent completely offline. mainly Camelback in the Poconos."
+      },
+      {
+        "number": "15",
+        "title": "Chipotle",
+        "description": "white rice, black beans, chicken al pastor, extra chicken al pastor, tomatillo red chili salsa, roasted chili corn salsa, cheese, and light sour cream."
+      },
+      {
+        "number": "7",
+        "title": "3E8 Robotics",
+        "description": "autonomous multi-floor delivery robots; elevator navigation, payload delivery. backed by Founders Inc., based in SF."
+      },
+      {
+        "number": "1",
+        "title": "pygame",
+        "description": "i started with the Tkinter turtle, then making games with PyGame, followed by HTML5 Canvas games. i later returned to Python with much more ambitious ideas in artificial intelligence."
+      },
+      {
+        "number": "14",
+        "title": "craft",
+        "description": "coding is the closest thing to a super power imo, but there's something satisfying about building and changing things with your own hands. this is a small subset of things i've made on my own."
+      }
+    ],
+    "social": {
+      "email": "ryanrana04@gmail.com",
+      "phone": "+19088734657",
+      "linkedin": "https://www.linkedin.com/in/ryanrana/",
+      "github": "https://github.com/RyanRana",
+      "medium": "https://ryanranas.medium.com/",
+      "twitter": "https://x.com/ryanrana0",
+      "hackernews": "https://news.ycombinator.com/user?id=ryanrana",
+      "instagram": "https://www.instagram.com/_ryanrana_/"
     },
-    {
-      "number": "2",
-      "title": "Osler",
-      "description": "hospitalist agent that handles onboarding and live workflow. adapts to all types of data and tools, runs under real hospital rules."
-    },
-    {
-      "number": "3",
-      "title": "Aura",
-      "description": "internal enterprise agent platform that interacts with Snowflake. modular agents, shared toolbelt, composable workflows."
-    },
-    {
-      "number": "4",
-      "title": "multi-modal transformers",
-      "description": "vision-language and multi-modal models; studying for robotics[5] and applied use cases (looking to meet others working in this space)."
-    },
-    {
-      "number": "5",
-      "title": "robots",
-      "description": "studying deformables, not just sim. Also doing generative serial chains as a side project (looking to meet others working)."
-    },
-    {
-      "number": "6",
-      "title": "scalable systems",
-      "description": "must know skill. I practice this in all work."
-    },
-   
-    {
-      "number": "9",
-      "title": "cs @ Rutgers",
-      "description": "in my 2nd year. most skills still come from outside the classroom."
-    },
-    {
-      "number": "10",
-      "title": "Mesh",
-      "description": "over 2025 summer, my friend and i built a collaborative ai internal knowledge platform; reached 600 users."
-    },
-    {
-      "number": "11",
-      "title": "Centren Health",
-      "description": "worked on very exciting things, including clinical transformers, PK/PD modeling, S3-backed pipelines. based in NYC."
-    },
-    {
-      "number": "12",
-      "title": "past 6 years",
-      "description": "never took a tutorial. what i've made is what i know, whatever i havent made yet, i'm going to learn how."
-    },
-    {
-      "number": "13",
-      "title": "Claude",
-      "description": "ORCHESTRATION."
-    },
-    {
-      "number": "14",
-      "title": "write",
-      "description": "updating my blog irregularly since summer 2021. includes my thoughts regarding interesting technology, ai (tech & philosophy), programming & life."
-    },
-    {
-      "number": "15",
-      "title": "ski",
-      "description": "time spent completely offline. mainly Camelback in the Poconos."
-    },
-    {
-      "number": "16",
-      "title": "Chipotle",
-      "description": "white rice, black beans, chicken al pastor, extra chicken al pastor, tomatillo red chili salsa, roasted chili corn salsa, cheese, and light sour cream."
-    },
-    {
-      "number": "17",
-      "title": "3E8 Robotics",
-      "description": "autonomous multi-floor delivery robots; elevator navigation, payload delivery. backed by Founders Inc., based in SF."
-    },
-    {
-      "number": "18",
-      "title": "pygame",
-      "description": "i started by making GUI games in PyGame, followed by HTML5 games, only to return to python with much more ambitious ideas in artificial intelligence."
-    },
-    {
-      "number": "19",
-      "title": "craft",
-      "description": "coding is the closest thing to a super power imo, but there's something satisfying about building and changing things with your own hands. this is a small subset of things i've made on my own."
+    "links": {
+      "centrenHealth": "https://centrenhealth.com/",
+      "mesh": "https://www.joinmesh.today/",
+      "3e8Robotics": "https://www.3e8robotics.com/",
+      "writing": "https://ryanranas.medium.com/",
+      "projects": "https://github.com/RyanRana"
     }
-  ],
-  "social": {
-    "email": "ryanrana04@gmail.com",
-    "phone": "+19088734657",
-    "linkedin": "https://www.linkedin.com/in/ryanrana/",
-    "github": "https://github.com/RyanRana",
-    "medium": "https://ryanranas.medium.com/",
-    "twitter": "https://x.com/ryanrana0",
-    "hackernews": "https://news.ycombinator.com/user?id=ryanrana",
-    "instagram": "https://www.instagram.com/_ryanrana_/"
-  },
-  "links": {
-    "centrenHealth": "https://centrenhealth.com/",
-    "mesh": "https://www.joinmesh.today/",
-    "3e8Robotics": "https://www.3e8robotics.com/",
-    "writing": "https://ryanranas.medium.com/",
-    "projects": "https://github.com/RyanRana"
   }
-}
+  
