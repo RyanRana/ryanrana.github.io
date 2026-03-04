@@ -414,7 +414,27 @@
         align-items: center;
         justify-content: center;
       }
-      #left { order: 0; flex: 1; min-height: 0; overflow: auto; }
+      #left { order: 0; flex: 1; min-height: 0; overflow: hidden; }
+      /* Allow scrolling inside left panel so Enter/Skip are reachable on small screens */
+      #content-area {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      /* Terminal wrap in flow so content height enables scroll; align top so we can scroll down to hint */
+      #terminal-wrap {
+        position: relative;
+        min-height: 100%;
+        align-items: flex-start;
+        padding-top: 24px;
+        padding-bottom: max(var(--space-12), env(safe-area-inset-bottom));
+      }
+      #terminal-wrap.hide {
+        position: absolute;
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+      }
       #nn-wrap {
         flex: 1;
         min-height: 220px;
@@ -422,14 +442,38 @@
         max-width: none;
         max-height: none;
       }
-      #terminal-wrap, #bio-wrap { padding: 0 28px; padding-bottom: var(--space-12); }
+      #terminal-wrap:not(.hide), #bio-wrap { padding-left: 20px; padding-right: 20px; }
+      #bio-wrap { padding-bottom: var(--space-12); }
       #terminal .t-line { white-space: pre-wrap; word-break: break-word; }
-      #nav { padding: 0 24px; flex-wrap: wrap; gap: 8px; }
+      #nav { padding: 0 20px; flex-wrap: wrap; gap: 8px; }
       .nav-links { display: flex; flex-wrap: wrap; gap: 16px; }
       .nav-links a { font-size: 0.75rem; }
       .bio-section { margin-top: 0; padding-top: var(--space-12); }
       .bio-section:first-of-type { margin-top: var(--space-10); padding-top: 0; }
       .bio-links { margin-top: var(--space-8); }
+    }
+
+    /* Short viewport (e.g. landscape phone, small window): same scrollable terminal as mobile */
+    @media (max-height: 560px) {
+      #left { overflow: hidden; }
+      #content-area {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      #terminal-wrap {
+        position: relative;
+        min-height: 100%;
+        align-items: flex-start;
+        padding-top: 24px;
+        padding-bottom: max(var(--space-12), env(safe-area-inset-bottom));
+      }
+      #terminal-wrap.hide {
+        position: absolute;
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+      }
     }
   </style>
 </head>
