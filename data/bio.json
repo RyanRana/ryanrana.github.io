@@ -7,7 +7,7 @@
         { "code": "pip install" },
         { "text": "ed pygame" },
         { "ref": 1 },
-        { "text": " in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers" },
+        { "text": " in 2020; now i'm interested in solving hard problems with multi-modal transformers" },
         { "ref": 2 },
         { "text": ", custom mcps" },
         { "ref": 3 },
@@ -15,31 +15,33 @@
         { "ref": 4 },
         { "text": " & scalable systems" },
         { "ref": 5 },
-        { "text": "." }
+        { "text": ", no matter the project space." }
       ]
     },
     {
       "parts": [
         { "text": "i'm studying cs @ Rutgers" },
         { "ref": 6 },
-        { "text": " & sweing @ " },
+        { "text": " & working on vision @ " },
         { "link": { "href": "https://www.3e8robotics.com/", "text": "3E8 Robotics" } },
         { "ref": 7 },
-        { "text": ". I previously sweied @ " },
+        { "text": ". this summer i'll be interning @ " },
+        { "link": { "href": "https://www.fiserv.com/en.html", "text": "Fiserv" } },
+        { "text": ". I previously worked on clinical agents @ " },
         { "link": { "href": "https://centrenhealth.com/", "text": "Centren Health" } },
         { "ref": 8 },
-        { "text": " & founded " },
+        { "text": " & co-founded " },
         { "link": { "href": "https://www.joinmesh.today/", "text": "Mesh" } },
         { "ref": 9 },
-        { "text": ". I've built a lot of other cool " },
-        { "link": { "href": "https://github.com/RyanRana", "text": "software" } },
-        { "ref": 10 },
-        { "text": " over the past 6 years." }
+        { "text": "." }
       ]
     },
     {
       "parts": [
-        { "text": "when Claude" },
+        { "text": "i learn by building, so i've accumulated a lot of " },
+        { "link": { "href": "https://github.com/RyanRana", "text": "projects" } },
+        { "ref": 10 },
+        { "text": " over the years. When Claude" },
         { "ref": 11 },
         { "text": " can't debug my slop, i like to " },
         { "link": { "href": "https://ryanranas.medium.com/", "text": "write" } },
@@ -51,7 +53,7 @@
         { "ref": 14 },
         { "text": " & eat Chipotle" },
         { "ref": 15 },
-        { "text": ". always seeking genuine collaboration and connection." }
+        { "text": ". i am always seeking genuine collaboration and connection." }
       ]
     }
   ],

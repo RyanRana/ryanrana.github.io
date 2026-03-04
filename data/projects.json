@@ -1,5 +1,17 @@
 [
   {
+    "title": "DEF",
+    "url": "https://github.com/RyanRana/def",
+    "description": "RL layer on any web game that tunes difficulty and engagement in real time using in-browser vitals (rPPG).",
+    "skills": ["JavaScript", "RL", "rPPG", "engagement", "browser"]
+  },
+  {
+    "title": "Minecraft Circuits",
+    "url": "https://github.com/RyanRana/minecraft-circuts",
+    "description": "Verilog or netlist → Minecraft redstone layouts. LLM-friendly, design only, no game connection.",
+    "skills": ["JavaScript", "Verilog", "redstone", "LLM", "Node.js"]
+  },
+  {
     "title": "Cyphe",
     "url": "https://github.com/RyanRana/cyphe/",
     "description": "horizonless encyclopedia that weaves llm content with wikipedia, twitter, reddit and memes while tracking engagement.",

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Ryan Rana</title>
   <style>
     :root {
@@ -403,25 +406,33 @@
     .footer-line a:hover { color: var(--black); border-bottom-color: var(--black); }
 
     @media (max-width: 720px) {
-      #layout { flex-direction: column; }
+      #layout {
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
       #right {
         order: -1;
-        flex: 0 0 42vh;
+        flex: 0 0 auto;
+        height: 42vh;
         min-height: 280px;
-        padding: 20px 16px 12px;
+        padding: 20px 14px 12px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
       }
-      #left { order: 0; flex: 1; min-height: 0; overflow: hidden; }
-      /* Allow scrolling inside left panel so Enter/Skip are reachable on small screens */
-      #content-area {
-        overflow-y: auto;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
+      #left {
+        order: 0;
+        flex: 0 0 auto;
+        overflow: visible;
       }
-      /* Terminal wrap in flow so content height enables scroll; align top so we can scroll down to hint */
+      /* Single scroll: content flows in layout, no inner scroll */
+      #content-area {
+        overflow: visible;
+      }
+      /* Terminal wrap in flow so Enter/Skip are reachable; align top */
       #terminal-wrap {
         position: relative;
         min-height: 100%;
@@ -435,6 +446,21 @@
         overflow: hidden;
         padding: 0;
       }
+      /* Bio in flow when shown so one layout scroll (no nested scroll) */
+      #bio-wrap {
+        position: absolute;
+        height: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      #bio-wrap.show {
+        position: relative;
+        height: auto;
+        overflow: visible;
+        pointer-events: auto;
+        scroll-snap-type: none;
+      }
+      .bio-intro, .bio-section { min-height: 0; }
       #nn-wrap {
         flex: 1;
         min-height: 220px;
@@ -442,10 +468,10 @@
         max-width: none;
         max-height: none;
       }
-      #terminal-wrap:not(.hide), #bio-wrap { padding-left: 20px; padding-right: 20px; }
+      #terminal-wrap:not(.hide), #bio-wrap { padding-left: 14px; padding-right: 14px; }
       #bio-wrap { padding-bottom: var(--space-12); }
       #terminal .t-line { white-space: pre-wrap; word-break: break-word; }
-      #nav { padding: 0 20px; flex-wrap: wrap; gap: 8px; }
+      #nav { padding: 0 14px; flex-wrap: wrap; gap: 8px; }
       .nav-links { display: flex; flex-wrap: wrap; gap: 16px; }
       .nav-links a { font-size: 0.75rem; }
       .bio-section { margin-top: 0; padding-top: var(--space-12); }
@@ -604,12 +630,12 @@
   const SESSION_KEY = 'ryanrana_intro_done';
 
   const LINES = [
-    { id: 'tl0', text: "> const res = await fetch('/api/ryanrana');", cls: '' },
+    { id: 'tl0', text: '>>> r = requests.get("/user").json()', cls: '' },
     { id: 'tl1', text: '200 OK', cls: 't-ok' },
-    { id: 'tl2', text: '> const { name, superpower } = await res.json();', cls: '' },
-    { id: 'tl3', text: '{ name: "ryan rana",  superpower: "programming" }', cls: 't-gray' },
-    { id: 'tl4', text: "> const { bio } = await fetch('/api/ryanrana').then(r => r.json());", cls: '' },
-    { id: 'tl5', text: '"i pip installed pygame in 2020; now i\'m interested in solving interdisciplinary problems..."', cls: 't-gray' },
+    { id: 'tl2', text: '>>> print(r["name"], r.get("superpower"))', cls: '' },
+    { id: 'tl3', text: 'ryan rana programming', cls: 't-gray' },
+    { id: 'tl4', text: '>>> print(open("bio.txt").read())', cls: '' },
+    { id: 'tl5', text: '', cls: '' },
   ];
 
   let step = 0;
@@ -653,10 +679,10 @@
     if (window.__nnRearrange) window.__nnRearrange();
 
     if (step === 0) {
-      // Show 200 OK, then show next line (name/superpower prompt)
+      // Show 200 OK, then type second line (print name/superpower)
       runSequence(1, 2, () => { step = 1; });
     } else if (step === 1) {
-      // Show name/superpower result, then show next line (bio prompt)
+      // Show print output, then type third line (print bio.txt)
       runSequence(3, 4, () => { step = 2; });
     } else {
       // Reveal everything (skip typing bio result)
@@ -757,7 +783,7 @@
     }
     return [];
   }
-  fetch('data/bio.json')
+  fetch('data/bio.json?t=' + Date.now())
     .then(function (r) { return r.ok ? r.json() : null; })
     .catch(function () { return null; })
     .then(function (data) {
@@ -792,16 +818,25 @@
       });
     });
   }
+  function showRefForFn(fn, refDisplay) {
+    var tip = fn && fn.querySelector('.fn-tip');
+    if (!tip || !refDisplay) return;
+    var numNode = Array.from(fn.childNodes).find(function (n) { return n.nodeType === 3; });
+    var num = numNode ? numNode.textContent.trim() : '';
+    refDisplay.textContent = (num ? num + '. ' : '') + tip.textContent.trim();
+  }
   var intro = document.getElementById('bio-intro');
   if (intro && refDisplay) {
     intro.addEventListener('mouseenter', function (e) {
       var fn = e.target.closest && e.target.closest('.fn');
       if (!fn) return;
-      var tip = fn.querySelector('.fn-tip');
-      if (!tip) return;
-      var numNode = Array.from(fn.childNodes).find(function (n) { return n.nodeType === 3; });
-      var num = numNode ? numNode.textContent.trim() : '';
-      refDisplay.textContent = (num ? num + '. ' : '') + tip.textContent.trim();
+      showRefForFn(fn, refDisplay);
+    }, true);
+    intro.addEventListener('click', function (e) {
+      var fn = e.target.closest && e.target.closest('.fn');
+      if (!fn) return;
+      e.preventDefault();
+      showRefForFn(fn, refDisplay);
     }, true);
   }
 })();
@@ -947,7 +982,7 @@
 
   const DATA_DIR = 'data/';
   function loadJson(path) {
-    return fetch(DATA_DIR + path).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
+    return fetch(DATA_DIR + path + '?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
   }
   Promise.all([
     loadJson('articles.json'),
@@ -974,15 +1009,15 @@
   let W = 0, H = 0;
   let mouse = { x: -999, y: -999 };
 
-  const PULL = 0.07, SPRING = 0.05, DRAG = 0.82, MAX_SPD = 5, FADE_MS = 500;
+  const PULL = 0.32, SPRING = 0.05, DRAG = 0.85, MAX_SPD = 12, FADE_MS = 500;
 
   // Complexity by viewport width (right panel / container width)
   function getConfig(width) {
-    if (width < 520)  return { N: 20,  START: [3, 5, 5, 5, 2],              R: 3.5, MOUSE_R: 60, maxH: 6 };
-    if (width < 900)  return { N: 36,  START: [3, 6, 8, 7, 6, 4, 2],       R: 4.5, MOUSE_R: 90, maxH: 10 };
-    if (width < 1400) return { N: 48,  START: [4, 8, 10, 12, 8, 4, 2],     R: 4,   MOUSE_R: 100, maxH: 12 };
-    if (width < 2000) return { N: 64,  START: [4, 10, 12, 14, 10, 8, 4, 2], R: 3.5, MOUSE_R: 110, maxH: 14 };
-    return { N: 80, START: [4, 10, 12, 14, 14, 12, 8, 4, 2], R: 3, MOUSE_R: 120, maxH: 16 };
+    if (width < 520)  return { N: 20,  START: [3, 5, 5, 5, 2],              R: 3.5, MOUSE_R: 140, maxH: 6 };
+    if (width < 900)  return { N: 36,  START: [3, 6, 8, 7, 6, 4, 2],       R: 4.5, MOUSE_R: 200, maxH: 10 };
+    if (width < 1400) return { N: 48,  START: [4, 8, 10, 12, 8, 4, 2],     R: 4,   MOUSE_R: 240, maxH: 12 };
+    if (width < 2000) return { N: 64,  START: [4, 10, 12, 14, 10, 8, 4, 2], R: 3.5, MOUSE_R: 280, maxH: 14 };
+    return { N: 80, START: [4, 10, 12, 14, 14, 12, 8, 4, 2], R: 3, MOUSE_R: 320, maxH: 16 };
   }
 
   let config = getConfig(400);
@@ -1146,14 +1181,25 @@
     requestAnimationFrame(loop);
   }
 
-  canvas.addEventListener('mousemove', (e) => {
+  function updateMouseFromEvent(e) {
     const r = canvas.getBoundingClientRect();
-    if (r.width) {
-      mouse.x = (e.clientX - r.left) * (W / r.width);
-      mouse.y = (e.clientY - r.top)  * (H / r.height);
+    if (!r.width || !r.height) return;
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    if (x >= 0 && x <= r.width && y >= 0 && y <= r.height) {
+      mouse.x = x * (W / r.width);
+      mouse.y = y * (H / r.height);
+    } else {
+      mouse.x = -999; mouse.y = -999;
     }
-  });
+  }
+  canvas.addEventListener('mousemove', updateMouseFromEvent);
   canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+  document.addEventListener('mousemove', updateMouseFromEvent);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Enter' && document.getElementById('terminal-wrap').classList.contains('hide'))
+      apply(randSizes(), false);
+  });
 
   window.__nnRearrange = () => apply(randSizes(), false);
 
