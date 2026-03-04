@@ -1,352 +1,1122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Ryan Rana</title>
-    <link rel="icon" type="image/png" href="pics/george.png">
-    <meta name="description" content="Ryan Rana's personal website - Focused on Applied AI and Software Architecture">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ryan Rana</title>
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray: #6e6e73;
+      --gray-light: #8e8e93;
+      --rule: rgba(0,0,0,0.09);
+      --mono: 'SF Mono','Fira Code','Fira Mono','Courier New',monospace;
+      --sans: -apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;
+      /* Spacing scale */
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── APP: nav + layout ── */
+    #app {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* NAV — full width, slides down after load */
+    #nav {
+      flex-shrink: 0;
+      width: 100%;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 44px;
+      border-bottom: 1px solid var(--rule);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1),
+                  opacity 0.6s ease;
+    }
+    #nav.show { transform: translateY(0); opacity: 1; }
+
+    /* ── TWO-PANEL LAYOUT ── */
+    #layout {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+
+    /* LEFT */
+    #left {
+      flex: 0 0 46%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-name {
+      font-size: 0.9rem; font-weight: 600;
+      letter-spacing: -0.02em; text-decoration: none; color: var(--black);
+    }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 500; color: var(--gray);
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--black); }
+
+    /* CONTENT AREA */
+    #content-area {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* TERMINAL */
+    #terminal-wrap {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: flex-start;
+      padding: 0 44px;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #terminal-wrap.hide {
+      opacity: 0; transform: translateY(-10px); pointer-events: none;
+    }
+    #terminal {
+      font-family: var(--mono);
+      font-size: 1.18rem;
+      line-height: 2.05;
+      color: var(--black);
+    }
+    .t-line { display: block; white-space: pre; }
+    .t-ok    { color: #1a8c1a; font-weight: 500; }
+    .t-gray  { color: var(--gray); }
+    .t-comment { color: #c0c0c0; }
+    .cursor {
+      display: inline-block; width: 7px; height: 1em;
+      background: var(--black); vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .t-hint {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 22px;
+      font-size: 0.74rem; color: #888;
+      letter-spacing: 0.05em;
+    }
+    .t-hint .key {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 58px; height: 22px;
+      border: 1px solid #bbb; border-radius: 4px;
+      font-size: 0.68rem; color: #666; letter-spacing: 0.03em;
+    }
+    .t-skip {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #c00;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 6px;
+      margin-left: 4px;
+      transition: opacity 0.2s;
+    }
+    .t-skip:hover { opacity: 0.8; }
+    .t-skip.hide { display: none; }
+
+    /* BIO — full-height panels, scroll snap */
+    #bio-wrap {
+      position: absolute; inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+      pointer-events: none;
+    }
+    #bio-wrap.show { opacity: 1; transform: none; pointer-events: auto; }
+
+    .bio-intro {
+      min-height: 100%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-12) 44px var(--space-16);
+      box-sizing: border-box;
+    }
+
+    .bio-name {
+      font-size: clamp(1.85rem, 2.8vw, 2.5rem);
+      font-weight: 700; letter-spacing: -0.035em;
+      line-height: 1.1; margin-bottom: var(--space-8);
+    }
+    .bio-para {
+      font-size: 0.98rem; line-height: 1.8;
+      color: #1d1d1f; margin-bottom: var(--space-6);
+      text-decoration: none;
+    }
+    .bio-para a {
+      color: var(--black); text-decoration: underline;
+      text-decoration-thickness: 1px; text-underline-offset: 3px;
+      transition: opacity 0.15s;
+    }
+    .bio-para a:hover { opacity: 0.45; }
+    .fn {
+      font-size: 0.6em; vertical-align: super;
+      font-family: var(--mono); color: #666;
+      margin-left: 1px; cursor: default; position: relative;
+    }
+    .fn-tip { display: none; }
+    .bio-ref-display {
+      font-size: 0.98rem; line-height: 1.55;
+      color: #555; margin-bottom: var(--space-8);
+      font-weight: 400; min-height: 0;
+    }
+
+    /* Section headings — same size/look as Ryan Rana (bio-name); full-height panels, vertically centered */
+    .bio-section {
+      min-height: 100%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      margin-top: 0;
+      padding: var(--space-12) 44px var(--space-16);
+      border-top: none;
+      position: relative;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .bio-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--rule);
+    }
+    .bio-section:first-of-type { padding-top: var(--space-12); }
+    .bio-section:first-of-type::before { display: none; }
+    .bio-section-title {
+      font-size: clamp(1.85rem, 2.8vw, 2.5rem);
+      font-weight: 700; letter-spacing: -0.035em;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: var(--space-6);
+    }
+    .articles-year {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--gray);
+      margin-top: var(--space-6); margin-bottom: var(--space-3);
+    }
+    .articles-year:first-child { margin-top: 0; }
+
+    /* Articles — chill, natural */
+    #articles-section .bio-section-list li {
+      margin-bottom: var(--space-4); padding-bottom: var(--space-4);
+      border-bottom: none;
+      padding-left: 0;
+      border-left: none;
+    }
+    #articles-section .item-title { font-size: 0.95rem; font-weight: 500; }
+    #articles-section .item-meta { font-size: 0.8rem; color: var(--gray); font-weight: 400; }
+    #articles-section .item-desc.article-excerpt { font-size: 0.9rem; line-height: 1.65; color: #444; }
+
+    /* Experience — timeline feel, compact */
+    #experience-section .bio-section-list li {
+      margin-bottom: var(--space-4); padding-bottom: var(--space-4);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    #experience-section .bio-section-list li:last-child { border-bottom: none; }
+    #experience-section .item-title { font-size: 0.9rem; font-weight: 600; }
+    #experience-section .item-meta { font-size: 0.77rem; font-weight: 500; color: var(--gray); }
+    #experience-section .item-desc { font-size: 0.84rem; line-height: 1.5; color: #444; }
+
+    /* Projects — 1 bullet, 1 line per project; tags inline, polished */
+    #projects-section .bio-section-list {
+      list-style: disc;
+      padding-left: 1.5rem;
+    }
+    #projects-section .bio-section-list li {
+      margin-bottom: var(--space-4);
+      padding-left: 0.35rem;
+      line-height: 1.65;
+    }
+    #projects-section .item-title { font-size: 0.92rem; font-weight: 600; margin: 0; display: inline; letter-spacing: -0.01em; }
+    #projects-section .item-title a { display: inline; }
+    #projects-section .item-desc { font-size: 0.83rem; color: #555; margin: 0; display: inline; font-weight: 400; }
+    #projects-section .project-sep { color: rgba(0,0,0,0.25); font-weight: 300; margin: 0 0.15rem; display: inline; }
+    #projects-section .item-skills {
+      display: inline;
+    }
+    #projects-section .project-skill {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: #5a5a5a;
+      background: rgba(0,0,0,0.055);
+      padding: 3px 7px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-right: 0.35rem;
+      margin-bottom: 0.15rem;
+    }
+
+    /* Shared list + item styles */
+    .bio-section-list { list-style: none; }
+    .bio-section-list .item-title { margin-bottom: var(--space-2); }
+    .bio-section-list .item-title a {
+      color: var(--black); text-decoration: none;
+      border-bottom: 1px solid transparent; transition: border-color 0.15s;
+    }
+    .bio-section-list .item-title a:hover { border-bottom-color: var(--black); }
+    .bio-section-list .item-meta { margin-bottom: var(--space-2); }
+    .bio-section-list .item-desc { font-size: 0.85rem; line-height: 1.55; color: #444; }
+    .bio-section-list .item-title-row {
+      display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2);
+    }
+    .bio-section-list .item-title-row .item-title { margin-bottom: 0; flex: 1; }
+    .bio-section-list .item-toggle {
+      flex-shrink: 0; width: 24px; height: 24px; padding: 0; border: none;
+      background: none; cursor: pointer; color: var(--gray);
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: transform 0.2s ease, color 0.15s;
+    }
+    .bio-section-list .item-toggle:hover { color: var(--black); }
+    .bio-section-list .item-toggle.open { transform: rotate(90deg); }
+    .bio-section-list .item-toggle svg { width: 14px; height: 14px; }
+    .bio-section-list .item-desc.article-excerpt { margin-top: var(--space-3); display: none; }
+    .bio-section-list .item-desc.article-excerpt.open { display: block; }
+    .bio-section-list .item-skills { font-size: 0.75rem; color: var(--gray); margin-top: var(--space-3); }
+
+    .show-more-btn {
+      background: none; border: none; font-family: var(--sans);
+      font-size: 0.82rem; font-weight: 500; color: var(--gray);
+      cursor: pointer; padding: var(--space-3) 0; margin-top: var(--space-4);
+      text-decoration: underline; text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+    .show-more-btn:hover { color: var(--black); }
+    .show-more-btn.hidden { display: none; }
+
+    .bio-links {
+      display: flex; gap: var(--space-3); flex-wrap: wrap;
+      margin-top: var(--space-10); padding-bottom: var(--space-2);
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center;
+      padding: 9px 20px; border-radius: 980px;
+      font-size: 0.78rem; font-weight: 500;
+      text-decoration: none; letter-spacing: 0.01em;
+      transition: all 0.18s;
+      border: none;
+    }
+    .btn-dark { background: var(--black); color: var(--white); }
+    .btn-dark:hover { background: #222; }
+    .icon-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.14); color: var(--black);
+      text-decoration: none; transition: all 0.18s;
+    }
+    .icon-btn:hover { background: #f0f0f0; border-color: rgba(0,0,0,0.25); }
+    .icon-btn svg { width: 16px; height: 16px; display: block; }
+
+    /* RIGHT — neural net */
+    #right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 32px;
+    }
+    #nn-wrap {
+      width: 100%; height: 100%;
+      /* Mobile: contained. Desktop: scale with viewport (proportional) */
+      max-width: min(520px, 96%);
+      max-height: min(68vh, 520px);
+    }
+    @media (min-width: 900px) {
+      #nn-wrap {
+        max-width: min(720px, 46vw);
+        max-height: min(85vh, 820px);
+      }
+    }
+    #nn-canvas { display: block; width: 100%; height: 100%; }
+
+    /* hide scrollbar, keep scroll */
+    #bio-wrap { scrollbar-width: none; }
+    #bio-wrap::-webkit-scrollbar { display: none; }
+
+    /* Footer — at end of scrollable bio, short */
+    #site-footer {
+      margin-top: 0;
+      padding: var(--space-12) 44px var(--space-16);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--rule);
+      scroll-snap-align: start;
+    }
+    .footer-line {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-bottom: var(--space-2);
+    }
+    .footer-line a {
+      color: var(--gray);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .footer-line a:hover { color: var(--black); border-bottom-color: var(--black); }
+
+    @media (max-width: 720px) {
+      #layout { flex-direction: column; }
+      #right {
+        order: -1;
+        flex: 0 0 42vh;
+        min-height: 280px;
+        padding: 20px 16px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #left { order: 0; flex: 1; min-height: 0; overflow: auto; }
+      #nn-wrap {
+        flex: 1;
+        min-height: 220px;
+        width: 100%;
+        max-width: none;
+        max-height: none;
+      }
+      #terminal-wrap, #bio-wrap { padding: 0 28px; padding-bottom: var(--space-12); }
+      #terminal .t-line { white-space: pre-wrap; word-break: break-word; }
+      #nav { padding: 0 24px; flex-wrap: wrap; gap: 8px; }
+      .nav-links { display: flex; flex-wrap: wrap; gap: 16px; }
+      .nav-links a { font-size: 0.75rem; }
+      .bio-section { margin-top: 0; padding-top: var(--space-12); }
+      .bio-section:first-of-type { margin-top: var(--space-10); padding-top: 0; }
+      .bio-links { margin-top: var(--space-8); }
+    }
+  </style>
 </head>
 <body>
-    <!-- Morphing Gradient Background -->
-    <div class="sui-morphing-gradient h-screen w-screen relative overflow-hidden top-0 left-0" id="gradientWrapper">
-        <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-            <defs>
-                <filter id="point">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                    <feColorMatrix
-                        in="blur"
-                        mode="matrix"
-                        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
-                        result="point"
-                    />
-                    <feBlend in="SourceGraphic" in2="point" />
-                </filter>
-            </defs>
-        </svg>
-        <div class="gradients-container w-full h-full [filter:_url(#point)_blur(40px)]">
-            <div class="g1"></div>
-            <div class="g2"></div>
-            <div class="g3"></div>
-            <div class="g4"></div>
-            <div class="g5"></div>
-            <div class="g6"></div>
-            <div class="g7"></div>
-            <div class="g8"></div>
-            <div class="g9"></div>
-            <div class="g10"></div>
-            <div class="g11"></div>
-            <div class="g12"></div>
-            <div class="g13"></div>
-            <div class="g14"></div>
-            <div class="g15"></div>
-            <div class="interactive" id="interactiveRef"></div>
+<div id="app">
+
+  <nav id="nav">
+    <a class="nav-name" href="#">Ryan Rana</a>
+    <ul class="nav-links">
+      <li><a href="#experience-section">Experience</a></li>
+      <li><a href="#projects-section">Projects</a></li>
+      <li><a href="#articles-section">Articles</a></li>
+      <li><a href="ryan_rana.pdf" target="_blank" rel="noopener">Resume</a></li>
+    </ul>
+  </nav>
+
+  <div id="layout">
+
+    <!-- LEFT PANEL -->
+    <div id="left">
+      <div id="content-area">
+
+      <!-- TERMINAL -->
+      <div id="terminal-wrap">
+        <div id="terminal" aria-live="polite">
+          <span class="t-line" id="tl0"></span>
+          <span class="t-line" id="tl1"></span>
+          <span class="t-line" id="tl2"></span>
+          <span class="t-line" id="tl3"></span>
+          <span class="t-line" id="tl4"></span>
+          <span class="t-line" id="tl5"></span>
+          <div class="t-hint" id="t-hint" style="opacity:0;transition:opacity 0.4s">
+            <span class="key">↵</span>
+            <button type="button" class="t-skip" id="t-skip">Skip</button>
+          </div>
         </div>
+      </div>
+
+      <!-- BIO -->
+      <div id="bio-wrap">
+        <div class="bio-intro" id="bio-intro">
+          <h1 class="bio-name" id="bio-name"></h1>
+          <div id="bio-paras"></div>
+          <p class="bio-ref-display" id="bio-ref-display" aria-live="polite"></p>
+
+          <div class="bio-links">
+            <button type="button" class="btn btn-dark" id="copy-email-btn">Copy email</button>
+
+            <!-- Phone -->
+            <a class="icon-btn" href="tel:+19088734657" title="Phone">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </a>
+
+            <!-- GitHub -->
+            <a class="icon-btn" href="https://github.com/RyanRana" target="_blank" title="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.84c.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.83-2.34 4.68-4.57 4.92.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
+            </a>
+
+            <!-- LinkedIn -->
+            <a class="icon-btn" href="https://www.linkedin.com/in/ryanrana/" target="_blank" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+            </a>
+
+            <!-- X / Twitter -->
+            <a class="icon-btn" href="https://x.com/ryanrana0" target="_blank" title="X">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-4.71-6.23-5.4 6.23H2.75l7.73-8.84L1.25 2.25H8.08l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg>
+            </a>
+
+            <!-- Medium -->
+            <a class="icon-btn" href="https://ryanranas.medium.com/" target="_blank" title="Medium">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+            </a>
+
+            <!-- Instagram -->
+            <a class="icon-btn" href="https://www.instagram.com/_ryanrana_/" target="_blank" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.2 0 3.584.012 4.85.07 3.25.148 4.77 1.69 4.918 4.919.058 1.265.07 1.645.07 4.849 0 3.205-.012 3.584-.07 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+
+            <!-- Hacker News -->
+            <a class="icon-btn" href="https://news.ycombinator.com/user?id=ryanrana" target="_blank" title="Hacker News">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 24V0h24v24H0zM6.951 5.896l4.112 7.708v5.064h1.583v-4.972l4.148-7.799h-1.749l-2.457 4.875c-.372.745-.688 1.434-.688 1.434s-.297-.708-.651-1.434L8.831 5.896H6.951z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <section class="bio-section" id="experience-section" aria-label="Experience">
+          <h2 class="bio-section-title">Experience</h2>
+          <ul class="bio-section-list" id="experience-list"></ul>
+          <button type="button" class="show-more-btn" id="experience-more">Show more</button>
+        </section>
+
+        <section class="bio-section" id="projects-section" aria-label="Projects">
+          <h2 class="bio-section-title">Projects</h2>
+          <ul class="bio-section-list" id="projects-list"></ul>
+          <button type="button" class="show-more-btn" id="projects-more">Show more</button>
+        </section>
+
+        <section class="bio-section" id="articles-section" aria-label="Articles">
+          <h2 class="bio-section-title">Articles</h2>
+          <ul class="bio-section-list" id="articles-list"></ul>
+          <button type="button" class="show-more-btn" id="articles-more">Show more</button>
+        </section>
+
+        <footer id="site-footer">
+          <p class="footer-line">&copy; 2026 Ryan Rana</p>
+          <p class="footer-line"><a href="https://github.com/RyanRana" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/ryanrana/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://ryanranas.medium.com/" target="_blank" rel="noopener">Medium</a> · <a href="mailto:ryanrana04@gmail.com">Email</a></p>
+        </footer>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /left -->
+
+  <!-- RIGHT PANEL — neural net -->
+  <div id="right">
+    <div id="nn-wrap">
+      <canvas id="nn-canvas"></canvas>
     </div>
+  </div>
 
-    <!-- Header -->
-    <header class="site-header">
-        <div class="header-content">
-            <h1 class="site-title">
-                <a href="index.html">ryanrana._</a>
-            </h1>
-            <nav class="site-nav">
-                <ul>
-                    <li><a class="page-link" href="pages/articles.html">articles</a></li>
-                    <li><a class="page-link" href="pages/expierence.html">experience</a></li>
-                    <li><a class="page-link" href="pages/projects.html">projects</a></li>
-                    <li><a class="page-link" href="ryan_rana.pdf">resume</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  </div><!-- /layout -->
+</div><!-- /app -->
 
-    <!-- Main Content -->
-    <main class="content">
-        <div class="container">
-            <div class="homepage-layout">
-                <!-- Left Column - Huge Name -->
-                <div class="name-column">
-                    <h1 class="main-name">Ryan Rana</h1>
-                </div>
+<script>
+/* ══════════════════════════
+   TERMINAL
+══════════════════════════ */
+(function () {
+  const SESSION_KEY = 'ryanrana_intro_done';
 
-                <!-- Right Column - Description -->
-                <div class="description-column">
-                    <div class="enter-reveal" id="enterReveal">
-                        <div class="enter-prompt terminal-block" id="enterPrompt">
-                            <div class="terminal-step" data-step="0">
-                                <span class="prompt-prefix">&gt;</span> <span class="t-keyword">const</span> <span class="t-var">res</span> <span class="t-punct">=</span> <span class="t-keyword">await</span> <span class="t-fn">fetch</span><span class="t-punct">(</span><span class="t-string">'/ipom/ryanrana'</span><span class="t-punct">);</span><span class="cursor" aria-hidden="true"></span>
-                            </div>
-                            <div class="terminal-output" data-step="0"><span class="t-ok">200 OK</span></div>
-                            <div class="terminal-step" data-step="1">
-                                <span class="prompt-prefix">&gt;</span> <span class="t-keyword">const</span> <span class="t-punct">{</span> <span class="t-var">name</span><span class="t-punct">,</span> <span class="t-var">superpower</span> <span class="t-punct">}</span> <span class="t-punct">=</span> <span class="t-keyword">await</span> <span class="t-var">res</span><span class="t-punct">.</span><span class="t-fn">json</span><span class="t-punct">();</span><span class="cursor" aria-hidden="true"></span>
-                            </div>
-                            <div class="terminal-output terminal-output-json" data-step="1">{ "ryan rana", "programming" }</div>
-                            <div class="terminal-step" data-step="2">
-                                <span class="prompt-prefix">&gt;</span> <span class="t-var">console</span><span class="t-punct">.</span><span class="t-fn">log</span><span class="t-punct">(</span><span class="t-string">&#96;${<span class="t-var">description</span>}&#96;</span><span class="t-punct">);</span><span class="cursor" aria-hidden="true"></span>
-                            </div>
-                            <div class="terminal-output" data-step="2"></div>
-                            <div class="terminal-step terminal-step-final" data-step="3">
-                                <span class="prompt-prefix">&gt;</span> <span class="t-comment">// press enter to render full response</span><span class="cursor" aria-hidden="true"></span>
-                            </div>
-                            <button type="button" class="enter-btn" id="enterBtn" aria-label="Press Enter">↵ Enter</button>
-                            <button type="button" class="skip-btn" id="skipBtn" aria-label="Skip" style="background: transparent; border: none; color: rgba(239, 68, 68, 0.8); padding: 0.5rem 0; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; margin-top: 0.5rem; display: block; text-align: left;">skip</button>
-                        </div>
-                        <div class="revealable-content" id="revealableContent">
-                    <p class="description">
-                        i'm interested in solving problems with agents, VLMs, robots & scalable systems. as a swe, i prioritize technical depth and high agency for improvement.
-                    </p>
-                    <br>
-                    <p class="description">
-                        i'm doing cs @ Rutgers & i'm a med swe @
-                        <a href="https://centrenhealth.com/">Centren Health</a>, prev co-founder @ <a href="https://www.joinmesh.today/">Mesh</a>. I also built a lot of other cool <a href="https://github.com/RyanRana">software</a> over many domains in the past 6 years.
-                    </p>
-                 
-                    <br>
-                    <p class="description">
-                       when Claude can't debug my slop, i like to <a href="https://ryanranas.medium.com/">write</a>, ski, <a href="pages/wood.html">craft</a> & eat Chipotle. i'm always seeking geniune collobaration and connection.
-                    </p>
-                    <br>
-                    <div class="social-icons">
-                        <a href="mailto:ryanrana04@gmail.com" class="social-icon" title="ryanrana04@gmail.com" id="emailIcon">
-                            <i class="fas fa-envelope" id="emailIconInner"></i>
-                        </a>
-                        <a href="tel:+19088734657" class="social-icon" title="Call">
-                            <i class="fas fa-phone"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/ryanrana/" target="_blank" rel="noopener noreferrer" class="social-icon" title="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://github.com/RyanRana" target="_blank" rel="noopener noreferrer" class="social-icon" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://ryanranas.medium.com/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Medium">
-                            <i class="fab fa-medium"></i>
-                        </a>
-                        <a href="https://x.com/ryanrana0" target="_blank" rel="noopener noreferrer" class="social-icon social-icon-svg" title="X (Twitter)">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                        <a href="https://news.ycombinator.com/user?id=ryanrana" target="_blank" rel="noopener noreferrer" class="social-icon" title="Hacker News">
-                            <i class="fa-brands fa-y-combinator"></i>
-                        </a>
-                        <a href="https://www.instagram.com/_ryanrana_/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+  const LINES = [
+    { id: 'tl0', text: "> const res = await fetch('/api/ryanrana');", cls: '' },
+    { id: 'tl1', text: '200 OK', cls: 't-ok' },
+    { id: 'tl2', text: '> const { name, superpower } = await res.json();', cls: '' },
+    { id: 'tl3', text: '{ name: "ryan rana",  superpower: "programming" }', cls: 't-gray' },
+    { id: 'tl4', text: "> const { bio } = await fetch('/api/ryanrana').then(r => r.json());", cls: '' },
+    { id: 'tl5', text: '"i pip installed pygame in 2020; now i\'m interested in solving interdisciplinary problems..."', cls: 't-gray' },
+  ];
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 Ryan Rana</p>
-        </div>
-    </footer>
+  let step = 0;
+  let typing = false;
+  let revealed = false;
 
-    <!-- Randomize Blob Colors, Positions, and Sizes -->
-    <script>
-        (() => {
-            // Tropical Sunrise - gold, tangerine, sky blue, seafoam, arctic white
-            const colorPalette = [
-                '255, 159, 28',   // Amber Glow
-                '255, 191, 105',  // Honey Bronze
-                '255, 255, 255',  // White
-                '203, 243, 240',  // Frozen Water
-                '46, 196, 182',   // Light Sea Green
-            ];
+  const cur = document.createElement('span');
+  cur.className = 'cursor';
 
-            // Function to get random color from palette
-            function paletteColor() {
-                return colorPalette[Math.floor(Math.random() * colorPalette.length)];
-            }
+  function typeLine(el, text, cls, cb) {
+    if (cls) el.className = 't-line ' + cls;
+    if (cur.parentNode) cur.parentNode.removeChild(cur);
+    el.appendChild(cur);
+    if (!text) { cb && cb(); return; }
+    let i = 0;
+    const iv = setInterval(() => {
+      cur.before(document.createTextNode(text[i++]));
+      if (i >= text.length) { clearInterval(iv); cb && cb(); }
+    }, 24);
+  }
 
-            // Function to generate random size between min and max percentage
-            function randomSize(min = 60, max = 120) {
-                return Math.floor(Math.random() * (max - min + 1) + min);
-            }
+  function runSequence(resultIdx, nextPromptIdx, then) {
+    const result = LINES[resultIdx];
+    const resultEl = document.getElementById(result.id);
+    typeLine(resultEl, result.text, result.cls, () => {
+      if (nextPromptIdx == null) { then && then(); return; }
+      const next = LINES[nextPromptIdx];
+      typeLine(document.getElementById(next.id), next.text, next.cls, () => { typing = false; then && then(); });
+    });
+  }
 
-            // Function to generate random position across full screen
-            function randomFullScreenPosition() {
-                return Math.floor(Math.random() * 100);
-            }
+  function hideSkip() {
+    const s = document.getElementById('t-skip');
+    if (s) s.classList.add('hide');
+  }
 
-            // Randomize gradient wrapper colors and sizes
-            const gradientWrapper = document.getElementById('gradientWrapper');
-            if (gradientWrapper) {
-                gradientWrapper.style.setProperty('--color1', paletteColor());
-                gradientWrapper.style.setProperty('--color2', paletteColor());
-                gradientWrapper.style.setProperty('--color3', paletteColor());
-                gradientWrapper.style.setProperty('--color4', paletteColor());
-                gradientWrapper.style.setProperty('--color5', paletteColor());
-                gradientWrapper.style.setProperty('--color-interactive', paletteColor());
-                gradientWrapper.style.setProperty('--circle-size', `${randomSize()}%`);
-            }
+  function advance() {
+    if (typing || revealed) return;
+    hideSkip();
+    typing = true;
+    if (window.__nnRearrange) window.__nnRearrange();
 
-            // Randomize individual blob positions and sizes
-            const blobs = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11', 'g12', 'g13', 'g14', 'g15'];
-            blobs.forEach(blobClass => {
-                const blob = document.querySelector(`.${blobClass}`);
-                if (blob) {
-                    const size = randomSize(80, 150);
-                    blob.style.width = `${size}%`;
-                    blob.style.height = `${size}%`;
-                    
-                    // Position blobs throughout the full screen (centering done in keyframes)
-                    blob.style.top = `${randomFullScreenPosition()}%`;
-                    blob.style.left = `${randomFullScreenPosition()}%`;
-                    
-                    // Assign random color from palette
-                    const color = paletteColor();
-                    blob.style.background = `radial-gradient(circle at center, rgba(${color}, 0.5) 0, rgba(${color}, 0) 50%)`;
-                    blob.style.mixBlendMode = 'hard-light';
-                    blob.style.position = 'absolute';
-                    
-                    // Random animation with varied speeds
-                    const animations = [
-                        'moveVertical 30s ease infinite',
-                        'moveInCircle 25s ease infinite',
-                        'moveHorizontal 35s ease infinite',
-                        'moveVertical 40s ease infinite',
-                        'moveInCircle 20s reverse infinite'
-                    ];
-                    blob.style.animation = animations[Math.floor(Math.random() * animations.length)];
-                }
-            });
-        })();
-    </script>
+    if (step === 0) {
+      // Show 200 OK, then show next line (name/superpower prompt)
+      runSequence(1, 2, () => { step = 1; });
+    } else if (step === 1) {
+      // Show name/superpower result, then show next line (bio prompt)
+      runSequence(3, 4, () => { step = 2; });
+    } else {
+      // Reveal everything (skip typing bio result)
+      typing = false;
+      reveal();
+    }
+  }
 
-    <!-- Morphing Gradient Mouse Interaction -->
-    <script>
-        (() => {
-            const interactiveRef = document.getElementById('interactiveRef');
-            if (!interactiveRef) return;
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (_) {}
+    if (cur.parentNode) cur.parentNode.removeChild(cur);
+    document.getElementById('terminal-wrap').classList.add('hide');
+    setTimeout(function () {
+      document.getElementById('nav').classList.add('show');
+      document.getElementById('bio-wrap').classList.add('show');
+    }, 260);
+  }
 
-            let currentPos = { x: 0, y: 0 };
-            let mousePos = { x: 0, y: 0 };
+  // Skip terminal if user already completed intro this session
+  try {
+    if (sessionStorage.getItem(SESSION_KEY)) {
+      reveal();
+      return;
+    }
+  } catch (_) {}
 
-            function updateMousePosition(e) {
-                mousePos.x = e.clientX;
-                mousePos.y = e.clientY;
-            }
+  // Type first prompt on load; show Enter + Skip hint when ready
+  setTimeout(function () {
+    typing = true;
+    typeLine(document.getElementById('tl0'), LINES[0].text, LINES[0].cls, function () {
+      typing = false;
+      var hint = document.getElementById('t-hint');
+      if (hint) hint.style.opacity = '1';
+    });
+  }, 400);
 
-            function animate() {
-                // Smooth mouse following with easing
-                currentPos.x += (mousePos.x - currentPos.x) / 20;
-                currentPos.y += (mousePos.y - currentPos.y) / 20;
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+      if (revealed) { if (window.__nnRearrange) window.__nnRearrange(); }
+      else advance();
+    }
+    if (e.code === 'Space') { e.preventDefault(); if (window.__nnRearrange) window.__nnRearrange(); }
+  });
+  document.getElementById('left').addEventListener('click', () => {
+    if (!typing) advance();
+  });
+  const skipBtn = document.getElementById('t-skip');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (revealed) return;
+      hideSkip();
+      reveal();
+    });
+  }
+})();
 
-                interactiveRef.style.transform = `translate(${Math.round(currentPos.x)}px, ${Math.round(currentPos.y)}px)`;
-
-                requestAnimationFrame(animate);
-            }
-
-            document.addEventListener('mousemove', updateMousePosition);
-            requestAnimationFrame(animate);
-        })();
-
-        // Press Enter to reveal content (multi-step API-style)
-        const enterReveal = document.getElementById('enterReveal');
-        const enterPrompt = document.getElementById('enterPrompt');
-        const enterBtn = document.getElementById('enterBtn');
-        let terminalStep = 0;
-        const maxStep = 4;
-
-        function setStep(step) {
-            if (!enterPrompt) return;
-            document.querySelectorAll('.terminal-step, .terminal-output').forEach(el => {
-                const s = parseInt(el.getAttribute('data-step'), 10);
-                el.classList.toggle('visible', s <= step && (el.classList.contains('terminal-output') ? s < step : true));
-            });
-            document.querySelectorAll('.terminal-step').forEach(el => {
-                const s = parseInt(el.getAttribute('data-step'), 10);
-                el.classList.toggle('has-cursor', s === step);
-            });
-            enterBtn.classList.toggle('visible', true);
-        }
-
-        function advanceTerminal() {
-            if (enterReveal.classList.contains('revealed')) return;
-            if (terminalStep < maxStep - 1) {
-                terminalStep++;
-                setStep(terminalStep);
-                // Hide skip button after first enter press
-                const skipBtn = document.getElementById('skipBtn');
-                if (skipBtn) skipBtn.style.display = 'none';
-            } else {
-                enterReveal.classList.add('revealed');
-                try { sessionStorage.setItem('enterRevealed', '1'); } catch (e) {}
-            }
-        }
-
-        if (enterReveal && sessionStorage.getItem('enterRevealed') === '1') {
-            enterReveal.classList.add('revealed');
-        } else if (enterPrompt) {
-            setStep(0);
-        }
-
-        if (enterBtn) enterBtn.addEventListener('click', advanceTerminal);
-        
-        // Skip button functionality
-        const skipBtn = document.getElementById('skipBtn');
-        if (skipBtn) {
-            skipBtn.addEventListener('click', function() {
-                enterReveal.classList.add('revealed');
-                try { sessionStorage.setItem('enterRevealed', '1'); } catch (e) {}
-            });
-            skipBtn.addEventListener('mouseenter', function() {
-                this.style.color = 'rgba(239, 68, 68, 1)';
-            });
-            skipBtn.addEventListener('mouseleave', function() {
-                this.style.color = 'rgba(239, 68, 68, 0.8)';
-            });
-        }
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && enterReveal && !enterReveal.classList.contains('revealed')) advanceTerminal();
+/* Bio — load from data/bio.json and render name + paragraphs + refs */
+(function () {
+  const codeStyle = 'font-size:0.88em;letter-spacing:-0.02em';
+  function esc(s) {
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+  function renderPart(part, refs) {
+    if (part.text) return [document.createTextNode(part.text)];
+    if (part.code) {
+      var code = document.createElement('code');
+      code.style.cssText = codeStyle;
+      code.textContent = part.code;
+      return [code];
+    }
+    if (part.link) {
+      var a = document.createElement('a');
+      a.href = part.link.href;
+      a.textContent = part.link.text;
+      if (part.link.href.indexOf('http') === 0) {
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+      return [a];
+    }
+    if (part.ref != null && refs) {
+      var num = String(part.ref);
+      var tip = refs[num] || '';
+      var span = document.createElement('span');
+      span.className = 'fn';
+      span.appendChild(document.createTextNode(num));
+      var tipSpan = document.createElement('span');
+      tipSpan.className = 'fn-tip';
+      tipSpan.textContent = tip;
+      span.appendChild(tipSpan);
+      return [span];
+    }
+    return [];
+  }
+  fetch('data/bio.json')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .catch(function () { return null; })
+    .then(function (data) {
+      if (!data) return;
+      var nameEl = document.getElementById('bio-name');
+      var parasEl = document.getElementById('bio-paras');
+      if (nameEl) nameEl.textContent = data.name || '';
+      if (!parasEl || !data.paragraphs || !data.references) return;
+      var refs = data.references;
+      data.paragraphs.forEach(function (para) {
+        if (!para.parts) return;
+        var p = document.createElement('p');
+        p.className = 'bio-para';
+        para.parts.forEach(function (part) {
+          renderPart(part, refs).forEach(function (node) { p.appendChild(node); });
         });
+        parasEl.appendChild(p);
+      });
+    });
+})();
 
-        // Email icon with copy to clipboard functionality
-        const emailIcon = document.getElementById('emailIcon');
-        const emailIconInner = document.getElementById('emailIconInner');
-        
-        if (emailIcon && emailIconInner) {
-            emailIcon.addEventListener('click', function(e) {
-                e.preventDefault();
-                const email = 'ryanrana04@gmail.com';
-                
-                // Try to copy to clipboard
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(email).then(() => {
-                        // Change icon to checkmark
-                        emailIconInner.className = 'fas fa-check';
-                        
-                        // Revert back to envelope after 2 seconds
-                        setTimeout(() => {
-                            emailIconInner.className = 'fas fa-envelope';
-                        }, 2000);
-                    }).catch(() => {
-                        // Fallback to mailto if clipboard fails
-                        window.location.href = 'mailto:' + email;
-                    });
-                } else {
-                    // Fallback to mailto for older browsers
-                    window.location.href = 'mailto:' + email;
-                }
-            });
-        }
-    </script>
-    
-    <!-- Content Loader Scripts -->
-    <script src="scripts/content-loader.js"></script>
-    <script src="scripts/render-home.js"></script>
-    
-    <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
-    <script defer src="/_vercel/insights/script.js"></script>
+/* Copy email + footnote ref display (event delegation for dynamic .fn) */
+(function () {
+  const email = 'ryanrana04@gmail.com';
+  const btn = document.getElementById('copy-email-btn');
+  const refDisplay = document.getElementById('bio-ref-display');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(email).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy email'; }, 1800);
+      });
+    });
+  }
+  var intro = document.getElementById('bio-intro');
+  if (intro && refDisplay) {
+    intro.addEventListener('mouseenter', function (e) {
+      var fn = e.target.closest && e.target.closest('.fn');
+      if (!fn) return;
+      var tip = fn.querySelector('.fn-tip');
+      if (!tip) return;
+      var numNode = Array.from(fn.childNodes).find(function (n) { return n.nodeType === 3; });
+      var num = numNode ? numNode.textContent.trim() : '';
+      refDisplay.textContent = (num ? num + '. ' : '') + tip.textContent.trim();
+    }, true);
+  }
+})();
+
+/* Nav: scroll to section when Experience / Projects / Articles clicked */
+(function () {
+  var wrap = document.getElementById('bio-wrap');
+  var links = document.querySelectorAll('.nav-links a[href^="#"]');
+  links.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if (el && wrap) {
+        e.preventDefault();
+        wrap.scrollTo({ top: el.offsetTop - 24, behavior: 'smooth' });
+      }
+    });
+  });
+})();
+
+/* When scrolled to a new section, rearrange the neural net */
+(function () {
+  var wrap = document.getElementById('bio-wrap');
+  if (!wrap) return;
+  var panels = [
+    document.getElementById('bio-intro'),
+    document.getElementById('experience-section'),
+    document.getElementById('projects-section'),
+    document.getElementById('articles-section')
+  ].filter(Boolean);
+  var lastActive = null;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.intersectionRatio < 0.4) return;
+      var id = entry.target.id || 'bio-intro';
+      if (lastActive !== null && lastActive !== id && typeof window.__nnRearrange === 'function') {
+        window.__nnRearrange();
+      }
+      lastActive = id;
+    });
+  }, { root: wrap, threshold: [0.25, 0.4, 0.5, 0.75, 1] });
+  panels.forEach(function (el) { if (el) observer.observe(el); });
+})();
+
+/* Articles, Experience, Projects — load JSON, show 5 at a time */
+(function () {
+  const PAGE = 5;
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function parseYear(dateStr) {
+    if (!dateStr) return 0;
+    const m = dateStr.match(/\b(19|20)\d{2}\b/);
+    return m ? parseInt(m[0], 10) : 0;
+  }
+
+  function renderArticleItem(item, list) {
+    const hasExcerpt = item.excerpt && item.excerpt.length > 0;
+    const titleRow = '<div class="item-title-row">' +
+      '<div class="item-title"><a href="' + (item.url || '#') + '" target="_blank" rel="noopener">' + escapeHtml(item.title) + '</a></div>' +
+      (hasExcerpt ? '<button type="button" class="item-toggle" aria-label="Show excerpt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>' : '') +
+      '</div>';
+    const meta = item.date ? '<div class="item-meta">' + escapeHtml(item.date) + '</div>' : '';
+    const excerptDiv = hasExcerpt ? '<div class="item-desc article-excerpt">' + escapeHtml(item.excerpt) + '</div>' : '';
+    const li = document.createElement('li');
+    li.innerHTML = titleRow + meta + excerptDiv;
+    if (hasExcerpt) {
+      const toggle = li.querySelector('.item-toggle');
+      const excerpt = li.querySelector('.article-excerpt');
+      toggle.addEventListener('click', function () {
+        toggle.classList.toggle('open');
+        excerpt.classList.toggle('open');
+      });
+    }
+    list.appendChild(li);
+  }
+
+  function setupSection(listId, moreBtnId, data) {
+    const list = document.getElementById(listId);
+    const btn = document.getElementById(moreBtnId);
+    if (!list || !btn || !data || !data.length) {
+      if (btn) btn.classList.add('hidden');
+      return;
+    }
+    var sortedData = data.slice();
+    if (listId === 'articles-list') {
+      sortedData.sort(function (a, b) { return parseYear(b.date) - parseYear(a.date) || 0; });
+    }
+    var shown = Math.min(PAGE, sortedData.length);
+    function update() {
+      var toShow = sortedData.slice(0, shown);
+      list.innerHTML = '';
+      if (listId === 'articles-list') {
+        var byYear = {};
+        toShow.forEach(function (item) {
+          var y = parseYear(item.date) || 'Other';
+          if (!byYear[y]) byYear[y] = [];
+          byYear[y].push(item);
+        });
+        var years = Object.keys(byYear).sort(function (a, b) { return Number(b) - Number(a); });
+        years.forEach(function (year) {
+          var yearEl = document.createElement('div');
+          yearEl.className = 'articles-year';
+          yearEl.textContent = year;
+          list.appendChild(yearEl);
+          byYear[year].forEach(function (item) { renderArticleItem(item, list); });
+        });
+      } else {
+        toShow.forEach(function (item) {
+          var li = document.createElement('li');
+          if (listId === 'experience-list') {
+            var meta = [item.company, item.date].filter(Boolean).join(' · ');
+            li.innerHTML = '<div class="item-title">' + escapeHtml(item.title) + '</div>' +
+              (meta ? '<div class="item-meta">' + escapeHtml(meta) + '</div>' : '') +
+              (item.description ? '<div class="item-desc">' + escapeHtml(item.description) + '</div>' : '');
+          } else {
+            var skillsHtml = '';
+            if (item.skills && item.skills.length) {
+              skillsHtml = '<div class="item-skills">' + item.skills.map(function (s) {
+                return '<span class="project-skill">' + escapeHtml(s) + '</span>';
+              }).join('') + '</div>';
+            }
+            var sep = item.description ? ' <span class="project-sep">—</span> ' : '';
+            li.innerHTML = '<span class="item-title"><a href="' + (item.url || '#') + '" target="_blank" rel="noopener">' + escapeHtml(item.title) + '</a></span>' +
+              (item.description ? sep + '<span class="item-desc">' + escapeHtml(item.description) + '</span>' : '') + (skillsHtml ? ' ' + skillsHtml : '');
+          }
+          list.appendChild(li);
+        });
+      }
+      if (shown >= sortedData.length) btn.classList.add('hidden');
+      else { btn.classList.remove('hidden'); btn.textContent = 'Show more'; }
+    }
+    btn.addEventListener('click', function () {
+      shown = Math.min(shown + PAGE, sortedData.length);
+      update();
+    });
+    update();
+  }
+
+  const DATA_DIR = 'data/';
+  function loadJson(path) {
+    return fetch(DATA_DIR + path).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
+  }
+  Promise.all([
+    loadJson('articles.json'),
+    loadJson('experience.json'),
+    loadJson('projects.json')
+  ]).then(function (results) {
+    var articles = Array.isArray(results[0]) ? results[0] : [];
+    var experience = Array.isArray(results[1]) ? results[1] : [];
+    var projects = Array.isArray(results[2]) ? results[2] : [];
+    setupSection('articles-list', 'articles-more', articles);
+    setupSection('experience-list', 'experience-more', experience);
+    setupSection('projects-list', 'projects-more', projects);
+  });
+})();
+
+/* ══════════════════════════
+   NEURAL NET — responsive + high-DPI
+══════════════════════════ */
+(function () {
+  const wrap   = document.getElementById('nn-wrap');
+  const canvas = document.getElementById('nn-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  let W = 0, H = 0;
+  let mouse = { x: -999, y: -999 };
+
+  const PULL = 0.07, SPRING = 0.05, DRAG = 0.82, MAX_SPD = 5, FADE_MS = 500;
+
+  // Complexity by viewport width (right panel / container width)
+  function getConfig(width) {
+    if (width < 520)  return { N: 20,  START: [3, 5, 5, 5, 2],              R: 3.5, MOUSE_R: 60, maxH: 6 };
+    if (width < 900)  return { N: 36,  START: [3, 6, 8, 7, 6, 4, 2],       R: 4.5, MOUSE_R: 90, maxH: 10 };
+    if (width < 1400) return { N: 48,  START: [4, 8, 10, 12, 8, 4, 2],     R: 4,   MOUSE_R: 100, maxH: 12 };
+    if (width < 2000) return { N: 64,  START: [4, 10, 12, 14, 10, 8, 4, 2], R: 3.5, MOUSE_R: 110, maxH: 14 };
+    return { N: 80, START: [4, 10, 12, 14, 14, 12, 8, 4, 2], R: 3, MOUSE_R: 120, maxH: 16 };
+  }
+
+  let config = getConfig(400);
+  let nodes = [];
+  let targets = [];
+  let prevEdges = [], nextEdges = [];
+  let fade = 1;
+  let usedKeys = new Set();
+
+  function randSizes() {
+    const { N, maxH } = config;
+    const inOut = 3 + 2;
+    let rem = N - inOut;
+    for (let a = 0; a < 400; a++) {
+      const nl = 3 + Math.floor(Math.random() * 5);
+      let left = rem;
+      const sizes = [];
+      for (let L = 0; L < nl - 2; L++) {
+        const last = L === nl - 3;
+        const hi = Math.min(maxH, left - (nl - 3 - L));
+        if (hi < 2) { left = -1; break; }
+        const n = last ? left : 2 + Math.floor(Math.random() * (hi - 1));
+        sizes.push(n);
+        left -= n;
+      }
+      if (left !== 0) continue;
+      const ls = [3, ...sizes, 2];
+      const key = ls.join(',');
+      if (ls.reduce((a,b)=>a+b,0) === N && !usedKeys.has(key)) {
+        usedKeys.add(key);
+        return ls;
+      }
+    }
+    usedKeys.clear();
+    return config.START.slice();
+  }
+
+  function buildLayout(ls) {
+    const pos = [], edg = [];
+    const mX = W * 0.09, mY = H * 0.07;
+    const uW = W - mX * 2;
+    const nl = ls.length;
+    let idx = 0;
+    const starts = [];
+    const maxGap = config.N <= 24 ? 46 : config.N <= 36 ? 38 : 32;
+    for (let L = 0; L < nl; L++) {
+      const cnt = ls[L];
+      starts.push(idx);
+      const bx = mX + (L / (nl - 1)) * uW;
+      const gap = Math.min((H - mY * 2) / (cnt + 1), maxGap);
+      const sy  = H / 2 - (gap * (cnt - 1)) / 2;
+      for (let i = 0; i < cnt; i++) {
+        pos.push({ x: bx, y: sy + i * gap });
+        idx++;
+      }
+    }
+    for (let L = 0; L < nl - 1; L++)
+      for (let i = 0; i < ls[L]; i++)
+        for (let j = 0; j < ls[L+1]; j++)
+          edg.push({ from: starts[L]+i, to: starts[L+1]+j });
+    return { pos, edg };
+  }
+
+  function apply(ls, instant) {
+    const { pos, edg } = buildLayout(ls);
+    targets = pos;
+    if (instant) { prevEdges = edg; nextEdges = edg; fade = 1; }
+    else         { prevEdges = nextEdges.length ? nextEdges : edg; nextEdges = edg; fade = 0; }
+  }
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    W = wrap.offsetWidth;
+    H = wrap.offsetHeight;
+    const newConfig = getConfig(W);
+    const prevN = config.N;
+    config = newConfig;
+
+    canvas.width  = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    if (nodes.length !== config.N) {
+      nodes = [];
+      for (let i = 0; i < config.N; i++)
+        nodes.push({ x: 0, y: 0, vx: 0, vy: 0 });
+      targets = [];
+      prevEdges = [];
+      nextEdges = [];
+      usedKeys = new Set();
+    }
+
+    apply(config.START, true);
+    for (let i = 0; i < config.N; i++) {
+      nodes[i].x = targets[i].x;
+      nodes[i].y = targets[i].y;
+      nodes[i].vx = 0;
+      nodes[i].vy = 0;
+    }
+  }
+
+  function tick(dt) {
+    const N = config.N, R = config.MOUSE_R;
+    if (fade < 1) fade = Math.min(1, fade + dt / FADE_MS);
+    const dn = Math.min(dt / 16, 2);
+    for (let i = 0; i < N; i++) {
+      const n = nodes[i], t = targets[i];
+      n.vx += (t.x - n.x) * SPRING * dn;
+      n.vy += (t.y - n.y) * SPRING * dn;
+      const dx = mouse.x - n.x, dy = mouse.y - n.y;
+      const d  = Math.hypot(dx, dy) || 0.001;
+      if (d < R) {
+        const f = PULL * (1 - d / R) * dn;
+        n.vx += dx / d * f; n.vy += dy / d * f;
+      }
+      n.vx *= DRAG; n.vy *= DRAG;
+      const spd = Math.hypot(n.vx, n.vy);
+      if (spd > MAX_SPD) { n.vx = n.vx/spd*MAX_SPD; n.vy = n.vy/spd*MAX_SPD; }
+      n.x += n.vx; n.y += n.vy;
+    }
+  }
+
+  function drawEdges(list, alpha) {
+    if (!alpha || !list.length) return;
+    const N = config.N;
+    const lineW = N <= 24 ? 0.6 : N <= 36 ? 0.5 : 0.4;
+    const baseAlpha = N <= 24 ? 0.28 : N <= 48 ? 0.22 : 0.16;
+    ctx.strokeStyle = `rgba(0,0,0,${(alpha * baseAlpha).toFixed(3)})`;
+    ctx.lineWidth = lineW;
+    ctx.beginPath();
+    for (const e of list) {
+      const a = nodes[e.from], b = nodes[e.to];
+      ctx.moveTo(Math.round(a.x), Math.round(a.y));
+      ctx.lineTo(Math.round(b.x), Math.round(b.y));
+    }
+    ctx.stroke();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    drawEdges(prevEdges, 1 - fade);
+    drawEdges(nextEdges, fade);
+    const R = config.R;
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = 'rgba(0,0,0,0.78)';
+    ctx.lineWidth = 1;
+    for (const n of nodes) {
+      ctx.beginPath();
+      ctx.arc(Math.round(n.x), Math.round(n.y), R, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+  }
+
+  let last = performance.now();
+  function loop(now) {
+    tick(now - last); last = now;
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    if (r.width) {
+      mouse.x = (e.clientX - r.left) * (W / r.width);
+      mouse.y = (e.clientY - r.top)  * (H / r.height);
+    }
+  });
+  canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+
+  window.__nnRearrange = () => apply(randSizes(), false);
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>

@@ -141,7 +141,7 @@
     "title": "The Simplest Guide to Logistic Regression",
     "date": "Aug 5, 2021",
     "url": "https://theryanrana.medium.com/the-simplest-guide-to-logistic-regression-fd5d912fa181",
-    "excerpt": "Logistic Regression is one of the best and easiest machine learning models that exist. In this article, we will cover not only how a Logistic Regression(LR) works but also code one with python using scikit-learn."
+    "excerpt": "Logistic Regression is one of the best and easiest machine learning models that exist. In this article, we will cover not only how a Logistic Regression(LR) works but also how to build one with python using scikit-learn."
   },
   {
     "title": "The Simplest Guide to Linear Regression",

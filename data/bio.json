@@ -1,0 +1,75 @@
+{
+  "name": "Ryan Rana",
+  "paragraphs": [
+    {
+      "parts": [
+        { "text": "i " },
+        { "code": "pip install" },
+        { "text": "ed pygame" },
+        { "ref": 1 },
+        { "text": " in 2020; now i'm interested in solving interdisciplinary problems with multi-modal transformers" },
+        { "ref": 2 },
+        { "text": ", custom mcps" },
+        { "ref": 3 },
+        { "text": ", robots" },
+        { "ref": 4 },
+        { "text": " & scalable systems" },
+        { "ref": 5 },
+        { "text": "." }
+      ]
+    },
+    {
+      "parts": [
+        { "text": "i'm studying cs @ Rutgers" },
+        { "ref": 6 },
+        { "text": " & sweing @ " },
+        { "link": { "href": "https://www.3e8robotics.com/", "text": "3E8 Robotics" } },
+        { "ref": 7 },
+        { "text": ". I previously sweied @ " },
+        { "link": { "href": "https://centrenhealth.com/", "text": "Centren Health" } },
+        { "ref": 8 },
+        { "text": " & founded " },
+        { "link": { "href": "https://www.joinmesh.today/", "text": "Mesh" } },
+        { "ref": 9 },
+        { "text": ". I've built a lot of other cool " },
+        { "link": { "href": "https://github.com/RyanRana", "text": "software" } },
+        { "ref": 10 },
+        { "text": " over the past 6 years." }
+      ]
+    },
+    {
+      "parts": [
+        { "text": "when Claude" },
+        { "ref": 11 },
+        { "text": " can't debug my slop, i like to " },
+        { "link": { "href": "https://ryanranas.medium.com/", "text": "write" } },
+        { "ref": 12 },
+        { "text": ", ski" },
+        { "ref": 13 },
+        { "text": ", " },
+        { "link": { "href": "pages/wood.html", "text": "craft" } },
+        { "ref": 14 },
+        { "text": " & eat Chipotle" },
+        { "ref": 15 },
+        { "text": ". always seeking genuine collaboration and connection." }
+      ]
+    }
+  ],
+  "references": {
+    "1": "Started with Tkinter turtle, then PyGame, then HTML5 Canvas. Returned to Python with much more ambitious ideas in AI.",
+    "2": "Built VLMs, MLMs, SLMs. Improved LLMs. Really deep diving in VLMs right now.",
+    "3": "Multi-step agent systems with memory, iterative feedback, RAG & domain-specific constraints — e.g. Osler for hospitalists, Aura for enterprise.",
+    "4": "Studying deformables, not just sim. Also doing generative serial chains as a side project.",
+    "5": "Must-know skill. I practice this in all work.",
+    "6": "2nd year. Most skills still come from outside the classroom.",
+    "7": "Autonomous multi-floor delivery robots; elevator navigation, payload delivery. Backed by Founders Inc., based in SF.",
+    "8": "Clinical transformers, PK/PD modeling, S3-backed pipelines. NYC.",
+    "9": "Collaborative AI internal knowledge platform; reached 600 users over summer 2025.",
+    "10": "Never took a tutorial. What I've made is what I know.",
+    "11": "ORCHESTRATION.",
+    "12": "Updating irregularly since summer 2021 — AI (tech & philosophy), programming & life.",
+    "13": "Completely offline. Mainly Camelback in the Poconos.",
+    "14": "There's something satisfying about building things with your own hands.",
+    "15": "White rice, black beans, chicken al pastor ×2, tomatillo red chili, roasted chili corn, cheese, light sour cream."
+  }
+}
