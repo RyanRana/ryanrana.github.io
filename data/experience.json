@@ -3,49 +3,49 @@
     "title": "Embodied AI Engineer",
     "company": "3E8 Robotics",
     "date": "Feb 2026 - Present",
-    "location": "",
+    "location": "San Francisco, CA",
     "description": "vision, navigation, horizon planning"
   },
   {
     "title": "Software Engineer",
     "company": "Centren Health",
     "date": "Nov 2025 - Present",
-    "location": "New York, New York, United States · Hybrid",
+    "location": "New York City, NY",
     "description": "Digital twins for clinical applications."
   },
   {
-    "title": "Software Engineer Intern",
+    "title": "Software Engineer",
     "company": "Undergraduation.com",
     "date": "Oct 2025 - Nov 2025",
-    "location": "Boston, Massachusetts, United States · Hybrid",
+    "location": "Boston, MA",
     "description": "New features and infrastructure development."
   },
   {
     "title": "CTO",
     "company": "Mesh",
     "date": "Jun 2025 - Sep 2025",
-    "location": "New York, New York, United States",
+    "location": "New York City, NY",
     "description": "Led technical development and grew platform to 600 users."
   },
   {
-    "title": "Possibilities Summit",
+    "title": "Possibilities Summit Intern",
     "company": "Goldman Sachs",
     "date": "Jan 2025 - Jun 2025",
     "location": "",
     "description": "Selected from ~15% acceptance rate out of 8,000 applicants."
   },
   {
-    "title": "Co President",
+    "title": "Co-President",
     "company": "HillsHacks",
     "date": "Sep 2021 - Feb 2024",
-    "location": "Warren, New Jersey, United States",
+    "location": "Warren, NJ",
     "description": "Organized hackathon with 120+ attendees annually and led 4 workshops."
   },
   {
     "title": "Software Engineer",
     "company": "Populus Fantasy",
     "date": "Jul 2023 - Dec 2023",
-    "location": "Austin, Texas, United States · Hybrid",
+    "location": "Austin, TX",
     "description": "UI/UX development and deployment for platform with 4,500 users."
   },
   {
@@ -73,21 +73,21 @@
     "title": "Software Engineer Intern",
     "company": "Datanexxt",
     "date": "May 2022 - Sep 2022",
-    "location": "New York City Metropolitan Area",
+   "location": "New York City, NY",
     "description": "Cloud migration solutions and infrastructure development."
   },
   {
     "title": "Instructor",
     "company": "Code Ninjas",
     "date": "Jun 2021",
-    "location": "Greenbrook, New Jersey · On-site",
+    "location": "Greenbrook, NJ",
     "description": "Python and web development instruction."
   },
   {
     "title": "Lead Instructor",
     "company": "Bricks 4 Kidz",
     "date": "Jun 2019 - Jun 2021",
-    "location": "Clark, New Jersey, United States · On-site",
+    "location": "Clark, NJ",
     "description": "Python programming and EV3 robotics instruction."
   }
 ]
