@@ -8,7 +8,7 @@
   {
     "title": "Minecraft Circuits",
     "url": "https://github.com/RyanRana/minecraft-circuts",
-    "description": "Verilog or netlist → Minecraft redstone layouts. LLM-friendly, design only, no game connection.",
+    "description": "llm --> Verilog or netlist → Minecraft redstone layouts.",
     "skills": ["JavaScript", "Verilog", "redstone", "LLM", "Node.js"]
   },
   {
