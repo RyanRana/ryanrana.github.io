@@ -630,11 +630,11 @@
   const SESSION_KEY = 'ryanrana_intro_done';
 
   const LINES = [
-    { id: 'tl0', text: '>>> r = requests.get("/user").json()', cls: '' },
+    { id: 'tl0', text: '>>> curl -s -o /tmp/ryan.json -w "%{http_code}"', cls: '' },
     { id: 'tl1', text: '200 OK', cls: 't-ok' },
-    { id: 'tl2', text: '>>> print(r["name"], r.get("superpower"))', cls: '' },
-    { id: 'tl3', text: 'ryan rana programming', cls: 't-gray' },
-    { id: 'tl4', text: '>>> print(open("bio.txt").read())', cls: '' },
+    { id: 'tl2', text: '>>> jq -r '"\(.name) \(.superpower)"'', cls: '' },
+    { id: 'tl3', text: 'ryan rana, building', cls: 't-gray' },
+    { id: 'tl4', text: '>>> cat bio.txt', cls: '' },
     { id: 'tl5', text: '', cls: '' },
   ];
 
