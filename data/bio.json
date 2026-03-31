@@ -7,24 +7,26 @@
         { "code": "pip install" },
         { "text": "ed pygame" },
         { "ref": 1 },
-        { "text": " in 2020; now i'm interested in solving hard problems with multi-modal transformers" },
+        { "text": " in 2020; now i'm interested in solving hard problems with multi-modal reasoning" },
         { "ref": 2 },
-        { "text": ", custom mcps" },
+        { "text": ", custom MCPs" },
         { "ref": 3 },
         { "text": ", robots" },
         { "ref": 4 },
         { "text": " & scalable systems" },
         { "ref": 5 },
-        { "text": ", no matter the project space." }
+        { "text": ", no matter the product space." }
       ]
     },
     {
       "parts": [
         { "text": "i'm studying cs @ Rutgers" },
         { "ref": 6 },
-        { "text": " & working on vision @ " },
+        { "text": " & SWEing @ " },
         { "link": { "href": "https://www.3e8robotics.com/", "text": "3E8 Robotics" } },
         { "ref": 7 },
+        { "text": ". i am a build leader @ " },
+        { "link": { "href": "https://www.rutgers.network/", "text": "rutgers.network" } },
         { "text": ". i previously worked on clinical agents @ " },
         { "link": { "href": "https://centrenhealth.com/", "text": "Centren Health" } },
         { "ref": 8 },

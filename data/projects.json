@@ -1,5 +1,17 @@
 [
   {
+    "title": "situational-intelligence",
+    "url": "https://github.com/RyanRana/situational-intelligence",
+    "description": "Situational emergency monitoring using live camera frames, motion analysis, speech recognition, geolocation, and AI vision analysis to detect risk, escalate events, and simulate dispatch workflows.",
+    "skills": ["YOLOv26", "Whisper", "Ollama", "Claude Vision", "Backtrack session storage"]
+  },
+  {
+    "title": "fax",
+    "url": "https://github.com/RyanRana/fax",
+    "description": "blockchain protocol for autonomous agents to discover, negotiate, and trade heterogeneous resources",
+    "skills": ["Rust", "blockchain", "autonomous agents", "protocols"]
+  },
+  {
     "title": "DEF",
     "url": "https://github.com/RyanRana/def",
     "description": "RL layer on any web game that tunes difficulty and engagement in real time using in-browser vitals (rPPG).",
