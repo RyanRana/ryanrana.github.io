@@ -178,10 +178,33 @@
       box-sizing: border-box;
     }
 
+    .bio-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: var(--space-6);
+    }
+    .bio-avatar {
+      display: block;
+      width: 50%;
+      height: auto;
+      flex-shrink: 0;
+    }
+    .bio-header .bio-name {
+      flex: 1;
+      text-align: right;
+      margin: 0;
+    }
     .bio-name {
-      font-size: clamp(2.3rem, 3.6vw, 3.2rem);
-      font-weight: 700; letter-spacing: -0.035em;
-      line-height: 1.08; margin-bottom: var(--space-8);
+      font-size: clamp(3rem, 5.2vw, 4.6rem);
+      font-weight: 400; letter-spacing: 0;
+      line-height: 1.02; margin-bottom: 0;
+      text-transform: lowercase;
+      white-space: nowrap;
+    }
+    .bio-name-ext {
+      display: inline-block;
+      letter-spacing: 0;
+      vertical-align: baseline;
     }
     .bio-para {
       font-size: 1.14rem; line-height: 1.75;
@@ -361,9 +384,9 @@
     }
     #bookshelf-section .book .title {
       writing-mode: vertical-rl;
-      font-size: var(--book-font, 0.58rem);
+      font-size: var(--book-font, 0.62rem);
       font-weight: var(--book-weight, 600);
-      letter-spacing: var(--book-tracking, 0.08em);
+      letter-spacing: var(--book-tracking, 0.07em);
       text-transform: uppercase;
       text-orientation: mixed;
       line-height: 1;
@@ -372,7 +395,7 @@
       align-items: center;
       justify-content: center;
       padding: 3px 0;
-      opacity: 0.92;
+      opacity: 0.88;
     }
     #bookshelf-section .book .icon {
       width: 14px; height: 14px;
@@ -665,7 +688,10 @@
       <!-- BIO -->
       <div id="bio-wrap">
         <div class="bio-intro" id="bio-intro">
-          <h1 class="bio-name" id="bio-name"></h1>
+          <div class="bio-header">
+            <img class="bio-avatar" src="Screenshot%202026-04-17%20at%209.24.30%E2%80%AFAM.png" alt="Ryan Rana">
+            <h1 class="bio-name" id="bio-name"></h1>
+          </div>
           <div id="bio-paras"></div>
           <p class="bio-ref-display" id="bio-ref-display" aria-live="polite"></p>
 
@@ -919,7 +945,15 @@
       if (!data) return;
       var nameEl = document.getElementById('bio-name');
       var parasEl = document.getElementById('bio-paras');
-      if (nameEl) nameEl.textContent = data.name || '';
+      if (nameEl) {
+        nameEl.textContent = '';
+        nameEl.appendChild(document.createTextNode(data.name || ''));
+        nameEl.appendChild(document.createElement('br'));
+        var ext = document.createElement('span');
+        ext.className = 'bio-name-ext';
+        ext.textContent = '.txt';
+        nameEl.appendChild(ext);
+      }
       if (!parasEl || !data.paragraphs || !data.references) return;
       var refs = data.references;
       data.paragraphs.forEach(function (para) {
@@ -1223,9 +1257,9 @@
     var topShift = Math.abs(h * Math.sin(tiltBase * Math.PI / 180));
     var leanLeft = tiltBase < 0 ? topShift : 0;
     var leanRight = tiltBase > 0 ? topShift : 0;
-    var weight = pick([500, 600, 700, 800]);
-    var fontSize = rand(0.5, 0.7).toFixed(3);
-    var tracking = rand(0.04, 0.13).toFixed(3);
+    var weight = pick([500, 600, 600, 700]);
+    var fontSize = rand(0.54, 0.7).toFixed(3);
+    var tracking = rand(0.05, 0.1).toFixed(3);
 
     var restBg = isCloth ? pick(clothTones) : pick(paperTones);
     var restFg = isCloth ? pick(['2a2a2a', '3a3a3a', '444444']) : pick(['3a3a3a', '444444', '555555']);
