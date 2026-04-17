@@ -5,10 +5,11 @@
       "parts": [
         { "text": "the first thing i ever shipped was a pygame loop in 2020" },
         { "ref": 1 },
-        { "text": ". now i like to solve hard problems across any domain." }
+        { "text": ". now i am working to solve hard problems across any domain with software and 1st principles." }
       ]
     },
     {
+
       "parts": [
         { "text": "i build multimodal AI" },
         { "ref": 2 },
