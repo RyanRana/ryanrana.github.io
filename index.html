@@ -951,7 +951,7 @@
         nameEl.appendChild(document.createElement('br'));
         var ext = document.createElement('span');
         ext.className = 'bio-name-ext';
-        ext.textContent = '.txt';
+        ext.textContent = '.com';
         nameEl.appendChild(ext);
       }
       if (!parasEl || !data.paragraphs || !data.references) return;
@@ -1365,26 +1365,22 @@
   });
 })();
 
-/* ══════════════════════════
-   NEURAL NET — responsive + high-DPI
-══════════════════════════ */
 (function () {
   const wrap   = document.getElementById('nn-wrap');
   const canvas = document.getElementById('nn-canvas');
   const ctx    = canvas.getContext('2d');
 
   let W = 0, H = 0;
-  let mouse = { x: -999, y: -999 };
+  const mouse = { x: -999, y: -999 };
 
-  const PULL = 0.32, SPRING = 0.05, DRAG = 0.85, MAX_SPD = 12, FADE_MS = 500;
+  const PULL = 0.7, SPRING = 0.14, DRAG = 0.78, MAX_SPD = 22, FADE_MS = 440;
 
-  // Complexity by viewport width (right panel / container width)
   function getConfig(width) {
-    if (width < 520)  return { N: 30,  START: [3, 6, 7, 7, 5, 2],                       R: 3,   MOUSE_R: 150, maxH: 8 };
-    if (width < 900)  return { N: 54,  START: [3, 7, 10, 11, 9, 7, 5, 2],               R: 3.8, MOUSE_R: 210, maxH: 13 };
-    if (width < 1400) return { N: 76,  START: [3, 9, 13, 15, 14, 10, 7, 3, 2],          R: 3.4, MOUSE_R: 250, maxH: 17 };
-    if (width < 2000) return { N: 102, START: [3, 11, 15, 18, 19, 15, 10, 6, 3, 2],     R: 3,   MOUSE_R: 290, maxH: 21 };
-    return { N: 132, START: [3, 12, 17, 22, 24, 22, 16, 9, 5, 2],                       R: 2.7, MOUSE_R: 330, maxH: 24 };
+    if (width < 520)  return { N: 60,  R: 3.2, MOUSE_R: 220, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 900)  return { N: 110, R: 3,   MOUSE_R: 280, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 1400) return { N: 160, R: 2.8, MOUSE_R: 340, kMin: 4, kMax: 6, minDeg: 3 };
+    if (width < 2000) return { N: 210, R: 2.6, MOUSE_R: 400, kMin: 4, kMax: 6, minDeg: 3 };
+    return              { N: 260, R: 2.5, MOUSE_R: 460, kMin: 4, kMax: 7, minDeg: 3 };
   }
 
   let config = getConfig(400);
@@ -1392,110 +1388,138 @@
   let targets = [];
   let prevEdges = [], nextEdges = [];
   let fade = 1;
-  let usedKeys = new Set();
+  let pulses = [];
+  let spawnT = 0;
 
-  function randSizes() {
-    const { N, maxH } = config;
-    const inOut = 3 + 2;
-    let rem = N - inOut;
-    for (let a = 0; a < 400; a++) {
-      const nl = 4 + Math.floor(Math.random() * 6);
-      let left = rem;
-      const sizes = [];
-      for (let L = 0; L < nl - 2; L++) {
-        const last = L === nl - 3;
-        const hi = Math.min(maxH, left - (nl - 3 - L));
-        if (hi < 2) { left = -1; break; }
-        const n = last ? left : 2 + Math.floor(Math.random() * (hi - 1));
-        sizes.push(n);
-        left -= n;
-      }
-      if (left !== 0) continue;
-      const ls = [3, ...sizes, 2];
-      const key = ls.join(',');
-      if (ls.reduce((a,b)=>a+b,0) === N && !usedKeys.has(key)) {
-        usedKeys.add(key);
-        return ls;
-      }
-    }
-    usedKeys.clear();
-    return config.START.slice();
-  }
-
-  function buildLayout(ls) {
-    const pos = [], edg = [];
+  function randLayout() {
+    const N = config.N;
+    const pos = [];
+    const cx = W / 2, cy = H / 2;
+    const clusters = 3 + Math.floor(Math.random() * 3);
+    const centers = [];
+    const base = Math.min(W, H);
     const mX = W * 0.06, mY = H * 0.05;
-    const uW = W - mX * 2;
-    const nl = ls.length;
-    let idx = 0;
-    const starts = [];
-    const maxGap = config.N <= 30 ? 44 : config.N <= 54 ? 34 : config.N <= 76 ? 28 : 24;
-    for (let L = 0; L < nl; L++) {
-      const cnt = ls[L];
-      starts.push(idx);
-      const bx = mX + (L / (nl - 1)) * uW;
-      const gap = Math.min((H - mY * 2) / (cnt + 1), maxGap);
-      const sy  = H / 2 - (gap * (cnt - 1)) / 2;
-      for (let i = 0; i < cnt; i++) {
-        pos.push({ x: bx, y: sy + i * gap });
-        idx++;
-      }
+    const maxX = W - mX, maxY = H - mY;
+    for (let k = 0; k < clusters; k++) {
+      const a = (k / clusters) * Math.PI * 2 + Math.random() * 0.8;
+      const rr = base * (0.26 + Math.random() * 0.22);
+      centers.push({
+        x: Math.max(mX, Math.min(maxX, cx + Math.cos(a) * rr)),
+        y: Math.max(mY, Math.min(maxY, cy + Math.sin(a) * rr))
+      });
     }
-    for (let L = 0; L < nl - 1; L++)
-      for (let i = 0; i < ls[L]; i++)
-        for (let j = 0; j < ls[L+1]; j++)
-          edg.push({ from: starts[L]+i, to: starts[L+1]+j });
-    return { pos, edg };
+    for (let i = 0; i < N; i++) {
+      const c = centers[i % clusters];
+      const spread = base * (0.14 + Math.random() * 0.16);
+      const a = Math.random() * Math.PI * 2;
+      const r = spread * Math.sqrt(Math.random());
+      pos.push({
+        x: Math.max(mX, Math.min(maxX, c.x + Math.cos(a) * r)),
+        y: Math.max(mY, Math.min(maxY, c.y + Math.sin(a) * r))
+      });
+    }
+    return pos;
   }
 
-  function apply(ls, instant) {
-    const { pos, edg } = buildLayout(ls);
+  function buildEdges(pos) {
+    const N = pos.length;
+    const edg = [];
+    const seen = new Set();
+    const deg = new Int32Array(N);
+    const allDists = [];
+    const kMin = config.kMin, kMax = config.kMax, minDeg = config.minDeg || 2;
+    for (let i = 0; i < N; i++) {
+      const dists = [];
+      for (let j = 0; j < N; j++) {
+        if (i === j) continue;
+        const dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y;
+        dists.push({ j, d: dx * dx + dy * dy });
+      }
+      dists.sort((a, b) => a.d - b.d);
+      allDists.push(dists);
+      const k = kMin + Math.floor(Math.random() * (kMax - kMin + 1));
+      for (const { j } of dists.slice(0, k)) {
+        const key = i < j ? i + '-' + j : j + '-' + i;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        edg.push({ from: i, to: j });
+        deg[i]++; deg[j]++;
+      }
+    }
+    for (let i = 0; i < N; i++) {
+      let need = minDeg - deg[i];
+      if (need <= 0) continue;
+      for (const { j } of allDists[i]) {
+        if (need <= 0) break;
+        const key = i < j ? i + '-' + j : j + '-' + i;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        edg.push({ from: i, to: j });
+        deg[i]++; deg[j]++;
+        need--;
+      }
+    }
+    return edg;
+  }
+
+  function apply(instant) {
+    const pos = randLayout();
+    const edg = buildEdges(pos);
     targets = pos;
-    if (instant) { prevEdges = edg; nextEdges = edg; fade = 1; }
-    else         { prevEdges = nextEdges.length ? nextEdges : edg; nextEdges = edg; fade = 0; }
+    if (instant) {
+      prevEdges = edg; nextEdges = edg; fade = 1;
+    } else {
+      prevEdges = nextEdges.length ? nextEdges : edg;
+      nextEdges = edg; fade = 0;
+    }
+    pulses = [];
   }
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 3);
     W = wrap.offsetWidth;
     H = wrap.offsetHeight;
-    const newConfig = getConfig(W);
-    const prevN = config.N;
-    config = newConfig;
-
-    canvas.width  = Math.floor(W * dpr);
+    const next = getConfig(W);
+    const sizeChanged = next.N !== config.N;
+    config = next;
+    canvas.width = Math.floor(W * dpr);
     canvas.height = Math.floor(H * dpr);
-    canvas.style.width  = W + 'px';
+    canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    if (nodes.length !== config.N) {
+    if (sizeChanged || nodes.length !== config.N) {
       nodes = [];
-      for (let i = 0; i < config.N; i++)
-        nodes.push({ x: 0, y: 0, vx: 0, vy: 0 });
-      targets = [];
-      prevEdges = [];
-      nextEdges = [];
-      usedKeys = new Set();
+      for (let i = 0; i < config.N; i++) {
+        nodes.push({
+          x: 0, y: 0, vx: 0, vy: 0,
+          phx: Math.random() * Math.PI * 2,
+          phy: Math.random() * Math.PI * 2,
+          fx: 0.0006 + Math.random() * 0.0009,
+          fy: 0.0006 + Math.random() * 0.0009,
+          amp: 7 + Math.random() * 7
+        });
+      }
     }
-
-    apply(config.START, true);
+    apply(true);
     for (let i = 0; i < config.N; i++) {
       nodes[i].x = targets[i].x;
       nodes[i].y = targets[i].y;
-      nodes[i].vx = 0;
-      nodes[i].vy = 0;
+      nodes[i].vx = 0; nodes[i].vy = 0;
     }
   }
 
+  let clock = 0;
   function tick(dt) {
     const N = config.N, R = config.MOUSE_R;
     if (fade < 1) fade = Math.min(1, fade + dt / FADE_MS);
+    clock += dt;
     const dn = Math.min(dt / 16, 2);
     for (let i = 0; i < N; i++) {
       const n = nodes[i], t = targets[i];
-      n.vx += (t.x - n.x) * SPRING * dn;
-      n.vy += (t.y - n.y) * SPRING * dn;
+      const tx = t.x + Math.sin(clock * n.fx + n.phx) * n.amp;
+      const ty = t.y + Math.cos(clock * n.fy + n.phy) * n.amp;
+      n.vx += (tx - n.x) * SPRING * dn;
+      n.vy += (ty - n.y) * SPRING * dn;
       const dx = mouse.x - n.x, dy = mouse.y - n.y;
       const d  = Math.hypot(dx, dy) || 0.001;
       if (d < R) {
@@ -1507,43 +1531,85 @@
       if (spd > MAX_SPD) { n.vx = n.vx/spd*MAX_SPD; n.vy = n.vy/spd*MAX_SPD; }
       n.x += n.vx; n.y += n.vy;
     }
+
+    const edgeList = fade >= 1 ? nextEdges : nextEdges;
+    spawnT += dt;
+    const spawnEvery = Math.max(35, 180 - N);
+    while (spawnT > spawnEvery) {
+      spawnT -= spawnEvery;
+      if (edgeList.length) {
+        const burst = 1 + Math.floor(Math.random() * 3);
+        for (let b = 0; b < burst; b++) {
+          const e = edgeList[Math.floor(Math.random() * edgeList.length)];
+          pulses.push({ from: e.from, to: e.to, p: 0, speed: 0.75 + Math.random() * 0.85 });
+        }
+      }
+    }
+    for (const p of pulses) p.p += (dt / 620) * p.speed;
+    for (let i = pulses.length - 1; i >= 0; i--) if (pulses[i].p >= 1) pulses.splice(i, 1);
+  }
+
+  function drawPulses() {
+    const N = config.N;
+    const pr = N <= 60 ? 2.4 : N <= 110 ? 2.2 : N <= 170 ? 2 : 1.8;
+    for (const pu of pulses) {
+      const a = nodes[pu.from], b = nodes[pu.to];
+      if (!a || !b) continue;
+      const x = a.x + (b.x - a.x) * pu.p;
+      const y = a.y + (b.y - a.y) * pu.p;
+      const fadeIn = Math.min(1, pu.p * 3.5);
+      const fadeOut = Math.pow(1 - pu.p, 1.3);
+      const al = fadeIn * fadeOut * 0.85;
+      ctx.fillStyle = `rgba(0,0,0,${al.toFixed(2)})`;
+      ctx.beginPath();
+      ctx.arc(x, y, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   function drawEdges(list, alpha) {
     if (!alpha || !list.length) return;
     const N = config.N;
-    const lineW = N <= 30 ? 0.6 : N <= 54 ? 0.5 : N <= 76 ? 0.45 : 0.4;
-    const baseAlpha = N <= 30 ? 0.3 : N <= 54 ? 0.24 : N <= 76 ? 0.2 : 0.16;
+    const lineW = N <= 50 ? 1.1 : N <= 100 ? 1 : 0.9;
+    const baseAlpha = N <= 50 ? 0.32 : N <= 100 ? 0.26 : 0.22;
     ctx.strokeStyle = `rgba(0,0,0,${(alpha * baseAlpha).toFixed(3)})`;
     ctx.lineWidth = lineW;
     ctx.beginPath();
     for (const e of list) {
       const a = nodes[e.from], b = nodes[e.to];
-      ctx.moveTo(Math.round(a.x), Math.round(a.y));
-      ctx.lineTo(Math.round(b.x), Math.round(b.y));
+      if (!a || !b) continue;
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
     }
     ctx.stroke();
   }
 
   function render() {
     ctx.clearRect(0, 0, W, H);
-    drawEdges(prevEdges, 1 - fade);
-    drawEdges(nextEdges, fade);
-    const R = config.R;
+    if (fade >= 1) {
+      drawEdges(nextEdges, 1);
+    } else {
+      const prevA = fade < 0.5 ? 1 - fade * 2 : 0;
+      const nextA = fade < 0.5 ? 0 : (fade - 0.5) * 2;
+      drawEdges(prevEdges, prevA);
+      drawEdges(nextEdges, nextA);
+    }
+    drawPulses();
     ctx.fillStyle = '#fff';
-    ctx.strokeStyle = 'rgba(0,0,0,0.78)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.85)';
     ctx.lineWidth = 1;
+    const R = config.R;
     for (const n of nodes) {
       ctx.beginPath();
-      ctx.arc(Math.round(n.x), Math.round(n.y), R, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
+      ctx.arc(n.x, n.y, R, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
     }
   }
 
   let last = performance.now();
   function loop(now) {
-    tick(now - last); last = now;
+    tick(Math.min(50, now - last));
+    last = now;
     render();
     requestAnimationFrame(loop);
   }
@@ -1564,11 +1630,22 @@
   document.addEventListener('mousemove', updateMouseFromEvent);
 
   document.addEventListener('keydown', (e) => {
-    if (e.code === 'Enter' && document.getElementById('terminal-wrap').classList.contains('hide'))
-      apply(randSizes(), false);
+    const term = document.getElementById('terminal-wrap');
+    if (e.code === 'Enter' && term && term.classList.contains('hide')) requestRearrange();
   });
 
-  window.__nnRearrange = () => apply(randSizes(), false);
+  // Simple throttle: ignore triggers while a dissolve is in flight or
+  // within the cooldown. No queuing — keeps scroll transitions to one motion.
+  const MIN_BETWEEN = 300;
+  let lastRearrangeAt = -Infinity;
+  function requestRearrange() {
+    const now = performance.now();
+    if (fade < 1) return;
+    if (now - lastRearrangeAt < MIN_BETWEEN) return;
+    lastRearrangeAt = now;
+    apply(false);
+  }
+  window.__nnRearrange = requestRearrange;
 
   window.addEventListener('resize', resize);
   resize();

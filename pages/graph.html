@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>graph.com — Ryan Rana</title>
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray: #6e6e73;
+      --gray-light: #8e8e93;
+      --rule: rgba(0,0,0,0.09);
+      --mono: 'SF Mono','Fira Code','Fira Mono','Courier New',monospace;
+      --sans: -apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #layout {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+
+    #left {
+      flex: 0 0 46%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #content-area {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #scroll {
+      position: absolute; inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: var(--space-10) var(--space-8) var(--space-16) clamp(44px, 9%, 96px);
+      box-sizing: border-box;
+    }
+    #scroll { scrollbar-width: none; }
+    #scroll::-webkit-scrollbar { display: none; }
+
+    a.back {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #666;
+      text-decoration: none;
+      margin-bottom: var(--space-8);
+      border-bottom: 1px solid transparent;
+      letter-spacing: 0.02em;
+    }
+    a.back:hover { color: var(--black); border-bottom-color: var(--black); }
+
+    .bio-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: var(--space-6);
+    }
+    .bio-avatar {
+      display: block;
+      width: 44%;
+      height: auto;
+      flex-shrink: 0;
+    }
+    .bio-header .bio-name {
+      flex: 1;
+      text-align: right;
+      margin: 0;
+    }
+    .bio-name {
+      font-size: clamp(3rem, 5.2vw, 4.6rem);
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.02;
+      margin-bottom: 0;
+      text-transform: lowercase;
+      white-space: nowrap;
+    }
+    .bio-name-ext {
+      display: inline-block;
+      letter-spacing: 0;
+      vertical-align: baseline;
+    }
+
+    .meta {
+      display: flex;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: #888;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-8);
+      text-transform: uppercase;
+    }
+    .meta span { display: inline-block; }
+
+    .bio-para {
+      font-size: 1.14rem;
+      line-height: 1.75;
+      color: #1d1d1f;
+      margin-bottom: var(--space-6);
+    }
+    .bio-para.lead {
+      font-size: 1.22rem;
+      color: #000;
+    }
+    .bio-para em {
+      font-style: italic;
+      color: #1d1d1f;
+    }
+    .bio-para code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      background: rgba(0,0,0,0.05);
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: -0.01em;
+    }
+    .sig {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-top: var(--space-10);
+      margin-bottom: var(--space-12);
+    }
+
+    #right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 12px 18px;
+    }
+    #nn-wrap {
+      width: 100%; height: 100%;
+      max-width: min(560px, 98%);
+      max-height: min(72vh, 560px);
+    }
+    @media (min-width: 900px) {
+      #nn-wrap { max-width: 100%; max-height: 94vh; }
+    }
+    #nn-canvas { display: block; width: 100%; height: 100%; }
+
+    @media (max-width: 720px) {
+      html, body { overflow: auto; height: auto; }
+      #app { height: auto; min-height: 100vh; }
+      #layout {
+        flex-direction: column;
+        overflow: visible;
+      }
+      #right {
+        order: -1;
+        flex: 0 0 auto;
+        width: 100%;
+        height: 38vh;
+        min-height: 240px;
+        max-height: 420px;
+        padding: 16px 10px 8px;
+      }
+      #left {
+        order: 0;
+        flex: 0 0 auto;
+        width: 100%;
+        overflow: visible;
+      }
+      #content-area { overflow: visible; position: static; }
+      #scroll {
+        position: relative;
+        inset: auto;
+        padding: var(--space-6) 20px var(--space-10);
+        overflow: visible;
+      }
+      #nn-wrap {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+      }
+      a.back { margin-bottom: var(--space-5); }
+      .bio-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: var(--space-5);
+      }
+      .bio-avatar { width: 34%; max-width: 140px; }
+      .bio-name {
+        font-size: clamp(2.2rem, 11vw, 3.4rem);
+        line-height: 1;
+      }
+      .bio-header .bio-name { text-align: right; }
+      .meta {
+        font-size: 0.66rem;
+        margin-bottom: var(--space-5);
+      }
+      .bio-para {
+        font-size: 1.02rem;
+        line-height: 1.68;
+        margin-bottom: var(--space-5);
+      }
+      .bio-para.lead { font-size: 1.08rem; }
+      .sig { margin-top: var(--space-6); margin-bottom: var(--space-8); }
+    }
+
+    @media (max-width: 420px) {
+      #right { height: 34vh; min-height: 220px; }
+      .bio-avatar { width: 32%; }
+      .bio-name { font-size: clamp(2rem, 12vw, 2.8rem); }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="layout">
+    <div id="left">
+      <div id="content-area">
+        <div id="scroll">
+          <a class="back" href="../index.html">← back</a>
+
+          <div class="bio-header">
+            <img class="bio-avatar" src="../Screenshot%202026-04-17%20at%2010.07.59%E2%80%AFAM%20copy.png" alt="Ryan Rana">
+            <h1 class="bio-name">graph<br><span class="bio-name-ext">.com</span></h1>
+          </div>
+
+          <div class="meta">
+            <span>// a short piece on favorite primitives</span>
+          </div>
+
+          <p class="bio-para lead">i didn't always like graphs.</p>
+
+          <p class="bio-para">the first time i saw one, i thought it was a way to draw relationships. a friend chart. a subway map. something static you look at once and understand.</p>
+
+          <p class="bio-para">then i tried to build anything real, and every problem quietly turned into a graph.</p>
+
+          <p class="bio-para">a brain is a graph. a supply chain is a graph. an agent talking to another agent is a graph. a proof is a graph. a team is a graph where the edges are trust. a city is a graph where the edges are time. an idea, before it's articulated, is a pile of fragments looking for an edge.</p>
+
+          <p class="bio-para">a neural net is a graph with weights. an attention head is a graph that keeps rewiring itself. a dependency tree is a graph pretending to have a hierarchy. debugging is <code>BFS</code> from the last thing you broke.</p>
+
+          <p class="bio-para">the cool thing isn't the abstraction. the cool thing is that when you stop forcing a system to be linear and let it be a graph, the <em>real</em> problem finally shows up. bottlenecks become shortest paths. contradictions become cycles. culture becomes centrality. trust becomes weight.</p>
+
+          <p class="bio-para">for a while i chased the flashiest part of every field — the biggest model, the slickest frontend, the cleverest algorithm. eventually i realized the thing underneath all of them is the same: which nodes. which edges. what flows.</p>
+
+          <p class="bio-para">a list lies. a tree lies a little less. a graph just says: here is what's connected, here is what moves. the rest is up to you.</p>
+
+          <p class="bio-para">message passing is also the only model of intelligence i find honest. nothing in a brain, a company, or a codebase is "thinking" in isolation — it's a node, waiting for a neighbor to send it something useful. the smart ones aren't the loudest nodes. they're the ones whose edges pull signal from the right places.</p>
+
+          <p class="bio-para">if you gave me one primitive to build everything with, it would be <code>(nodes, edges)</code>. and message passing. and a bit of patience.</p>
+
+          <p class="sig">— ryan</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="right">
+      <div id="nn-wrap">
+        <canvas id="nn-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const wrap   = document.getElementById('nn-wrap');
+  const canvas = document.getElementById('nn-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  let W = 0, H = 0;
+  const mouse = { x: -999, y: -999 };
+
+  const PULL = 0.7, SPRING = 0.14, DRAG = 0.78, MAX_SPD = 22, FADE_MS = 440;
+
+  function getConfig(width) {
+    if (width < 520)  return { N: 60,  R: 3.2, MOUSE_R: 220, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 900)  return { N: 110, R: 3,   MOUSE_R: 280, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 1400) return { N: 160, R: 2.8, MOUSE_R: 340, kMin: 4, kMax: 6, minDeg: 3 };
+    if (width < 2000) return { N: 210, R: 2.6, MOUSE_R: 400, kMin: 4, kMax: 6, minDeg: 3 };
+    return              { N: 260, R: 2.5, MOUSE_R: 460, kMin: 4, kMax: 7, minDeg: 3 };
+  }
+
+  let config = getConfig(400);
+  let nodes = [];
+  let targets = [];
+  let prevEdges = [], nextEdges = [];
+  let fade = 1;
+  let pulses = [];
+  let spawnT = 0;
+
+  function randLayout() {
+    const N = config.N;
+    const pos = [];
+    const cx = W / 2, cy = H / 2;
+    const clusters = 3 + Math.floor(Math.random() * 3);
+    const centers = [];
+    const base = Math.min(W, H);
+    const mX = W * 0.06, mY = H * 0.05;
+    const maxX = W - mX, maxY = H - mY;
+    for (let k = 0; k < clusters; k++) {
+      const a = (k / clusters) * Math.PI * 2 + Math.random() * 0.8;
+      const rr = base * (0.26 + Math.random() * 0.22);
+      centers.push({
+        x: Math.max(mX, Math.min(maxX, cx + Math.cos(a) * rr)),
+        y: Math.max(mY, Math.min(maxY, cy + Math.sin(a) * rr))
+      });
+    }
+    for (let i = 0; i < N; i++) {
+      const c = centers[i % clusters];
+      const spread = base * (0.14 + Math.random() * 0.16);
+      const a = Math.random() * Math.PI * 2;
+      const r = spread * Math.sqrt(Math.random());
+      pos.push({
+        x: Math.max(mX, Math.min(maxX, c.x + Math.cos(a) * r)),
+        y: Math.max(mY, Math.min(maxY, c.y + Math.sin(a) * r))
+      });
+    }
+    return pos;
+  }
+
+  function buildEdges(pos) {
+    const N = pos.length;
+    const edg = [];
+    const seen = new Set();
+    const deg = new Int32Array(N);
+    const allDists = [];
+    const kMin = config.kMin, kMax = config.kMax, minDeg = config.minDeg || 2;
+    for (let i = 0; i < N; i++) {
+      const dists = [];
+      for (let j = 0; j < N; j++) {
+        if (i === j) continue;
+        const dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y;
+        dists.push({ j, d: dx * dx + dy * dy });
+      }
+      dists.sort((a, b) => a.d - b.d);
+      allDists.push(dists);
+      const k = kMin + Math.floor(Math.random() * (kMax - kMin + 1));
+      for (const { j } of dists.slice(0, k)) {
+        const key = i < j ? i + '-' + j : j + '-' + i;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        edg.push({ from: i, to: j });
+        deg[i]++; deg[j]++;
+      }
+    }
+    for (let i = 0; i < N; i++) {
+      let need = minDeg - deg[i];
+      if (need <= 0) continue;
+      for (const { j } of allDists[i]) {
+        if (need <= 0) break;
+        const key = i < j ? i + '-' + j : j + '-' + i;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        edg.push({ from: i, to: j });
+        deg[i]++; deg[j]++;
+        need--;
+      }
+    }
+    return edg;
+  }
+
+  function apply(instant) {
+    const pos = randLayout();
+    const edg = buildEdges(pos);
+    targets = pos;
+    if (instant) {
+      prevEdges = edg; nextEdges = edg; fade = 1;
+    } else {
+      prevEdges = nextEdges.length ? nextEdges : edg;
+      nextEdges = edg; fade = 0;
+    }
+    pulses = [];
+  }
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    W = wrap.offsetWidth;
+    H = wrap.offsetHeight;
+    const next = getConfig(W);
+    const sizeChanged = next.N !== config.N;
+    config = next;
+    canvas.width = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (sizeChanged || nodes.length !== config.N) {
+      nodes = [];
+      for (let i = 0; i < config.N; i++) {
+        nodes.push({
+          x: 0, y: 0, vx: 0, vy: 0,
+          phx: Math.random() * Math.PI * 2,
+          phy: Math.random() * Math.PI * 2,
+          fx: 0.0006 + Math.random() * 0.0009,
+          fy: 0.0006 + Math.random() * 0.0009,
+          amp: 7 + Math.random() * 7
+        });
+      }
+    }
+    apply(true);
+    for (let i = 0; i < config.N; i++) {
+      nodes[i].x = targets[i].x;
+      nodes[i].y = targets[i].y;
+      nodes[i].vx = 0; nodes[i].vy = 0;
+    }
+  }
+
+  let clock = 0;
+  function tick(dt) {
+    const N = config.N, R = config.MOUSE_R;
+    if (fade < 1) fade = Math.min(1, fade + dt / FADE_MS);
+    clock += dt;
+    const dn = Math.min(dt / 16, 2);
+    for (let i = 0; i < N; i++) {
+      const n = nodes[i], t = targets[i];
+      const tx = t.x + Math.sin(clock * n.fx + n.phx) * n.amp;
+      const ty = t.y + Math.cos(clock * n.fy + n.phy) * n.amp;
+      n.vx += (tx - n.x) * SPRING * dn;
+      n.vy += (ty - n.y) * SPRING * dn;
+      const dx = mouse.x - n.x, dy = mouse.y - n.y;
+      const d  = Math.hypot(dx, dy) || 0.001;
+      if (d < R) {
+        const f = PULL * (1 - d / R) * dn;
+        n.vx += dx / d * f; n.vy += dy / d * f;
+      }
+      n.vx *= DRAG; n.vy *= DRAG;
+      const spd = Math.hypot(n.vx, n.vy);
+      if (spd > MAX_SPD) { n.vx = n.vx/spd*MAX_SPD; n.vy = n.vy/spd*MAX_SPD; }
+      n.x += n.vx; n.y += n.vy;
+    }
+
+    spawnT += dt;
+    const spawnEvery = Math.max(35, 180 - N);
+    while (spawnT > spawnEvery) {
+      spawnT -= spawnEvery;
+      if (nextEdges.length) {
+        const burst = 1 + Math.floor(Math.random() * 3);
+        for (let b = 0; b < burst; b++) {
+          const e = nextEdges[Math.floor(Math.random() * nextEdges.length)];
+          pulses.push({ from: e.from, to: e.to, p: 0, speed: 0.75 + Math.random() * 0.85 });
+        }
+      }
+    }
+    for (const p of pulses) p.p += (dt / 620) * p.speed;
+    for (let i = pulses.length - 1; i >= 0; i--) if (pulses[i].p >= 1) pulses.splice(i, 1);
+  }
+
+  function drawPulses() {
+    const N = config.N;
+    const pr = N <= 60 ? 2.4 : N <= 110 ? 2.2 : N <= 170 ? 2 : 1.8;
+    for (const pu of pulses) {
+      const a = nodes[pu.from], b = nodes[pu.to];
+      if (!a || !b) continue;
+      const x = a.x + (b.x - a.x) * pu.p;
+      const y = a.y + (b.y - a.y) * pu.p;
+      const fadeIn = Math.min(1, pu.p * 3.5);
+      const fadeOut = Math.pow(1 - pu.p, 1.3);
+      const al = fadeIn * fadeOut * 0.85;
+      ctx.fillStyle = `rgba(0,0,0,${al.toFixed(2)})`;
+      ctx.beginPath();
+      ctx.arc(x, y, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawEdges(list, alpha) {
+    if (!alpha || !list.length) return;
+    const N = config.N;
+    const lineW = N <= 50 ? 1.1 : N <= 100 ? 1 : 0.9;
+    const baseAlpha = N <= 50 ? 0.32 : N <= 100 ? 0.26 : 0.22;
+    ctx.strokeStyle = `rgba(0,0,0,${(alpha * baseAlpha).toFixed(3)})`;
+    ctx.lineWidth = lineW;
+    ctx.beginPath();
+    for (const e of list) {
+      const a = nodes[e.from], b = nodes[e.to];
+      if (!a || !b) continue;
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+    }
+    ctx.stroke();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    if (fade >= 1) {
+      drawEdges(nextEdges, 1);
+    } else {
+      const prevA = fade < 0.5 ? 1 - fade * 2 : 0;
+      const nextA = fade < 0.5 ? 0 : (fade - 0.5) * 2;
+      drawEdges(prevEdges, prevA);
+      drawEdges(nextEdges, nextA);
+    }
+    drawPulses();
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+    ctx.lineWidth = 1;
+    const R = config.R;
+    for (const n of nodes) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, R, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+    }
+  }
+
+  let last = performance.now();
+  function loop(now) {
+    tick(Math.min(50, now - last));
+    last = now;
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  function updateMouseFromEvent(e) {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    if (x >= 0 && x <= r.width && y >= 0 && y <= r.height) {
+      mouse.x = x * (W / r.width);
+      mouse.y = y * (H / r.height);
+    } else {
+      mouse.x = -999; mouse.y = -999;
+    }
+  }
+  canvas.addEventListener('mousemove', updateMouseFromEvent);
+  canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+
+  const MIN_BETWEEN = 300;
+  let lastRearrangeAt = -Infinity;
+  function requestRearrange() {
+    const now = performance.now();
+    if (fade < 1) return;
+    if (now - lastRearrangeAt < MIN_BETWEEN) return;
+    lastRearrangeAt = now;
+    apply(false);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Enter' || e.code === 'Space') {
+      e.preventDefault();
+      requestRearrange();
+    }
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

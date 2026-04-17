@@ -3,46 +3,47 @@
   "paragraphs": [
     {
       "parts": [
-        { "text": "the first thing i ever shipped was a pygame loop in 2020" },
+        { "text": "I shipped my first pygame loop in 2020" },
         { "ref": 1 },
-        { "text": ". now i am working to solve hard problems across any domain with software and 1st principles." }
+        { "text": ". now i am working to solve hard problems across any domain with multimodal AI" },
+        { "ref": 2 },
+        { "text": " from unstructured data" },
+        { "ref": 3 },
+        { "text": " and 1st principles." }
       ]
     },
     {
-
       "parts": [
-        { "text": "i build multimodal AI" },
-        { "ref": 2 },
-        { "text": " out of unstructured data" },
-        { "ref": 3 },
-        { "text": " and package the work to easily be deployed" },
+        { "text": "as a swe i've worked across devops" },
         { "ref": 4 },
-        { "text": ". as a swe focused at the intersection of ai research and product, i've built in devops" },
-        { "ref": 5 },
         { "text": ", robotics" },
-        { "ref": 6 },
+        { "ref": 5 },
         { "text": ", hospitals" },
+        { "ref": 6 },
+        { "text": ", education" },
         { "ref": 7 },
-        { "text": ", etc. these are unrelated surfaces, but the same problem sphere." }
+        { "text": ", finance" },
+        { "ref": 8 },
+        { "text": ", etc. seemingly unrelated surfaces but the same problem sphere: the intersection of AI research and product." }
       ]
     },
     {
       "parts": [
         { "text": "i learn by building, so i have a lot of " },
         { "link": { "href": "https://github.com/RyanRana", "text": "projects" } },
-        { "ref": 8 },
-        { "text": " over the years. when Claude" },
         { "ref": 9 },
+        { "text": " over the years. when Claude" },
+        { "ref": 10 },
         { "text": " can't debug my slop, i like to " },
         { "link": { "href": "https://ryanranas.medium.com/", "text": "write" } },
-        { "ref": 10 },
-        { "text": ", ski" },
         { "ref": 11 },
+        { "text": ", ski" },
+        { "ref": 12 },
         { "text": ", " },
         { "link": { "href": "pages/wood.html", "text": "craft" } },
-        { "ref": 12 },
-        { "text": " & eat Chipotle" },
         { "ref": 13 },
+        { "text": " & eat Chipotle" },
+        { "ref": 14 },
         { "text": ". i am always looking to talk & build with others." }
       ]
     }
@@ -51,15 +52,16 @@
     "1": "Started with Tkinter turtle, then PyGame, then HTML5 Canvas. Returned to Python with much more ambitious ideas in AI.",
     "2": "VLMs, MLMs, SLMs. Deep-diving in VLMs right now.",
     "3": "Raw video, EHR notes, voice, logs — where most of the real signal actually lives.",
-    "4": "Mesh — 600 users over summer 2025. Centren Health — S3-backed clinical pipelines serving 8 hospital partners.",
-    "5": "Cloud migration @ Datanexxt; infra & LLM APIs @ Undergraduation.com. Scalable systems are a must-know.",
-    "6": "3E8 Robotics — autonomous multi-floor delivery; elevator navigation, payload handoff. Backed by Founders Inc., based in SF. Also: deformables & generative serial chains as side work.",
-    "7": "Clinical transformers & PK/PD modeling @ Centren Health, NYC. Osler — RAG onboarding for hospitalists, 3rd place @ RUHealthHack.",
-    "8": "Never took a tutorial. What I've made is what I know.",
-    "9": "ORCHESTRATION.",
-    "10": "Updating irregularly since summer 2021 — AI (tech & philosophy), programming & life.",
-    "11": "Completely offline. Mainly Camelback in the Poconos.",
-    "12": "There's something satisfying about building things with your own hands.",
-    "13": "White rice, black beans, chicken al pastor ×2, tomatillo red chili, roasted chili corn, cheese, light sour cream."
+    "4": "Cloud migration @ Datanexxt; infra & LLM APIs @ Undergraduation.com. Scalable systems are a must-know.",
+    "5": "3E8 Robotics — autonomous multi-floor delivery; elevator navigation, payload handoff. Backed by Founders Inc., based in SF. Also: deformables & generative serial chains as side work.",
+    "6": "Clinical transformers & PK/PD modeling @ Centren Health, NYC. Osler — RAG onboarding for hospitalists, 3rd place @ RUHealthHack.",
+    "7": "Product eng @ Undergraduation.com. Stem In Place — 501(c)(3) free online STEM summer courses, 1500 students, 40 instructors. Also taught @ Code Ninjas & Bricks 4 Kidz.",
+    "8": "Incoming @ Fiserv. Possibilities Summit @ Goldman Sachs. SWE virtual intern @ JPMorgan Chase. Mesh — 1st place Rutgers x Fiserv hackathon.",
+    "9": "Never took a tutorial. What I've made is what I know.",
+    "10": "ORCHESTRATION.",
+    "11": "Updating irregularly since summer 2021 — AI (tech & philosophy), programming & life.",
+    "12": "Completely offline. Mainly Camelback in the Poconos.",
+    "13": "There's something satisfying about building things with your own hands.",
+    "14": "White rice, black beans, chicken al pastor ×2, tomatillo red chili, roasted chili corn, cheese, light sour cream."
   }
 }
