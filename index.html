@@ -180,22 +180,24 @@
 
     .bio-header {
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
+      gap: var(--space-4);
       margin-bottom: var(--space-6);
     }
     .bio-avatar {
       display: block;
-      width: 50%;
+      width: clamp(140px, 24%, 220px);
       height: auto;
       flex-shrink: 0;
     }
     .bio-header .bio-name {
       flex: 1;
-      text-align: right;
+      text-align: left;
       margin: 0;
+      line-height: 1;
     }
     .bio-name {
-      font-size: clamp(3rem, 5.2vw, 4.6rem);
+      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
       font-weight: 400; letter-spacing: 0;
       line-height: 1.02; margin-bottom: 0;
       text-transform: lowercase;
@@ -948,11 +950,6 @@
       if (nameEl) {
         nameEl.textContent = '';
         nameEl.appendChild(document.createTextNode(data.name || ''));
-        nameEl.appendChild(document.createElement('br'));
-        var ext = document.createElement('span');
-        ext.className = 'bio-name-ext';
-        ext.textContent = '.com';
-        nameEl.appendChild(ext);
       }
       if (!parasEl || !data.paragraphs || !data.references) return;
       var refs = data.references;

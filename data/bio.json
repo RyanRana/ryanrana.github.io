@@ -1,11 +1,11 @@
 {
-  "name": "Ryan Rana",
+  "name": "hi, i'm ryan rana.",
   "paragraphs": [
     {
       "parts": [
-        { "text": "I shipped my first pygame loop in 2020" },
+        { "text": "i shipped my first pygame loop in 2020" },
         { "ref": 1 },
-        { "text": ". now i am working to solve hard problems across any domain with multimodal AI" },
+        { "text": ". now i am working to solve hard problems across any domain with multimodal ai" },
         { "ref": 2 },
         { "text": " from unstructured data" },
         { "ref": 3 },
@@ -24,7 +24,7 @@
         { "ref": 7 },
         { "text": ", finance" },
         { "ref": 8 },
-        { "text": ", etc. seemingly unrelated surfaces but the same problem sphere: the intersection of AI research and product." }
+        { "text": ", etc. seemingly unrelated surfaces but the same problem sphere: the intersection of ai research and product." }
       ]
     },
     {
