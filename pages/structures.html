@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>structures</title>
+  <style>
+    :root {
+      --mono: 'SF Mono','Fira Code','Fira Mono','Courier New',monospace;
+      --sans: -apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #fff; color: #000; font-family: var(--sans); }
+    body { padding: 36px 28px 80px; max-width: 1240px; margin: 0 auto; }
+    a.back {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #666;
+      text-decoration: none;
+      margin-bottom: 18px;
+      border-bottom: 1px solid transparent;
+    }
+    a.back:hover { color: #000; border-bottom-color: #000; }
+    h1 {
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      text-transform: lowercase;
+    }
+    .sub {
+      color: #777;
+      font-size: 0.86rem;
+      margin-bottom: 28px;
+      font-family: var(--mono);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+    .tile {
+      aspect-ratio: 1 / 1;
+      position: relative;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: #fff;
+      overflow: hidden;
+    }
+    .tile canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+    .tile .label {
+      position: absolute;
+      bottom: 10px; left: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: #666;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .tile .num {
+      position: absolute;
+      top: 10px; right: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: #c0c0c0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="../index.html">← back</a>
+  <h1>structures.txt</h1>
+  <p class="sub">// 15 sketches in the same visual language</p>
+  <div class="grid" id="grid"></div>
+
+<script>
+/* ═══════════ shared helpers ═══════════ */
+const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+function mkNode(x, y, r) {
+  return { x, y, tx: x, ty: y, vx: 0, vy: 0, r: r || 3 };
+}
+
+function spring(nodes, mouse, dt, mouseR = 90) {
+  const dn = Math.min(dt / 16, 2);
+  for (const n of nodes) {
+    n.vx += (n.tx - n.x) * 0.05 * dn;
+    n.vy += (n.ty - n.y) * 0.05 * dn;
+    const dx = mouse.x - n.x, dy = mouse.y - n.y;
+    const d = Math.hypot(dx, dy) || 0.001;
+    if (d < mouseR) {
+      const f = 0.32 * (1 - d / mouseR) * dn;
+      n.vx += dx / d * f; n.vy += dy / d * f;
+    }
+    n.vx *= 0.85; n.vy *= 0.85;
+    const s = Math.hypot(n.vx, n.vy);
+    if (s > 10) { n.vx = n.vx / s * 10; n.vy = n.vy / s * 10; }
+    n.x += n.vx; n.y += n.vy;
+  }
+}
+
+function drawEdges(ctx, nodes, edges, alpha = 0.22, lineW = 0.55) {
+  ctx.strokeStyle = `rgba(0,0,0,${alpha})`;
+  ctx.lineWidth = lineW;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  for (const [i, j] of edges) {
+    ctx.moveTo(nodes[i].x, nodes[i].y);
+    ctx.lineTo(nodes[j].x, nodes[j].y);
+  }
+  ctx.stroke();
+}
+
+function drawNodes(ctx, nodes, r = 3, strokeAlpha = 0.78, lineW = 1) {
+  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = `rgba(0,0,0,${strokeAlpha})`;
+  ctx.lineWidth = lineW;
+  for (const n of nodes) {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r || r, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+  }
+}
+
+function drawArrow(ctx, ax, ay, bx, by, head = 4, alpha = 0.55) {
+  const dx = bx - ax, dy = by - ay;
+  const d = Math.hypot(dx, dy) || 0.001;
+  const ux = dx / d, uy = dy / d;
+  const ex = bx - ux * (head + 2), ey = by - uy * (head + 2);
+  ctx.strokeStyle = `rgba(0,0,0,${alpha})`;
+  ctx.lineWidth = 0.6;
+  ctx.beginPath();
+  ctx.moveTo(ax, ay); ctx.lineTo(ex, ey);
+  ctx.stroke();
+  ctx.fillStyle = `rgba(0,0,0,${alpha})`;
+  const px = -uy, py = ux;
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(ex + px * head * 0.5, ey + py * head * 0.5);
+  ctx.lineTo(ex - px * head * 0.5, ey - py * head * 0.5);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ═══════════ 1. MLP ═══════════ */
+function mlp({ W, H }) {
+  const layers = [3, 5, 7, 5, 2];
+  const nodes = [];
+  const idx = [0];
+  const mX = W * 0.12, mY = H * 0.1;
+  const uW = W - 2 * mX;
+  const maxL = Math.max(...layers);
+  for (let L = 0; L < layers.length; L++) {
+    const cnt = layers[L];
+    const x = mX + (L / (layers.length - 1)) * uW;
+    const gap = Math.min((H - 2 * mY) / (maxL + 1), 20);
+    const sy = H / 2 - gap * (cnt - 1) / 2;
+    for (let i = 0; i < cnt; i++) nodes.push(mkNode(x, sy + i * gap));
+    idx.push(idx[L] + cnt);
+  }
+  const edges = [];
+  for (let L = 0; L < layers.length - 1; L++)
+    for (let i = 0; i < layers[L]; i++)
+      for (let j = 0; j < layers[L + 1]; j++)
+        edges.push([idx[L] + i, idx[L + 1] + j]);
+  return {
+    tick: (dt, m) => spring(nodes, m, dt, 100),
+    render: ctx => {
+      drawEdges(ctx, nodes, edges, 0.18, 0.5);
+      drawNodes(ctx, nodes, 3);
+    }
+  };
+}
+
+/* ═══════════ 2. Attention ═══════════ */
+function attention({ W, H }) {
+  const n = 6;
+  const top = [], bot = [];
+  const mX = W * 0.12;
+  const tY = H * 0.22, bY = H * 0.78;
+  for (let i = 0; i < n; i++) {
+    const x = mX + (i / (n - 1)) * (W - 2 * mX);
+    top.push(mkNode(x, tY));
+    bot.push(mkNode(x, bY));
+  }
+  const nodes = [...top, ...bot];
+  let weights = [];
+  let prev = [];
+  let t = 0, period = 1800;
+  function newWeights() {
+    const w = Array.from({ length: n }, () => Array.from({ length: n }, () => Math.random()));
+    for (let i = 0; i < n; i++) {
+      const s = w[i].reduce((a, b) => a + b, 0);
+      for (let j = 0; j < n; j++) w[i][j] /= s;
+    }
+    return w;
+  }
+  weights = newWeights(); prev = weights.map(r => r.slice());
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 80);
+      t += dt;
+      if (t > period) {
+        t = 0;
+        prev = weights.map(r => r.slice());
+        weights = newWeights();
+      }
+    },
+    render: ctx => {
+      const k = Math.min(1, t / period);
+      ctx.lineCap = 'round';
+      ctx.lineWidth = 0.55;
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+          const w = prev[i][j] * (1 - k) + weights[i][j] * k;
+          ctx.strokeStyle = `rgba(0,0,0,${(w * 1.3).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.moveTo(top[i].x, top[i].y);
+          ctx.lineTo(bot[j].x, bot[j].y);
+          ctx.stroke();
+        }
+      }
+      drawNodes(ctx, nodes, 3.5);
+    }
+  };
+}
+
+/* ═══════════ 3. CNN ═══════════ */
+function cnn({ W, H }) {
+  const cols = 11, rows = 11;
+  const mX = W * 0.12, mY = H * 0.12;
+  const uW = W - 2 * mX, uH = H - 2 * mY;
+  const dxg = uW / (cols - 1), dyg = uH / (rows - 1);
+  const pts = [];
+  for (let r = 0; r < rows; r++)
+    for (let c = 0; c < cols; c++)
+      pts.push({ x: mX + c * dxg, y: mY + r * dyg, c, r });
+  let t = 0;
+  const kSize = 3;
+  return {
+    tick: dt => { t += dt; },
+    render: ctx => {
+      const phase = (t / 2200) % 1;
+      const path = (cols - kSize) * (rows - kSize);
+      const step = Math.floor(phase * (path + 1));
+      const kc = step % (cols - kSize + 1);
+      const kr = Math.floor(step / (cols - kSize + 1));
+      for (const p of pts) {
+        const inK = p.c >= kc && p.c < kc + kSize && p.r >= kr && p.r < kr + kSize;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = inK ? '#000' : 'rgba(0,0,0,0.25)';
+        ctx.fill();
+      }
+      ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+      ctx.lineWidth = 1;
+      const x0 = mX + kc * dxg - 5, y0 = mY + kr * dyg - 5;
+      const x1 = mX + (kc + kSize - 1) * dxg + 5, y1 = mY + (kr + kSize - 1) * dyg + 5;
+      ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+    }
+  };
+}
+
+/* ═══════════ 4. RNN ═══════════ */
+function rnn({ W, H }) {
+  const n = 5;
+  const y = H * 0.58;
+  const mX = W * 0.12;
+  const nodes = [];
+  for (let i = 0; i < n; i++) {
+    const x = mX + (i / (n - 1)) * (W - 2 * mX);
+    nodes.push(mkNode(x, y, 5));
+  }
+  let t = 0;
+  return {
+    tick: (dt, m) => { t += dt; spring(nodes, m, dt, 70); },
+    render: ctx => {
+      for (let i = 0; i < n - 1; i++) {
+        drawArrow(ctx, nodes[i].x + 5, nodes[i].y, nodes[i + 1].x - 5, nodes[i + 1].y, 3.5, 0.6);
+      }
+      for (const n of nodes) {
+        ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y - 14, 7, Math.PI * 0.25, Math.PI * 0.75 * 2, false);
+        ctx.stroke();
+      }
+      drawNodes(ctx, nodes, 5);
+      const phase = (t / 1400) % 1;
+      const idx = Math.min(n - 1, Math.floor(phase * n));
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(nodes[idx].x, nodes[idx].y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.font = '9px var(--mono, monospace)';
+      for (let i = 0; i < n; i++) {
+        ctx.fillText('t' + (i === 0 ? '₀' : i === n - 1 ? 'ₙ' : ''), nodes[i].x - 4, y + 22);
+      }
+    }
+  };
+}
+
+/* ═══════════ 5. Autoencoder ═══════════ */
+function autoencoder({ W, H }) {
+  const layers = [6, 4, 2, 4, 6];
+  const nodes = [];
+  const idx = [0];
+  const mX = W * 0.12, mY = H * 0.1;
+  const uW = W - 2 * mX;
+  const maxL = Math.max(...layers);
+  for (let L = 0; L < layers.length; L++) {
+    const cnt = layers[L];
+    const x = mX + (L / (layers.length - 1)) * uW;
+    const gap = Math.min((H - 2 * mY) / (maxL + 1), 20);
+    const sy = H / 2 - gap * (cnt - 1) / 2;
+    for (let i = 0; i < cnt; i++) nodes.push(mkNode(x, sy + i * gap));
+    idx.push(idx[L] + cnt);
+  }
+  const edges = [];
+  for (let L = 0; L < layers.length - 1; L++)
+    for (let i = 0; i < layers[L]; i++)
+      for (let j = 0; j < layers[L + 1]; j++)
+        edges.push([idx[L] + i, idx[L + 1] + j]);
+  return {
+    tick: (dt, m) => spring(nodes, m, dt, 90),
+    render: ctx => {
+      drawEdges(ctx, nodes, edges, 0.2, 0.5);
+      drawNodes(ctx, nodes, 3);
+      ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+      ctx.lineWidth = 0.6;
+      ctx.setLineDash([2, 3]);
+      const cx = nodes[idx[2]].x;
+      ctx.beginPath();
+      ctx.moveTo(cx, H * 0.08); ctx.lineTo(cx, H * 0.92);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  };
+}
+
+/* ═══════════ 6. GNN ═══════════ */
+function gnn({ W, H }) {
+  const n = 11;
+  const nodes = [];
+  const cx = W / 2, cy = H / 2;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + rand(-0.2, 0.2);
+    const rad = Math.min(W, H) * rand(0.22, 0.36);
+    nodes.push(mkNode(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad));
+  }
+  const edges = [];
+  for (let i = 0; i < n; i++) {
+    const k = 2 + Math.floor(Math.random() * 2);
+    for (let j = 0; j < k; j++) {
+      const t = (i + 1 + Math.floor(Math.random() * (n - 2))) % n;
+      if (!edges.some(e => (e[0] === i && e[1] === t) || (e[0] === t && e[1] === i)))
+        edges.push([i, t]);
+    }
+  }
+  const pulses = [];
+  let t = 0;
+  function spawn() {
+    if (!edges.length) return;
+    const e = edges[Math.floor(Math.random() * edges.length)];
+    pulses.push({ a: e[0], b: e[1], p: 0 });
+  }
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 80);
+      t += dt;
+      if (t > 320) { t = 0; spawn(); }
+      for (const p of pulses) p.p += dt / 900;
+      for (let i = pulses.length - 1; i >= 0; i--) if (pulses[i].p >= 1) pulses.splice(i, 1);
+    },
+    render: ctx => {
+      drawEdges(ctx, nodes, edges, 0.22, 0.55);
+      for (const p of pulses) {
+        const a = nodes[p.a], b = nodes[p.b];
+        const x = a.x + (b.x - a.x) * p.p;
+        const y = a.y + (b.y - a.y) * p.p;
+        ctx.fillStyle = 'rgba(0,0,0,' + (1 - p.p).toFixed(2) + ')';
+        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
+      }
+      drawNodes(ctx, nodes, 3.5);
+    }
+  };
+}
+
+/* ═══════════ 7. RAG ═══════════ */
+function rag({ W, H }) {
+  const q = mkNode(W * 0.1, H * 0.5, 5);
+  const llm = mkNode(W * 0.88, H * 0.5, 6);
+  const docs = [];
+  const dc = 3, dr = 3;
+  const dx0 = W * 0.38, dx1 = W * 0.62;
+  const dy0 = H * 0.22, dy1 = H * 0.78;
+  for (let r = 0; r < dr; r++)
+    for (let c = 0; c < dc; c++)
+      docs.push(mkNode(dx0 + c * (dx1 - dx0) / (dc - 1), dy0 + r * (dy1 - dy0) / (dr - 1), 3));
+  const nodes = [q, ...docs, llm];
+  let t = 0;
+  const active = new Set();
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 80);
+      t += dt;
+      if (t > 1200) {
+        t = 0;
+        active.clear();
+        const picks = new Set();
+        const k = 3;
+        while (picks.size < k) picks.add(Math.floor(Math.random() * docs.length));
+        picks.forEach(i => active.add(i));
+      }
+    },
+    render: ctx => {
+      ctx.lineCap = 'round';
+      for (let i = 0; i < docs.length; i++) {
+        const on = active.has(i);
+        ctx.strokeStyle = on ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0.12)';
+        ctx.lineWidth = on ? 1 : 0.5;
+        ctx.beginPath();
+        ctx.moveTo(q.x + 5, q.y); ctx.lineTo(docs[i].x - 3, docs[i].y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(docs[i].x + 3, docs[i].y); ctx.lineTo(llm.x - 6, llm.y); ctx.stroke();
+      }
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+      ctx.lineWidth = 1;
+      for (const d of docs) {
+        ctx.fillRect(d.x - 5, d.y - 6, 10, 12);
+        ctx.strokeRect(d.x - 5, d.y - 6, 10, 12);
+      }
+      drawNodes(ctx, [q, llm], 5);
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.font = '9px var(--mono, monospace)';
+      ctx.fillText('q', q.x - 3, q.y + 18);
+      ctx.fillText('llm', llm.x - 9, llm.y + 18);
+    }
+  };
+}
+
+/* ═══════════ 8. Diffusion ═══════════ */
+function diffusion({ W, H }) {
+  const N = 64;
+  const pts = [];
+  const cols = 8, rows = 8;
+  const mX = W * 0.2, mY = H * 0.2;
+  const dx = (W - 2 * mX) / (cols - 1), dy = (H - 2 * mY) / (rows - 1);
+  for (let i = 0; i < N; i++) {
+    const c = i % cols, r = Math.floor(i / cols);
+    pts.push({
+      sx: W / 2 + rand(-W * 0.4, W * 0.4),
+      sy: H / 2 + rand(-H * 0.4, H * 0.4),
+      tx: mX + c * dx,
+      ty: mY + r * dy,
+      x: 0, y: 0
+    });
+    pts[i].x = pts[i].sx; pts[i].y = pts[i].sy;
+  }
+  let t = 0;
+  return {
+    tick: dt => { t += dt; },
+    render: ctx => {
+      const period = 3800;
+      const phase = (t % period) / period;
+      const k = phase < 0.5 ? phase * 2 : (1 - phase) * 2;
+      const eased = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      for (const p of pts) {
+        p.x = p.sx + (p.tx - p.sx) * eased;
+        p.y = p.sy + (p.ty - p.sy) * eased;
+      }
+      ctx.fillStyle = 'rgba(0,0,0,0.72)';
+      for (const p of pts) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  };
+}
+
+/* ═══════════ 9. Mixture of Experts ═══════════ */
+function moe({ W, H }) {
+  const gate = mkNode(W * 0.5, H * 0.2, 5);
+  const nExp = 5;
+  const experts = [];
+  const eY = H * 0.78;
+  const mX = W * 0.15;
+  for (let i = 0; i < nExp; i++) {
+    experts.push(mkNode(mX + (i / (nExp - 1)) * (W - 2 * mX), eY, 5));
+  }
+  const nodes = [gate, ...experts];
+  let t = 0;
+  let active = 0;
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 80);
+      t += dt;
+      if (t > 900) { t = 0; active = Math.floor(Math.random() * nExp); }
+    },
+    render: ctx => {
+      for (let i = 0; i < nExp; i++) {
+        const on = i === active;
+        ctx.strokeStyle = on ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.15)';
+        ctx.lineWidth = on ? 1.2 : 0.5;
+        ctx.beginPath();
+        ctx.moveTo(gate.x, gate.y + 5); ctx.lineTo(experts[i].x, experts[i].y - 5);
+        ctx.stroke();
+      }
+      drawNodes(ctx, nodes, 5);
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(experts[active].x, experts[active].y, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.font = '9px var(--mono, monospace)';
+      ctx.fillText('gate', gate.x - 10, gate.y - 10);
+    }
+  };
+}
+
+/* ═══════════ 10. Swarm ═══════════ */
+function swarm({ W, H }) {
+  const N = 18;
+  const agents = [];
+  for (let i = 0; i < N; i++) {
+    agents.push({
+      x: rand(W * 0.1, W * 0.9),
+      y: rand(H * 0.1, H * 0.9),
+      vx: rand(-1, 1),
+      vy: rand(-1, 1)
+    });
+  }
+  return {
+    tick: (dt, m) => {
+      const dn = Math.min(dt / 16, 2);
+      for (const a of agents) {
+        let cx = 0, cy = 0, ax = 0, ay = 0, sx = 0, sy = 0, nC = 0, nA = 0;
+        for (const b of agents) {
+          if (b === a) continue;
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const d = Math.hypot(dx, dy) || 0.001;
+          if (d < 60) { cx += b.x; cy += b.y; ax += b.vx; ay += b.vy; nC++; nA++; }
+          if (d < 20) { sx -= dx / d; sy -= dy / d; }
+        }
+        if (nC) { cx = cx / nC - a.x; cy = cy / nC - a.y; a.vx += cx * 0.0015 * dn; a.vy += cy * 0.0015 * dn; }
+        if (nA) { a.vx += (ax / nA - a.vx) * 0.02 * dn; a.vy += (ay / nA - a.vy) * 0.02 * dn; }
+        a.vx += sx * 0.04 * dn; a.vy += sy * 0.04 * dn;
+        if (m.x > -500) {
+          const dx = m.x - a.x, dy = m.y - a.y;
+          const d = Math.hypot(dx, dy) || 0.001;
+          if (d < 120) { a.vx += dx / d * 0.15 * dn; a.vy += dy / d * 0.15 * dn; }
+        }
+        const s = Math.hypot(a.vx, a.vy);
+        if (s > 1.8) { a.vx = a.vx / s * 1.8; a.vy = a.vy / s * 1.8; }
+        a.x += a.vx * dn; a.y += a.vy * dn;
+        if (a.x < 4) { a.x = 4; a.vx *= -0.7; }
+        if (a.x > W - 4) { a.x = W - 4; a.vx *= -0.7; }
+        if (a.y < 4) { a.y = 4; a.vy *= -0.7; }
+        if (a.y > H - 4) { a.y = H - 4; a.vy *= -0.7; }
+      }
+    },
+    render: ctx => {
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = 'rgba(0,0,0,0.78)';
+      ctx.lineWidth = 0.9;
+      for (const a of agents) {
+        const ang = Math.atan2(a.vy, a.vx);
+        ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.rotate(ang);
+        ctx.beginPath();
+        ctx.moveTo(4, 0); ctx.lineTo(-3, 2.2); ctx.lineTo(-3, -2.2); ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        ctx.restore();
+      }
+    }
+  };
+}
+
+/* ═══════════ 11. Tool Agent ═══════════ */
+function tools({ W, H }) {
+  const hub = mkNode(W / 2, H / 2, 6);
+  const nT = 7;
+  const tlist = [];
+  const rad = Math.min(W, H) * 0.34;
+  for (let i = 0; i < nT; i++) {
+    const a = (i / nT) * Math.PI * 2 - Math.PI / 2;
+    tlist.push(mkNode(hub.x + Math.cos(a) * rad, hub.y + Math.sin(a) * rad, 4));
+  }
+  const nodes = [hub, ...tlist];
+  let t = 0, target = 0, out = true, prog = 0;
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 70);
+      t += dt;
+      prog += dt / 550;
+      if (prog >= 1) {
+        prog = 0;
+        if (out) { out = false; }
+        else { out = true; target = Math.floor(Math.random() * nT); }
+      }
+    },
+    render: ctx => {
+      for (let i = 0; i < nT; i++) {
+        ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(hub.x, hub.y); ctx.lineTo(tlist[i].x, tlist[i].y);
+        ctx.stroke();
+      }
+      const tgt = tlist[target];
+      const from = out ? hub : tgt;
+      const to = out ? tgt : hub;
+      const x = from.x + (to.x - from.x) * prog;
+      const y = from.y + (to.y - from.y) * prog;
+      ctx.fillStyle = '#000';
+      ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+      ctx.lineWidth = 1;
+      for (const t of tlist) {
+        ctx.fillRect(t.x - 4, t.y - 4, 8, 8);
+        ctx.strokeRect(t.x - 4, t.y - 4, 8, 8);
+      }
+      drawNodes(ctx, [hub], 6);
+    }
+  };
+}
+
+/* ═══════════ 12. Decision Tree ═══════════ */
+function tree({ W, H }) {
+  const depth = 4;
+  const mX = W * 0.08, mY = H * 0.1;
+  const uW = W - 2 * mX;
+  const dy = (H - 2 * mY) / (depth - 1);
+  const nodes = [];
+  const edges = [];
+  function add(d, i, total) {
+    const x = mX + ((i + 0.5) / total) * uW;
+    const y = mY + d * dy;
+    nodes.push(mkNode(x, y, d === 0 ? 4 : 3));
+    return nodes.length - 1;
+  }
+  const idxByDepth = [];
+  for (let d = 0; d < depth; d++) {
+    const count = 1 << d;
+    const arr = [];
+    for (let i = 0; i < count; i++) arr.push(add(d, i, count));
+    idxByDepth.push(arr);
+  }
+  for (let d = 0; d < depth - 1; d++) {
+    const cur = idxByDepth[d], nxt = idxByDepth[d + 1];
+    for (let i = 0; i < cur.length; i++) {
+      edges.push([cur[i], nxt[i * 2]]);
+      edges.push([cur[i], nxt[i * 2 + 1]]);
+    }
+  }
+  let t = 0;
+  let path = [];
+  function newPath() {
+    path = [0];
+    let i = 0;
+    for (let d = 1; d < depth; d++) {
+      i = idxByDepth[d][Math.floor(Math.random() * idxByDepth[d].length)];
+      path.push(i);
+    }
+  }
+  newPath();
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 60);
+      t += dt;
+      if (t > 1400) { t = 0; newPath(); }
+    },
+    render: ctx => {
+      drawEdges(ctx, nodes, edges, 0.16, 0.5);
+      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+      ctx.lineWidth = 1.1;
+      for (let i = 0; i < path.length - 1; i++) {
+        const a = nodes[path[i]], b = nodes[path[i + 1]];
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+      drawNodes(ctx, nodes, 3);
+      for (const p of path) {
+        const n = nodes[p];
+        ctx.fillStyle = '#000';
+        ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+  };
+}
+
+/* ═══════════ 13. Compute DAG ═══════════ */
+function dag({ W, H }) {
+  const layers = [2, 3, 2, 2];
+  const nodes = [];
+  const idx = [0];
+  const mX = W * 0.12, mY = H * 0.15;
+  const uW = W - 2 * mX;
+  for (let L = 0; L < layers.length; L++) {
+    const cnt = layers[L];
+    const x = mX + (L / (layers.length - 1)) * uW;
+    const gap = Math.min((H - 2 * mY) / (cnt + 1), 28);
+    const sy = H / 2 - gap * (cnt - 1) / 2;
+    for (let i = 0; i < cnt; i++) nodes.push(mkNode(x, sy + i * gap, 4));
+    idx.push(idx[L] + cnt);
+  }
+  const edges = [];
+  for (let L = 0; L < layers.length - 1; L++) {
+    for (let i = 0; i < layers[L]; i++) {
+      const conn = 1 + Math.floor(Math.random() * 2);
+      for (let k = 0; k < conn; k++) {
+        const j = Math.floor(Math.random() * layers[L + 1]);
+        if (!edges.some(e => e[0] === idx[L] + i && e[1] === idx[L + 1] + j))
+          edges.push([idx[L] + i, idx[L + 1] + j]);
+      }
+    }
+  }
+  let t = 0;
+  return {
+    tick: (dt, m) => { spring(nodes, m, dt, 70); t += dt; },
+    render: ctx => {
+      for (const [a, b] of edges) {
+        drawArrow(ctx, nodes[a].x + 4, nodes[a].y, nodes[b].x - 4, nodes[b].y, 3, 0.4);
+      }
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+      ctx.lineWidth = 1;
+      for (const n of nodes) {
+        ctx.beginPath(); ctx.arc(n.x, n.y, 4, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+      }
+      const pulse = (Math.sin(t / 500) + 1) / 2;
+      ctx.fillStyle = `rgba(0,0,0,${(pulse * 0.8).toFixed(2)})`;
+      ctx.beginPath();
+      ctx.arc(nodes[0].x, nodes[0].y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  };
+}
+
+/* ═══════════ 14. Blockchain ═══════════ */
+function blockchain({ W, H }) {
+  const n = 5;
+  const y = H / 2;
+  const bW = 22, bH = 28;
+  const gap = (W - n * bW - 2 * W * 0.08) / (n - 1);
+  const mX = W * 0.08;
+  const blocks = [];
+  for (let i = 0; i < n; i++) {
+    blocks.push({
+      x: mX + i * (bW + gap),
+      y: y - bH / 2,
+      hash: (Math.random() * 0xffff | 0).toString(16).padStart(4, '0')
+    });
+  }
+  let t = 0, phase = 0;
+  return {
+    tick: dt => {
+      t += dt;
+      phase = (t / 2500) % 1;
+    },
+    render: ctx => {
+      for (let i = 0; i < n - 1; i++) {
+        drawArrow(ctx,
+          blocks[i].x + bW, blocks[i].y + bH / 2,
+          blocks[i + 1].x, blocks[i + 1].y + bH / 2,
+          3.5, 0.55);
+      }
+      for (let i = 0; i < n; i++) {
+        const b = blocks[i];
+        ctx.fillStyle = '#fff';
+        ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+        ctx.lineWidth = 1;
+        ctx.fillRect(b.x, b.y, bW, bH);
+        ctx.strokeRect(b.x, b.y, bW, bH);
+        ctx.fillStyle = 'rgba(0,0,0,0.75)';
+        ctx.font = '8px var(--mono, monospace)';
+        ctx.fillText(b.hash, b.x + 2, b.y + bH / 2 + 3);
+      }
+      const last = blocks[n - 1];
+      const nx = last.x + bW + gap;
+      ctx.save();
+      ctx.globalAlpha = phase;
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+      ctx.setLineDash([2, 2]);
+      ctx.strokeRect(nx, last.y, bW, bH);
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+  };
+}
+
+/* ═══════════ 15. Markov Chain ═══════════ */
+function markov({ W, H }) {
+  const N = 4;
+  const nodes = [];
+  const cx = W / 2, cy = H / 2;
+  const rad = Math.min(W, H) * 0.3;
+  for (let i = 0; i < N; i++) {
+    const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+    nodes.push(mkNode(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad, 6));
+  }
+  let cur = 0, t = 0, nextT = 900;
+  const probs = Array.from({ length: N }, () => {
+    const r = Array.from({ length: N }, () => Math.random() * 0.5 + 0.1);
+    const s = r.reduce((a, b) => a + b, 0);
+    return r.map(v => v / s);
+  });
+  return {
+    tick: (dt, m) => {
+      spring(nodes, m, dt, 80);
+      t += dt;
+      if (t > nextT) {
+        t = 0; nextT = 800 + Math.random() * 600;
+        const r = Math.random();
+        let acc = 0;
+        for (let j = 0; j < N; j++) {
+          acc += probs[cur][j];
+          if (r < acc) { cur = j; break; }
+        }
+      }
+    },
+    render: ctx => {
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          if (i === j) continue;
+          const w = probs[i][j];
+          const a = nodes[i], b = nodes[j];
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const d = Math.hypot(dx, dy) || 1;
+          const ox = -dy / d * 4, oy = dx / d * 4;
+          ctx.strokeStyle = `rgba(0,0,0,${(0.1 + w * 0.8).toFixed(2)})`;
+          ctx.lineWidth = 0.55;
+          ctx.beginPath();
+          ctx.moveTo(a.x + ox, a.y + oy);
+          ctx.lineTo(b.x + ox - dx / d * 7, b.y + oy - dy / d * 7);
+          ctx.stroke();
+        }
+      }
+      drawNodes(ctx, nodes, 6, 0.85, 1);
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(nodes[cur].x, nodes[cur].y, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.font = '10px var(--mono, monospace)';
+      for (let i = 0; i < N; i++) {
+        ctx.fillText('s' + i, nodes[i].x - 5, nodes[i].y + 20);
+      }
+    }
+  };
+}
+
+/* ═══════════ wiring ═══════════ */
+const STRUCTURES = [
+  { name: 'MLP',             build: mlp },
+  { name: 'Attention',       build: attention },
+  { name: 'CNN',             build: cnn },
+  { name: 'RNN',             build: rnn },
+  { name: 'Autoencoder',     build: autoencoder },
+  { name: 'GNN',             build: gnn },
+  { name: 'RAG',             build: rag },
+  { name: 'Diffusion',       build: diffusion },
+  { name: 'MoE',             build: moe },
+  { name: 'Swarm',           build: swarm },
+  { name: 'Tool Agent',      build: tools },
+  { name: 'Decision Tree',   build: tree },
+  { name: 'Compute DAG',     build: dag },
+  { name: 'Blockchain',      build: blockchain },
+  { name: 'Markov Chain',    build: markov }
+];
+
+class Tile {
+  constructor(canvas, builder) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.builder = builder;
+    this.mouse = { x: -999, y: -999 };
+    this.W = 0; this.H = 0;
+    canvas.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      this.mouse.x = e.clientX - r.left;
+      this.mouse.y = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave', () => { this.mouse.x = -999; this.mouse.y = -999; });
+    this.trySetup();
+    window.addEventListener('resize', () => this.trySetup());
+  }
+  trySetup() {
+    const w = this.canvas.clientWidth;
+    const h = this.canvas.clientHeight;
+    if (w === 0 || h === 0) {
+      requestAnimationFrame(() => this.trySetup());
+      return;
+    }
+    if (w === this.W && h === this.H && this.tickFn) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.W = w; this.H = h;
+    this.canvas.width = w * dpr;
+    this.canvas.height = h * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const api = this.builder({ W: w, H: h });
+    this.tickFn = api.tick;
+    this.renderFn = api.render;
+  }
+  frame(dt) {
+    if (!this.tickFn) { this.trySetup(); return; }
+    this.tickFn(dt, this.mouse);
+    this.ctx.clearRect(0, 0, this.W, this.H);
+    this.renderFn(this.ctx);
+  }
+}
+
+const grid = document.getElementById('grid');
+const tiles = STRUCTURES.map((s, i) => {
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  const canvas = document.createElement('canvas');
+  const num = document.createElement('div');
+  num.className = 'num';
+  num.textContent = String(i + 1).padStart(2, '0');
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.textContent = s.name;
+  tile.appendChild(canvas);
+  tile.appendChild(num);
+  tile.appendChild(label);
+  grid.appendChild(tile);
+  return new Tile(canvas, s.build);
+});
+
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(50, now - last);
+  last = now;
+  for (let i = 0; i < tiles.length; i++) {
+    try { tiles[i].frame(dt); }
+    catch (err) {
+      if (!tiles[i]._errored) {
+        console.error('tile', i + 1, STRUCTURES[i].name, err);
+        tiles[i]._errored = true;
+      }
+    }
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
