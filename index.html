@@ -322,9 +322,153 @@
     }
 
     /* BOOKSHELF */
+    #bookshelf-section .shelf-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+    #bookshelf-section .shelf-header .bio-section-title { margin-bottom: 0; }
+
+    .shelf-lamp {
+      position: relative;
+      width: 140px;
+      height: 60px;
+      flex-shrink: 0;
+      overflow: visible;
+      margin-top: -28px;
+    }
+    .shelf-lamp .lamp-string {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1.5px;
+      height: 22px;
+      background: #9a9a9a;
+      transform: translateX(-0.75px);
+      z-index: 2;
+    }
+    .shelf-lamp .lamp-shade {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      margin-left: -28px;
+      width: 56px;
+      height: 0;
+      border-bottom: 46px solid #2a2a2a;
+      border-left: 22px solid transparent;
+      border-right: 22px solid transparent;
+      border-radius: 5px 5px 0 0;
+      z-index: 3;
+    }
+    .shelf-lamp .lamp-bulb {
+      position: absolute;
+      top: 52px;
+      left: 50%;
+      margin-left: -13px;
+      width: 26px;
+      height: 26px;
+      background: #6b6b6b;
+      border-radius: 50%;
+      z-index: 1;
+      transition: background 300ms, box-shadow 300ms;
+    }
+    .shelf-lamp .lamp-pull {
+      position: absolute;
+      top: 58px;
+      left: 50%;
+      margin-left: 18px;
+      width: 14px;
+      height: 82px;
+      display: block;
+      cursor: pointer;
+      z-index: 2;
+      transform-origin: top center;
+      transition: transform 280ms cubic-bezier(.3,1.4,.5,1);
+    }
+    .shelf-lamp .lamp-pull:hover { transform: translateY(3px); }
+    .shelf-lamp .lamp-pull:active { transform: translateY(8px); }
+    .shelf-lamp .lamp-pull .lamp-pull-cord {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1.5px;
+      height: 66px;
+      background: #b3b3b3;
+      transform: translateX(-0.75px);
+    }
+    .shelf-lamp .lamp-pull .lamp-pull-knob {
+      position: absolute;
+      top: 62px;
+      left: 50%;
+      margin-left: -6px;
+      width: 12px;
+      height: 12px;
+      background: #d4d4d4;
+      border: 1px solid #888;
+      border-radius: 50%;
+    }
+    .shelf-lamp .lamp-pull-off { display: none; }
+    .shelf-lamp .lamp-light {
+      position: absolute;
+      top: 78px;
+      left: 50%;
+      margin-left: -150px;
+      width: 300px;
+      height: 380px;
+      background: radial-gradient(
+        ellipse 60% 90% at 50% 0%,
+        rgba(255, 220, 140, 0.55) 0%,
+        rgba(255, 210, 130, 0.28) 45%,
+        rgba(255, 205, 125, 0.08) 80%,
+        rgba(255, 200, 120, 0) 100%
+      );
+      clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 480ms ease;
+      filter: blur(10px);
+    }
+    .shelf-lamp .lamp-ambient {
+      position: absolute;
+      top: 56px;
+      left: 50%;
+      margin-left: -110px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(
+        circle at 50% 25%,
+        rgba(255, 215, 135, 0.35) 0%,
+        rgba(255, 210, 130, 0.12) 55%,
+        rgba(255, 205, 125, 0) 100%
+      );
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 500ms ease;
+      filter: blur(14px);
+    }
+    #shelf-lamp:target .lamp-pull-on { display: none; }
+    #shelf-lamp:target .lamp-pull-off { display: block; }
+    #shelf-lamp:target .lamp-bulb {
+      background: radial-gradient(circle at 40% 38%, #ffffff 0%, #FFF6C2 55%, #F5D76E 100%);
+      box-shadow:
+        0 0 6px 1px #ffffff,
+        0 0 16px 4px rgba(255, 240, 170, 0.95),
+        0 0 34px 10px rgba(255, 205, 80, 0.55);
+    }
+    #shelf-lamp:target .lamp-light { opacity: 1; }
+    #shelf-lamp:target .lamp-ambient { opacity: 1; }
+    #shelf-lamp:target ~ #bookshelf .book {
+      transition: filter 400ms ease;
+      filter: brightness(1.1) saturate(1.1);
+    }
+
     #bookshelf-section .bookshelf-wrap {
       position: relative;
-      margin-top: var(--space-6);
+      margin-top: var(--space-2);
       max-width: 560px;
       perspective: 1400px;
     }
@@ -750,7 +894,24 @@
         </section>
 
         <section class="bio-section" id="bookshelf-section" aria-label="Bookshelf">
-          <h2 class="bio-section-title">Bookshelf</h2>
+          <div class="shelf-header">
+            <h2 class="bio-section-title">Bookshelf</h2>
+            <div id="shelf-lamp" class="shelf-lamp">
+              <span class="lamp-string"></span>
+              <span class="lamp-shade"></span>
+              <span class="lamp-bulb"></span>
+              <a href="#shelf-lamp" class="lamp-pull lamp-pull-on" aria-label="Pull lamp on">
+                <span class="lamp-pull-cord"></span>
+                <span class="lamp-pull-knob"></span>
+              </a>
+              <a href="#" class="lamp-pull lamp-pull-off" aria-label="Pull lamp off">
+                <span class="lamp-pull-cord"></span>
+                <span class="lamp-pull-knob"></span>
+              </a>
+              <span class="lamp-ambient"></span>
+              <span class="lamp-light"></span>
+            </div>
+          </div>
           <div id="bookshelf" class="bookshelf-wrap"></div>
         </section>
 
@@ -1352,6 +1513,29 @@
       }
     });
     if (row.children.length > 0) flushRow();
+    applyLampDip();
+  }
+
+  function applyLampDip() {
+    var pull = document.querySelector('#shelf-lamp .lamp-pull-on');
+    var firstBookshelf = wrap.querySelector('.shelf-row:first-child .bookshelf');
+    if (!pull || !firstBookshelf) return;
+    var pullRect = pull.getBoundingClientRect();
+    var chainX = pullRect.left + pullRect.width / 2;
+    var DIP_RADIUS = 170;
+    var MAX_DIP = 58;
+    firstBookshelf.querySelectorAll('.book').forEach(function (b) {
+      var r = b.getBoundingClientRect();
+      var cx = r.left + r.width / 2;
+      var dx = Math.abs(cx - chainX);
+      if (dx >= DIP_RADIUS) return;
+      var t = dx / DIP_RADIUS;
+      var factor = 0.5 * (1 + Math.cos(Math.PI * t));
+      var reduce = MAX_DIP * factor;
+      var currentH = parseFloat(b.style.height) || b.offsetHeight;
+      var newH = Math.max(70, currentH - reduce);
+      b.style.height = newH + 'px';
+    });
   }
 
   build();
