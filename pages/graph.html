@@ -89,33 +89,23 @@
 
     .bio-header {
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
       margin-bottom: var(--space-6);
-    }
-    .bio-avatar {
-      display: block;
-      width: 44%;
-      height: auto;
-      flex-shrink: 0;
     }
     .bio-header .bio-name {
       flex: 1;
-      text-align: right;
+      text-align: left;
       margin: 0;
+      line-height: 1;
     }
     .bio-name {
-      font-size: clamp(3rem, 5.2vw, 4.6rem);
+      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
       font-weight: 400;
       letter-spacing: 0;
       line-height: 1.02;
       margin-bottom: 0;
       text-transform: lowercase;
       white-space: nowrap;
-    }
-    .bio-name-ext {
-      display: inline-block;
-      letter-spacing: 0;
-      vertical-align: baseline;
     }
 
     .meta {
@@ -216,16 +206,15 @@
       a.back { margin-bottom: var(--space-5); }
       .bio-header {
         flex-direction: row;
-        align-items: center;
+        align-items: flex-end;
         gap: 14px;
         margin-bottom: var(--space-5);
       }
-      .bio-avatar { width: 34%; max-width: 140px; }
       .bio-name {
-        font-size: clamp(2.2rem, 11vw, 3.4rem);
+        font-size: clamp(1.4rem, 6vw, 2rem);
         line-height: 1;
       }
-      .bio-header .bio-name { text-align: right; }
+      .bio-header .bio-name { text-align: left; }
       .meta {
         font-size: 0.66rem;
         margin-bottom: var(--space-5);
@@ -241,8 +230,7 @@
 
     @media (max-width: 420px) {
       #right { height: 34vh; min-height: 220px; }
-      .bio-avatar { width: 32%; }
-      .bio-name { font-size: clamp(2rem, 12vw, 2.8rem); }
+      .bio-name { font-size: clamp(1.3rem, 7vw, 1.8rem); }
     }
   </style>
 </head>
@@ -255,13 +243,10 @@
           <a class="back" href="../index.html">← back</a>
 
           <div class="bio-header">
-            <img class="bio-avatar" src="../Screenshot%202026-04-17%20at%2010.07.59%E2%80%AFAM%20copy.png" alt="Ryan Rana">
-            <h1 class="bio-name">graph<br><span class="bio-name-ext">.com</span></h1>
+            <h1 class="bio-name">graphs our my favorite primitive.</h1>
           </div>
 
-          <div class="meta">
-            <span>// a short piece on favorite primitives</span>
-          </div>
+          
 
           <p class="bio-para lead">i didn't always like graphs.</p>
 
@@ -275,7 +260,7 @@
 
           <p class="bio-para">the cool thing isn't the abstraction. the cool thing is that when you stop forcing a system to be linear and let it be a graph, the <em>real</em> problem finally shows up. bottlenecks become shortest paths. contradictions become cycles. culture becomes centrality. trust becomes weight.</p>
 
-          <p class="bio-para">for a while i chased the flashiest part of every field — the biggest model, the slickest frontend, the cleverest algorithm. eventually i realized the thing underneath all of them is the same: which nodes. which edges. what flows.</p>
+          <p class="bio-para">i used to chase the loud parts of every field — the biggest model, the slickest interface, the cleverest trick. strip any of them down and the same three questions stare back: which nodes, which edges, what flows.</p>
 
           <p class="bio-para">a list lies. a tree lies a little less. a graph just says: here is what's connected, here is what moves. the rest is up to you.</p>
 
