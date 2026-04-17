@@ -1,5 +1,11 @@
 [
   {
+    "title": "AI Blocks",
+    "url": "https://github.com/RyanRana/Scratch-for-AI-Dev",
+    "description": "scratch for ai engineering, built in under 6 hours; 505 adaptive blocks in a graph db dag let you vibecode for 80% fewer tokens than opus 4.6, and import existing code or any github repo into the editor. open source.",
+    "skills": ["TypeScript", "Python", "React", "graph DB", "DAG", "code generation", "open source"]
+  },
+  {
     "title": "situational-intelligence",
     "url": "https://github.com/RyanRana/situational-intelligence",
     "description": "Situational emergency monitoring using live camera frames, motion analysis, speech recognition, geolocation, and AI vision analysis to detect risk, escalate events, and simulate dispatch workflows.",

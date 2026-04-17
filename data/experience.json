@@ -1,100 +1,114 @@
 [
   {
-    "title": "Embodied AI Engineer",
+    "title": "Intern (Incoming)",
+    "company": "Fiserv",
+    "date": "Apr 2026 - Present",
+    "location": "Berkeley Heights, NJ",
+    "description": "incoming."
+  },
+  {
+    "title": "AI Engineer",
     "company": "3E8 Robotics",
     "date": "Feb 2026 - Present",
     "location": "San Francisco, CA",
-    "description": "vision, edge inference"
+    "description": "vision, edge, blueprint.am. backed by founders inc."
   },
   {
-    "title": "Software Engineer",
+    "title": "AI Engineer",
     "company": "Centren Health",
     "date": "Nov 2025 - Feb 2026",
     "location": "New York City, NY",
-    "description": "transformers, s3, pk/pd."
+    "description": "ehr transformers, pkpd, data eng. employee #4, 8 hospital partners."
   },
   {
-    "title": "SWE embedded @ Seal Security",
-    "company": "Centren Health",
-    "date": "Nov 2025 - Jan 2026",
-    "location": "New York City, NY",
-    "description": "surveillance, re-id, VLA embedding."
+    "title": "AI Engineer (Contract)",
+    "company": "SEAL Security",
+    "date": "Nov 2025 - Dec 2025",
+    "location": "Houston, TX",
+    "description": "surveillance tool."
   },
   {
-    "title": "Software Engineer",
+    "title": "Product Engineer",
     "company": "Undergraduation.com",
     "date": "Oct 2025 - Nov 2025",
     "location": "Boston, MA",
-    "description": "infra, ai apis."
+    "description": "infra, llm apis."
   },
   {
-    "title": "Co-founder",
+    "title": "Builder",
     "company": "Mesh",
     "date": "Jun 2025 - Sep 2025",
     "location": "New York City, NY",
-    "description": "joinmesh.today with 600 others"
+    "description": "joinmesh.today with 600 users. rag, k8s, web."
   },
   {
     "title": "Possibilities Summit Intern",
     "company": "Goldman Sachs",
     "date": "Jan 2025 - Jun 2025",
     "location": "",
-    "description": "15% ar."
+    "description": "learned."
   },
   {
     "title": "Co-President",
     "company": "HillsHacks",
     "date": "Sep 2021 - Feb 2024",
-    "location": "Warren, NJ",
-    "description": "120+ attendees annually and led 4 workshops."
+    "location": "",
+    "description": "challenged 120 hackers a year & ran many workshops. invited back as alumni to give workshops."
   },
   {
-    "title": "Software Engineer",
+    "title": "Product Engineer",
     "company": "Populus Fantasy",
     "date": "Jul 2023 - Dec 2023",
     "location": "Austin, TX",
-    "description": "UI/UX & deployment for 4,500 users."
+    "description": "ui/ux & deployment."
   },
   {
-    "title": "Tech Team",
+    "title": "Back End Developer",
     "company": "MEGA League",
-    "date": "Sep 2023 - Nov 2023",
+    "date": "Sep 2023",
     "location": "",
-    "description": "backend development and infrastructure."
+    "description": "part-time."
   },
   {
-    "title": "Student Software Engineer Program",
+    "title": "Software Engineering Virtual Intern",
     "company": "JPMorgan Chase & Co.",
     "date": "Jul 2023 - Aug 2023",
-    "location": "",
-    "description": "learned data optimization and financial systems development."
+    "location": "Jersey City, NJ",
+    "description": "pre-uni program; learned a lot about data."
   },
   {
     "title": "President",
     "company": "Stem In Place",
-    "date": "Jun 2020 - Aug 2023",
+    "date": "Aug 2022 - Aug 2023",
     "location": "",
-    "description": "started as a teacher and grew the organization to 1,500 students and 40 instructors."
+    "description": "501(c)(3); free online live stem summer courses. 1500 students, 40 instructors. founded in 2021."
   },
   {
-    "title": "Software Engineer Intern",
+    "title": "Entry Cloud Engineer",
     "company": "Datanexxt",
     "date": "May 2022 - Sep 2022",
-   "location": "New York City, NY",
-    "description": "basic cloud migration (rehost & damage recovery)."
+    "location": "New York City, NY",
+    "description": "learned how to do cloud migration."
+  },
+  {
+    "title": "Researcher",
+    "company": "Opast Publishing Group",
+    "date": "Dec 2021 - Feb 2022",
+    "location": "",
+    "description": "unsupervised learning for pipe leakage and usage analysis; published in the Journal of Robotics and Automation Research."
   },
   {
     "title": "Instructor",
     "company": "Code Ninjas",
-    "date": "Jun 2021",
+    "date": "Jun 2021 - Sep 2021",
     "location": "Greenbrook, NJ",
-    "description": "Python and web development instruction."
+    "description": "python & web dev."
   },
   {
-    "title": "Lead Instructor",
+    "title": "Instructor",
     "company": "Bricks 4 Kidz",
     "date": "Jun 2019 - Jun 2021",
     "location": "Clark, NJ",
-    "description": "Python programming and EV3 robotics instruction. My mom owned part of the franchise at the time."
+    "description": "python & ev3. my mom had part of the franchise at the time."
   }
 ]

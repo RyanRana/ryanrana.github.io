@@ -3,75 +3,62 @@
   "paragraphs": [
     {
       "parts": [
-        { "text": "i " },
-        { "code": "pip install" },
-        { "text": "ed pygame" },
+        { "text": "the first thing i ever shipped was a pygame loop in 2020" },
         { "ref": 1 },
-        { "text": " in 2020; now i'm interested in solving hard problems with multi-modal reasoning" },
+        { "text": ". now i like to solve hard problems across any domain." }
+      ]
+    },
+    {
+      "parts": [
+        { "text": "i build multimodal AI" },
         { "ref": 2 },
-        { "text": ", custom MCPs" },
+        { "text": " out of unstructured data" },
         { "ref": 3 },
-        { "text": ", robots" },
+        { "text": " to be deployed in production and applications" },
         { "ref": 4 },
-        { "text": " & scalable systems" },
+        { "text": ". as a software engineer, i've built in devops" },
         { "ref": 5 },
-        { "text": ", no matter the product space." }
-      ]
-    },
-    {
-      "parts": [
-        { "text": "i'm studying cs @ Rutgers" },
+        { "text": ", robotics" },
         { "ref": 6 },
-        { "text": " & SWEing @ " },
-        { "link": { "href": "https://www.3e8robotics.com/", "text": "3E8 Robotics" } },
+        { "text": ", hospitals" },
         { "ref": 7 },
-        { "text": ". i am a build leader @ " },
-        { "link": { "href": "https://www.rutgers.network/", "text": "rutgers.network" } },
-        { "text": ". i previously worked on clinical agents @ " },
-        { "link": { "href": "https://centrenhealth.com/", "text": "Centren Health" } },
-        { "ref": 8 },
-        { "text": " & co-founded " },
-        { "link": { "href": "https://www.joinmesh.today/", "text": "Mesh" } },
-        { "ref": 9 },
-        { "text": "." }
+        { "text": ", etc. they might look unrelated, but they all force me to think deeply." }
       ]
     },
     {
       "parts": [
-        { "text": "i learn by building, so i've accumulated a lot of " },
+        { "text": "i learn by building, so i have a lot of " },
         { "link": { "href": "https://github.com/RyanRana", "text": "projects" } },
-        { "ref": 10 },
-        { "text": " over the years. When Claude" },
-        { "ref": 11 },
+        { "ref": 8 },
+        { "text": " over the years. when Claude" },
+        { "ref": 9 },
         { "text": " can't debug my slop, i like to " },
         { "link": { "href": "https://ryanranas.medium.com/", "text": "write" } },
-        { "ref": 12 },
+        { "ref": 10 },
         { "text": ", ski" },
-        { "ref": 13 },
+        { "ref": 11 },
         { "text": ", " },
         { "link": { "href": "pages/wood.html", "text": "craft" } },
-        { "ref": 14 },
+        { "ref": 12 },
         { "text": " & eat Chipotle" },
-        { "ref": 15 },
-        { "text": ". i am always seeking genuine collaboration and connection." }
+        { "ref": 13 },
+        { "text": ". i am always looking to talk & build with others." }
       ]
     }
   ],
   "references": {
     "1": "Started with Tkinter turtle, then PyGame, then HTML5 Canvas. Returned to Python with much more ambitious ideas in AI.",
-    "2": "Built VLMs, MLMs, SLMs. Improved LLMs. Really deep diving in VLMs right now.",
-    "3": "Multi-step agent systems with memory, iterative feedback, RAG & domain-specific constraints — e.g. Osler for hospitalists, Aura for enterprise.",
-    "4": "Studying deformables, not just sim. Also doing generative serial chains as a side project.",
-    "5": "Must-know skill. I practice this in all work.",
-    "6": "2nd year. Most skills still come from outside the classroom.",
-    "7": "Autonomous multi-floor delivery robots; elevator navigation, payload delivery. Backed by Founders Inc., based in SF.",
-    "8": "Clinical transformers, PK/PD modeling, S3-backed pipelines. NYC.",
-    "9": "Collaborative AI internal knowledge platform; reached 600 users over summer 2025.",
-    "10": "Never took a tutorial. What I've made is what I know.",
-    "11": "ORCHESTRATION.",
-    "12": "Updating irregularly since summer 2021 — AI (tech & philosophy), programming & life.",
-    "13": "Completely offline. Mainly Camelback in the Poconos.",
-    "14": "There's something satisfying about building things with your own hands.",
-    "15": "White rice, black beans, chicken al pastor ×2, tomatillo red chili, roasted chili corn, cheese, light sour cream."
+    "2": "VLMs, MLMs, SLMs. Deep-diving in VLMs right now.",
+    "3": "Raw video, EHR notes, voice, logs — where most of the real signal actually lives.",
+    "4": "Mesh — 600 users over summer 2025. Centren Health — S3-backed clinical pipelines serving 8 hospital partners.",
+    "5": "Cloud migration @ Datanexxt; infra & LLM APIs @ Undergraduation.com. Scalable systems are a must-know.",
+    "6": "3E8 Robotics — autonomous multi-floor delivery; elevator navigation, payload handoff. Backed by Founders Inc., based in SF. Also: deformables & generative serial chains as side work.",
+    "7": "Clinical transformers & PK/PD modeling @ Centren Health, NYC. Osler — RAG onboarding for hospitalists, 3rd place @ RUHealthHack.",
+    "8": "Never took a tutorial. What I've made is what I know.",
+    "9": "ORCHESTRATION.",
+    "10": "Updating irregularly since summer 2021 — AI (tech & philosophy), programming & life.",
+    "11": "Completely offline. Mainly Camelback in the Poconos.",
+    "12": "There's something satisfying about building things with your own hands.",
+    "13": "White rice, black beans, chicken al pastor ×2, tomatillo red chili, roasted chili corn, cheese, light sour cream."
   }
 }
