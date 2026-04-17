@@ -309,16 +309,15 @@
       display: flex;
       align-items: flex-end;
       flex-wrap: nowrap;
-      gap: 2px;
+      gap: 0;
       padding: 16px 0 0;
-      transform-style: preserve-3d;
     }
     #bookshelf-section .shelf-plank {
-      height: 10px;
-      background: linear-gradient(to bottom, #0a0a0a 0%, #000 55%, #1a1a1a 100%);
+      height: 4px;
+      background: #1a1a1a;
       border-radius: 1px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.18), 0 6px 14px rgba(0,0,0,0.12);
-      margin-top: -2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+      margin-top: -1px;
     }
     #bookshelf-section .book {
       --book-brand: #e8e8e8;
@@ -353,25 +352,12 @@
       user-select: none;
       will-change: transform;
       color: var(--book-fg);
-      background:
-        linear-gradient(to right,
-          var(--book-edge) 0%,
-          rgba(0,0,0,0.04) 10%,
-          transparent 24%,
-          transparent 76%,
-          rgba(0,0,0,0.04) 90%,
-          var(--book-edge) 100%),
-        var(--book-bg);
-      box-shadow:
-        inset -1px 0 2px rgba(0,0,0,0.08),
-        inset 1px 0 2px rgba(0,0,0,0.04),
-        inset 0 -1px 2px rgba(0,0,0,0.06),
-        1px 2px 4px var(--book-shadow);
+      background: var(--book-bg);
+      box-shadow: 0 1px 2px var(--book-shadow);
     }
     #bookshelf-section .book.cloth {
-      --book-edge: rgba(0,0,0,0.35);
-      --book-border: rgba(0,0,0,0.45);
-      --book-shadow: rgba(0,0,0,0.18);
+      --book-border: rgba(0,0,0,0.32);
+      --book-shadow: rgba(0,0,0,0.14);
     }
     #bookshelf-section .book .title {
       writing-mode: vertical-rl;
@@ -418,15 +404,10 @@
     #bookshelf-section .book:hover {
       --book-bg: var(--book-brand);
       --book-fg: var(--book-contrast);
-      --book-edge: rgba(0,0,0,0.35);
-      --book-border: rgba(0,0,0,0.45);
-      transform: translateY(-14px) scale(1.05) rotate(0deg) !important;
+      --book-border: rgba(0,0,0,0.35);
+      transform: translateY(-12px) scale(1.04) rotate(0deg) !important;
       z-index: 10;
-      box-shadow:
-        inset -1px 0 2px rgba(0,0,0,0.45),
-        inset 1px 0 2px rgba(0,0,0,0.35),
-        inset 0 -1px 2px rgba(0,0,0,0.35),
-        4px 14px 28px rgba(0,0,0,0.34);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.22);
     }
     #bookshelf-section .book:hover .title,
     #bookshelf-section .book:hover .icon { opacity: 1; }
@@ -1174,8 +1155,11 @@
     { name: 'MLflow',       slug: 'mlflow',            brand: '4fb8ff' },
     { name: 'PostgreSQL',   slug: 'postgresql',        brand: '6aa8d6' },
     { name: 'Snowflake',    slug: 'snowflake',         brand: '29b5e8' },
+    { name: 'Redis',        slug: 'redis',             brand: 'ff4438' },
+    { name: 'Apache',       slug: 'apache',            brand: 'd22128' },
     // Stack
     { name: 'Python',       slug: 'python',            brand: '5a9fd4' },
+    { name: 'JavaScript',   slug: 'javascript',        brand: 'f7df1e' },
     { name: 'TypeScript',   slug: 'typescript',        brand: '61a7e8' },
     { name: 'C++',          slug: 'cplusplus',         brand: '4aa0d4' },
     { name: 'Rust',         slug: 'rust',              brand: 'e97761' },
@@ -1265,12 +1249,9 @@
       '<div class="icon">' + iconHtml(b, restFg, contrastHex) + '</div>' +
       '<div class="title">' + escText(b.name) + '</div>' +
       '<div class="foot"></div>';
-    var mL = Math.ceil(leanLeft);
-    var mR = Math.ceil(leanRight);
-    el.style.marginLeft = mL + 'px';
-    el.style.marginRight = mR + 'px';
     el._w = w;
-    el._outer = w + mL + mR;
+    el._leanL = leanLeft;
+    el._leanR = leanRight;
 
     el.addEventListener('mouseenter', function () {
       var img = el.querySelector('.icon img');
@@ -1295,9 +1276,14 @@
   function build() {
     wrap.innerHTML = '';
     var containerW = wrap.clientWidth || 560;
-    var gap = 3;
     var els = books.map(makeBook);
-    var totalW = els.reduce(function (a, e) { return a + e._outer + gap; }, 0);
+
+    function pairGap(a, b) {
+      return Math.ceil(Math.max(0, a._leanR + b._leanL));
+    }
+    var totalW = els.reduce(function (sum, e, i) {
+      return sum + e._w + (i > 0 ? pairGap(els[i - 1], e) : 0);
+    }, 0);
     var numRows = Math.max(1, Math.ceil(totalW / containerW));
     var targetW = totalW / numRows;
 
@@ -1305,6 +1291,7 @@
     row.className = 'bookshelf';
     var rowW = 0;
     var rowsPlaced = 0;
+    var prevInRow = null;
 
     function flushRow() {
       var shelfRow = document.createElement('div');
@@ -1318,9 +1305,12 @@
     }
 
     els.forEach(function (el, i) {
-      var w = el._outer + gap;
+      var m = prevInRow ? pairGap(prevInRow, el) : 0;
+      el.style.marginLeft = m + 'px';
       row.appendChild(el);
-      rowW += w;
+      rowW += el._w + m;
+      prevInRow = el;
+
       var isLast = i === els.length - 1;
       var remainingRows = numRows - rowsPlaced - 1;
       if (!isLast && remainingRows > 0 && rowW >= targetW - 4) {
@@ -1328,6 +1318,7 @@
         row = document.createElement('div');
         row.className = 'bookshelf';
         rowW = 0;
+        prevInRow = null;
       }
     });
     if (row.children.length > 0) flushRow();
