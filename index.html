@@ -9,11 +9,42 @@
   <title>Ryan Rana</title>
   <style>
     :root {
+      color-scheme: light dark;
       --black: #000;
       --white: #fff;
       --gray: #6e6e73;
       --gray-light: #8e8e93;
       --rule: rgba(0,0,0,0.09);
+      --fg-strong: #1d1d1f;
+      --fg-muted: #444;
+      --fg-subtle: #555;
+      --fg-faint: #666;
+      --fg-dim: #888;
+      --surface-muted: rgba(0,0,0,0.055);
+      --surface-hover: #f0f0f0;
+      --border-soft: rgba(0,0,0,0.14);
+      --border-hover: rgba(0,0,0,0.25);
+      --border-hairline: rgba(0,0,0,0.06);
+      --project-sep: rgba(0,0,0,0.25);
+      --accent-green: #0f7a0f;
+      --accent-red: #c00;
+      --t-gray: #3a3a3d;
+      --t-comment: #c0c0c0;
+      --key-border: #bbb;
+      --btn-dark-hover: #222;
+      --shelf-plank: #1a1a1a;
+      --book-rest-bg: #e6e6e6;
+      --book-rest-fg: #3a3a3a;
+      --book-brand: #e8e8e8;
+      --book-contrast: #1a1a1a;
+      --book-border: rgba(0,0,0,0.22);
+      --book-border-cloth: rgba(0,0,0,0.32);
+      --book-border-hover: rgba(0,0,0,0.35);
+      --book-shadow: rgba(0,0,0,0.10);
+      --book-shadow-cloth: rgba(0,0,0,0.14);
+      --book-shadow-hover: rgba(0,0,0,0.22);
+      --nn-fg-rgb: 0,0,0;
+      --nn-node-fill: #fff;
       --mono: 'SF Mono','Fira Code','Fira Mono','Courier New',monospace;
       --sans: -apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;
       /* Spacing scale */
@@ -26,6 +57,46 @@
       --space-10: 2.5rem;
       --space-12: 3rem;
       --space-16: 4rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --black: #f5f5f7;
+        --white: #000;
+        --gray: #86868b;
+        --gray-light: #6e6e73;
+        --rule: rgba(255,255,255,0.1);
+        --fg-strong: #e8e8ea;
+        --fg-muted: #b8b8bc;
+        --fg-subtle: #a8a8ac;
+        --fg-faint: #8e8e93;
+        --fg-dim: #6e6e73;
+        --surface-muted: rgba(255,255,255,0.08);
+        --surface-hover: #1c1c1e;
+        --border-soft: rgba(255,255,255,0.14);
+        --border-hover: rgba(255,255,255,0.28);
+        --border-hairline: rgba(255,255,255,0.08);
+        --project-sep: rgba(255,255,255,0.28);
+        --accent-green: #4ade80;
+        --accent-red: #ff6b6b;
+        --t-gray: #c8c8cc;
+        --t-comment: #4a4a4d;
+        --key-border: #555;
+        --btn-dark-hover: #d4d4d4;
+        --shelf-plank: #d0d0d0;
+        --book-rest-bg: #2a2a2c;
+        --book-rest-fg: #c8c8cc;
+        --book-brand: #3a3a3c;
+        --book-contrast: #f0f0f2;
+        --book-border: rgba(255,255,255,0.18);
+        --book-border-cloth: rgba(255,255,255,0.28);
+        --book-border-hover: rgba(255,255,255,0.4);
+        --book-shadow: rgba(0,0,0,0.5);
+        --book-shadow-cloth: rgba(0,0,0,0.6);
+        --book-shadow-hover: rgba(0,0,0,0.7);
+        --nn-fg-rgb: 228,230,236;
+        --nn-node-fill: #0a0a0c;
+      }
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -118,9 +189,9 @@
       color: var(--black);
     }
     .t-line { display: block; white-space: pre; }
-    .t-ok    { color: #0f7a0f; font-weight: 600; }
-    .t-gray  { color: #3a3a3d; font-weight: 500; }
-    .t-comment { color: #c0c0c0; }
+    .t-ok    { color: var(--accent-green); font-weight: 600; }
+    .t-gray  { color: var(--t-gray); font-weight: 500; }
+    .t-comment { color: var(--t-comment); }
     .cursor {
       display: inline-block; width: 7px; height: 1em;
       background: var(--black); vertical-align: text-bottom;
@@ -130,20 +201,20 @@
     .t-hint {
       display: flex; align-items: center; gap: 10px;
       margin-top: 22px;
-      font-size: 0.74rem; color: #888;
+      font-size: 0.74rem; color: var(--fg-dim);
       letter-spacing: 0.05em;
     }
     .t-hint .key {
       display: inline-flex; align-items: center; justify-content: center;
       width: 58px; height: 22px;
-      border: 1px solid #bbb; border-radius: 4px;
-      font-size: 0.68rem; color: #666; letter-spacing: 0.03em;
+      border: 1px solid var(--key-border); border-radius: 4px;
+      font-size: 0.68rem; color: var(--fg-faint); letter-spacing: 0.03em;
     }
     .t-skip {
       font-family: var(--sans);
       font-size: 0.8rem;
       font-weight: 500;
-      color: #c00;
+      color: var(--accent-red);
       background: none;
       border: none;
       cursor: pointer;
@@ -184,11 +255,15 @@
       gap: var(--space-4);
       margin-bottom: var(--space-6);
     }
-    .bio-avatar {
+    .bio-header picture {
       display: block;
       width: clamp(140px, 24%, 220px);
-      height: auto;
       flex-shrink: 0;
+    }
+    .bio-avatar {
+      display: block;
+      width: 100%;
+      height: auto;
     }
     .bio-header .bio-name {
       flex: 1;
@@ -210,7 +285,7 @@
     }
     .bio-para {
       font-size: 1.14rem; line-height: 1.75;
-      color: #1d1d1f; margin-bottom: var(--space-6);
+      color: var(--fg-strong); margin-bottom: var(--space-6);
       text-decoration: none;
     }
     .bio-para a {
@@ -221,13 +296,13 @@
     .bio-para a:hover { opacity: 0.45; }
     .fn {
       font-size: 0.6em; vertical-align: super;
-      font-family: var(--mono); color: #666;
+      font-family: var(--mono); color: var(--fg-faint);
       margin-left: 1px; cursor: default; position: relative;
     }
     .fn-tip { display: none; }
     .bio-ref-display {
       font-size: 1.08rem; line-height: 1.6;
-      color: #555; margin-bottom: var(--space-8);
+      color: var(--fg-subtle); margin-bottom: var(--space-8);
       font-weight: 400; min-height: 0;
     }
 
@@ -279,17 +354,17 @@
     }
     #articles-section .item-title { font-size: 1.08rem; font-weight: 500; }
     #articles-section .item-meta { font-size: 0.88rem; color: var(--gray); font-weight: 400; }
-    #articles-section .item-desc.article-excerpt { font-size: 1rem; line-height: 1.65; color: #444; }
+    #articles-section .item-desc.article-excerpt { font-size: 1rem; line-height: 1.65; color: var(--fg-muted); }
 
     /* Experience — timeline feel, compact */
     #experience-section .bio-section-list li {
       margin-bottom: var(--space-4); padding-bottom: var(--space-4);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid var(--border-hairline);
     }
     #experience-section .bio-section-list li:last-child { border-bottom: none; }
     #experience-section .item-title { font-size: 1.02rem; font-weight: 600; }
     #experience-section .item-meta { font-size: 0.86rem; font-weight: 500; color: var(--gray); }
-    #experience-section .item-desc { font-size: 0.94rem; line-height: 1.55; color: #444; }
+    #experience-section .item-desc { font-size: 0.94rem; line-height: 1.55; color: var(--fg-muted); }
 
     /* Projects — 1 bullet, 1 line per project; tags inline, polished */
     #projects-section .bio-section-list {
@@ -303,8 +378,8 @@
     }
     #projects-section .item-title { font-size: 1.05rem; font-weight: 600; margin: 0; display: inline; letter-spacing: -0.01em; }
     #projects-section .item-title a { display: inline; }
-    #projects-section .item-desc { font-size: 0.95rem; color: #555; margin: 0; display: inline; font-weight: 400; }
-    #projects-section .project-sep { color: rgba(0,0,0,0.25); font-weight: 300; margin: 0 0.15rem; display: inline; }
+    #projects-section .item-desc { font-size: 0.95rem; color: var(--fg-subtle); margin: 0; display: inline; font-weight: 400; }
+    #projects-section .project-sep { color: var(--project-sep); font-weight: 300; margin: 0 0.15rem; display: inline; }
     #projects-section .item-skills {
       display: inline;
     }
@@ -312,8 +387,8 @@
       font-size: 0.76rem;
       font-weight: 500;
       letter-spacing: 0.03em;
-      color: #5a5a5a;
-      background: rgba(0,0,0,0.055);
+      color: var(--fg-subtle);
+      background: var(--surface-muted);
       padding: 3px 7px;
       border-radius: 4px;
       display: inline-block;
@@ -394,7 +469,7 @@
       left: 50%;
       width: 1.5px;
       height: 66px;
-      background: #b3b3b3;
+      background: linear-gradient(to bottom, rgba(179,179,179,0) 0%, rgba(179,179,179,0.5) 22%, #b3b3b3 40%);
       transform: translateX(-0.75px);
     }
     .shelf-lamp .lamp-pull .lamp-pull-knob {
@@ -411,24 +486,24 @@
     .shelf-lamp .lamp-pull-off { display: none; }
     .shelf-lamp .lamp-light {
       position: absolute;
-      top: 78px;
+      top: 70px;
       left: 50%;
-      margin-left: -150px;
-      width: 300px;
-      height: 380px;
+      margin-left: -180px;
+      width: 360px;
+      height: 440px;
       background: radial-gradient(
-        ellipse 60% 90% at 50% 0%,
+        ellipse 45% 95% at 50% -5%,
         rgba(255, 220, 140, 0.55) 0%,
-        rgba(255, 210, 130, 0.28) 45%,
-        rgba(255, 205, 125, 0.08) 80%,
+        rgba(255, 212, 132, 0.32) 32%,
+        rgba(255, 208, 128, 0.14) 60%,
+        rgba(255, 204, 124, 0.04) 82%,
         rgba(255, 200, 120, 0) 100%
       );
-      clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
       opacity: 0;
       pointer-events: none;
       z-index: 0;
       transition: opacity 480ms ease;
-      filter: blur(10px);
+      filter: blur(22px);
     }
     .shelf-lamp .lamp-ambient {
       position: absolute;
@@ -483,21 +558,15 @@
     }
     #bookshelf-section .shelf-plank {
       height: 4px;
-      background: #1a1a1a;
+      background: var(--shelf-plank);
       border-radius: 1px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 2px var(--book-shadow);
       margin-top: -1px;
     }
     #bookshelf-section .book {
-      --book-brand: #e8e8e8;
-      --book-contrast: #1a1a1a;
-      --book-rest-bg: #e6e6e6;
-      --book-rest-fg: #3a3a3a;
       --book-bg: var(--book-rest-bg);
       --book-fg: var(--book-rest-fg);
-      --book-edge: rgba(0,0,0,0.14);
-      --book-border: rgba(0,0,0,0.22);
-      --book-shadow: rgba(0,0,0,0.10);
+      --book-edge: var(--border-soft);
       --own-tilt: 0deg;
       position: relative;
       flex: 0 0 auto;
@@ -525,8 +594,8 @@
       box-shadow: 0 1px 2px var(--book-shadow);
     }
     #bookshelf-section .book.cloth {
-      --book-border: rgba(0,0,0,0.32);
-      --book-shadow: rgba(0,0,0,0.14);
+      --book-border: var(--book-border-cloth);
+      --book-shadow: var(--book-shadow-cloth);
     }
     #bookshelf-section .book .title {
       writing-mode: vertical-rl;
@@ -572,10 +641,10 @@
     #bookshelf-section .book:hover {
       --book-bg: var(--book-brand);
       --book-fg: var(--book-contrast);
-      --book-border: rgba(0,0,0,0.35);
+      --book-border: var(--book-border-hover);
       transform: translateY(-12px) scale(1.04) rotate(0deg) !important;
       z-index: 10;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+      box-shadow: 0 8px 18px var(--book-shadow-hover);
     }
     #bookshelf-section .book:hover .title,
     #bookshelf-section .book:hover .icon { opacity: 1; }
@@ -596,7 +665,7 @@
     }
     .bio-section-list .item-title a:hover { border-bottom-color: var(--black); }
     .bio-section-list .item-meta { margin-bottom: var(--space-2); }
-    .bio-section-list .item-desc { font-size: 0.95rem; line-height: 1.6; color: #444; }
+    .bio-section-list .item-desc { font-size: 0.95rem; line-height: 1.6; color: var(--fg-muted); }
     .bio-section-list .item-title-row {
       display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2);
     }
@@ -638,14 +707,14 @@
       border: none;
     }
     .btn-dark { background: var(--black); color: var(--white); }
-    .btn-dark:hover { background: #222; }
+    .btn-dark:hover { background: var(--btn-dark-hover); }
     .icon-btn {
       display: inline-flex; align-items: center; justify-content: center;
       width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.14); color: var(--black);
+      border: 1px solid var(--border-soft); color: var(--black);
       text-decoration: none; transition: all 0.18s;
     }
-    .icon-btn:hover { background: #f0f0f0; border-color: rgba(0,0,0,0.25); }
+    .icon-btn:hover { background: var(--surface-hover); border-color: var(--border-hover); }
     .icon-btn svg { width: 16px; height: 16px; display: block; }
 
     /* RIGHT — neural net */
@@ -698,39 +767,29 @@
     .footer-line a:hover { color: var(--black); border-bottom-color: var(--black); }
 
     @media (max-width: 720px) {
+      html, body { overflow: auto; height: auto; }
+      #app { height: auto; min-height: 100vh; }
       #layout {
         flex-direction: column;
-        overflow-y: auto;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
+        overflow: visible;
       }
-      #right {
-        order: -1;
-        flex: 0 0 auto;
-        height: 42vh;
-        min-height: 280px;
-        padding: 20px 14px 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
+      #right { display: none; }
       #left {
         order: 0;
-        flex: 0 0 auto;
+        flex: 1 1 auto;
         overflow: visible;
+        min-height: calc(100vh - 52px);
       }
-      /* Single scroll: content flows in layout, no inner scroll */
-      #content-area {
-        overflow: visible;
-      }
-      /* Terminal wrap in flow so Enter/Skip are reachable; align top */
+      #content-area { overflow: visible; }
       #terminal-wrap {
         position: relative;
-        min-height: 100%;
+        min-height: calc(100vh - 52px);
         align-items: flex-start;
-        padding-top: 24px;
-        padding-bottom: max(var(--space-12), env(safe-area-inset-bottom));
+        padding: 32px 20px max(var(--space-12), env(safe-area-inset-bottom));
+      }
+      #terminal {
+        font-size: 1.02rem;
+        line-height: 1.9;
       }
       #terminal-wrap.hide {
         position: absolute;
@@ -738,7 +797,6 @@
         overflow: hidden;
         padding: 0;
       }
-      /* Bio in flow when shown so one layout scroll (no nested scroll) */
       #bio-wrap {
         position: absolute;
         height: 0;
@@ -753,22 +811,53 @@
         scroll-snap-type: none;
       }
       .bio-intro, .bio-section { min-height: 0; }
-      #nn-wrap {
-        flex: 1;
-        min-height: 220px;
-        width: 100%;
-        max-width: none;
-        max-height: none;
+      .bio-intro {
+        padding: var(--space-10) 20px var(--space-8);
       }
-      #terminal-wrap:not(.hide), #bio-wrap { padding-left: 14px; padding-right: 14px; }
-      #bio-wrap { padding-bottom: var(--space-12); }
+      .bio-section {
+        padding: var(--space-10) 20px var(--space-8);
+      }
+      .bio-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+        margin-bottom: var(--space-5);
+      }
+      .bio-header picture {
+        width: 96px;
+      }
+      .bio-name {
+        font-size: 2rem;
+        white-space: normal;
+      }
+      .bio-section-title {
+        font-size: 2rem;
+        margin-bottom: var(--space-5);
+      }
+      .bio-para {
+        font-size: 1.02rem;
+        line-height: 1.65;
+        margin-bottom: var(--space-5);
+      }
+      .bio-ref-display {
+        font-size: 0.98rem;
+        margin-bottom: var(--space-6);
+      }
+      #bio-wrap { padding-bottom: var(--space-10); }
       #terminal .t-line { white-space: pre-wrap; word-break: break-word; }
-      #nav { padding: 0 14px; flex-wrap: wrap; gap: 8px; }
-      .nav-links { display: flex; flex-wrap: wrap; gap: 16px; }
-      .nav-links a { font-size: 0.75rem; }
-      .bio-section { margin-top: 0; padding-top: var(--space-12); }
-      .bio-section:first-of-type { margin-top: var(--space-10); padding-top: 0; }
-      .bio-links { margin-top: var(--space-8); }
+      #nav { padding: 0 16px; height: 48px; gap: 12px; }
+      .nav-links { gap: 14px; flex-wrap: wrap; }
+      .nav-links a { font-size: 0.78rem; }
+      .bio-section:first-of-type { padding-top: var(--space-8); }
+      .bio-section::before { display: none; }
+      .bio-links {
+        margin-top: var(--space-6);
+        gap: var(--space-2);
+      }
+      .btn { padding: 10px 18px; font-size: 0.8rem; }
+      .icon-btn { width: 40px; height: 40px; }
+      #bookshelf-section .bookshelf-wrap { max-width: 100%; }
+      #projects-section .bio-section-list { padding-left: 1.1rem; }
     }
 
     /* Short viewport (e.g. landscape phone, small window): same scrollable terminal as mobile */
@@ -835,7 +924,10 @@
       <div id="bio-wrap">
         <div class="bio-intro" id="bio-intro">
           <div class="bio-header">
-            <img class="bio-avatar" src="Screenshot%202026-04-17%20at%2010.07.59%E2%80%AFAM%20copy.png" alt="Ryan Rana">
+            <picture>
+              <source srcset="image.png" media="(prefers-color-scheme: dark)">
+              <img class="bio-avatar" src="Screenshot%202026-04-17%20at%2010.07.59%E2%80%AFAM%20copy.png" alt="Ryan Rana">
+            </picture>
             <h1 class="bio-name" id="bio-name"></h1>
           </div>
           <div id="bio-paras"></div>
@@ -1550,6 +1642,9 @@
   const wrap   = document.getElementById('nn-wrap');
   const canvas = document.getElementById('nn-canvas');
   const ctx    = canvas.getContext('2d');
+  const rootStyle = getComputedStyle(document.documentElement);
+  const nnFg       = () => (rootStyle.getPropertyValue('--nn-fg-rgb').trim() || '0,0,0');
+  const nnNodeFill = () => (rootStyle.getPropertyValue('--nn-node-fill').trim() || '#fff');
 
   let W = 0, H = 0;
   const mouse = { x: -999, y: -999 };
@@ -1557,48 +1652,391 @@
   const PULL = 0.7, SPRING = 0.14, DRAG = 0.78, MAX_SPD = 22, FADE_MS = 440;
 
   function getConfig(width) {
-    if (width < 520)  return { N: 60,  R: 3.2, MOUSE_R: 220, kMin: 3, kMax: 5, minDeg: 3 };
-    if (width < 900)  return { N: 110, R: 3,   MOUSE_R: 280, kMin: 3, kMax: 5, minDeg: 3 };
-    if (width < 1400) return { N: 160, R: 2.8, MOUSE_R: 340, kMin: 4, kMax: 6, minDeg: 3 };
-    if (width < 2000) return { N: 210, R: 2.6, MOUSE_R: 400, kMin: 4, kMax: 6, minDeg: 3 };
-    return              { N: 260, R: 2.5, MOUSE_R: 460, kMin: 4, kMax: 7, minDeg: 3 };
+    if (width < 520)  return { N: 50,  R: 4.2, MOUSE_R: 220, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 900)  return { N: 90,  R: 4.0, MOUSE_R: 280, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 1400) return { N: 140, R: 3.8, MOUSE_R: 340, kMin: 4, kMax: 6, minDeg: 3 };
+    if (width < 2000) return { N: 190, R: 3.6, MOUSE_R: 400, kMin: 4, kMax: 6, minDeg: 3 };
+    return              { N: 240, R: 3.4, MOUSE_R: 460, kMin: 4, kMax: 7, minDeg: 3 };
   }
 
   let config = getConfig(400);
   let nodes = [];
   let targets = [];
   let prevEdges = [], nextEdges = [];
+  let adjacency = [];
   let fade = 1;
   let pulses = [];
   let spawnT = 0;
 
+  function buildAdjacency(edg, N) {
+    const adj = Array(N).fill(null).map(() => []);
+    for (const e of edg) {
+      adj[e.from].push(e.to);
+      adj[e.to].push(e.from);
+    }
+    return adj;
+  }
+
+  function newPulse(from, to) {
+    return {
+      from, to, p: 0,
+      speed: 0.75 + Math.random() * 0.85,
+      hops: 0,
+      maxHops: 5 + Math.floor(Math.random() * 6)
+    };
+  }
+
+  const LAYOUTS = [
+    'rings', 'hex', 'spiral', 'wheel',
+    'grid', 'star', 'flower', 'heart', 'lissajous', 'figure8',
+    'rose', 'sunburst', 'waves', 'polygon',
+    'dna', 'gear', 'cardioid'
+  ];
+  let lastLayout = null;
+
   function randLayout() {
     const N = config.N;
-    const pos = [];
     const cx = W / 2, cy = H / 2;
-    const clusters = 3 + Math.floor(Math.random() * 3);
-    const centers = [];
     const base = Math.min(W, H);
     const mX = W * 0.06, mY = H * 0.05;
     const maxX = W - mX, maxY = H - mY;
-    for (let k = 0; k < clusters; k++) {
-      const a = (k / clusters) * Math.PI * 2 + Math.random() * 0.8;
-      const rr = base * (0.26 + Math.random() * 0.22);
-      centers.push({
-        x: Math.max(mX, Math.min(maxX, cx + Math.cos(a) * rr)),
-        y: Math.max(mY, Math.min(maxY, cy + Math.sin(a) * rr))
-      });
+    const clamp = (p) => ({
+      x: Math.max(mX, Math.min(maxX, p.x)),
+      y: Math.max(mY, Math.min(maxY, p.y))
+    });
+
+    const choices = LAYOUTS.filter(l => l !== lastLayout);
+    const kind = choices[Math.floor(Math.random() * choices.length)];
+    lastLayout = kind;
+
+    const pos = [];
+
+    if (kind === 'rings') {
+      const rings = 3 + Math.floor(Math.random() * 3);
+      const rMin = base * 0.08, rMax = base * 0.42;
+      const radii = [];
+      for (let r = 0; r < rings; r++) {
+        radii.push(rMin + (r / Math.max(1, rings - 1)) * (rMax - rMin));
+      }
+      let weightSum = 0;
+      for (let r = 0; r < rings; r++) weightSum += (r + 2);
+      const counts = [];
+      let placed = 0;
+      for (let r = 0; r < rings; r++) {
+        const c = r === rings - 1 ? N - placed : Math.round(N * (r + 2) / weightSum);
+        counts.push(c); placed += c;
+      }
+      for (let r = 0; r < rings; r++) {
+        const off = Math.random() * Math.PI * 2;
+        const step = (Math.PI * 2) / counts[r];
+        for (let i = 0; i < counts[r]; i++) {
+          const a = off + i * step;
+          pos.push(clamp({ x: cx + Math.cos(a) * radii[r], y: cy + Math.sin(a) * radii[r] }));
+        }
+      }
+    } else if (kind === 'wheel') {
+      const spokes = 6 + Math.floor(Math.random() * 4);
+      const layers = Math.max(2, Math.ceil((N - 1) / spokes));
+      const step = base * 0.38 / layers;
+      const off = Math.random() * Math.PI * 2;
+      pos.push(clamp({ x: cx, y: cy }));
+      for (let L = 1; L <= layers && pos.length < N; L++) {
+        const rr = L * step;
+        const twist = (L % 2 === 0) ? Math.PI / spokes : 0;
+        for (let s = 0; s < spokes && pos.length < N; s++) {
+          const a = off + twist + (s / spokes) * Math.PI * 2;
+          pos.push(clamp({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr }));
+        }
+      }
+    } else if (kind === 'hex') {
+      const ratio = W / H;
+      const cols = Math.max(4, Math.round(Math.sqrt(N * ratio) * 1.05));
+      const rows = Math.ceil(N / cols);
+      const sx = (maxX - mX) / cols;
+      const sy = (maxY - mY) / Math.max(1, rows);
+      let k = 0;
+      for (let r = 0; r < rows && k < N; r++) {
+        const rowCount = (r === rows - 1) ? (N - r * cols) : cols;
+        const rowOff = (r % 2) * sx * 0.5;
+        const startX = mX + sx * 0.5 + rowOff;
+        const yy = mY + sy * 0.5 + r * sy;
+        for (let c = 0; c < rowCount && k < N; c++) {
+          pos.push(clamp({ x: startX + c * sx, y: yy }));
+          k++;
+        }
+      }
+    } else if (kind === 'grid') {
+      const ratio = W / H;
+      const cols = Math.max(4, Math.round(Math.sqrt(N * ratio)));
+      const rows = Math.ceil(N / cols);
+      const sx = (maxX - mX) / cols;
+      const sy = (maxY - mY) / Math.max(1, rows);
+      let k = 0;
+      for (let r = 0; r < rows && k < N; r++) {
+        for (let c = 0; c < cols && k < N; c++) {
+          pos.push(clamp({ x: mX + sx * 0.5 + c * sx, y: mY + sy * 0.5 + r * sy }));
+          k++;
+        }
+      }
+    } else if (kind === 'spiral') {
+      const turns = 3 + Math.random() * 2;
+      const maxR = base * 0.42;
+      const off = Math.random() * Math.PI * 2;
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      for (let i = 0; i < N; i++) {
+        const t = (i + 0.5) / N;
+        const a = off + dir * t * turns * Math.PI * 2;
+        const r = maxR * Math.sqrt(t);
+        pos.push(clamp({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r }));
+      }
+    } else if (kind === 'star') {
+      const points = 5 + Math.floor(Math.random() * 3);
+      const outerR = base * 0.4, innerR = outerR * 0.45;
+      const segs = points * 2;
+      const layers = 3;
+      const perLayer = Math.ceil(N / layers);
+      const rotOff = Math.random() * Math.PI * 2;
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.32;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const rot = rotOff + L * 0.18;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * segs;
+          const seg = Math.floor(t) % segs;
+          const segT = t - Math.floor(t);
+          const a1 = (seg / segs) * Math.PI * 2 - Math.PI / 2 + rot;
+          const a2 = ((seg + 1) / segs) * Math.PI * 2 - Math.PI / 2 + rot;
+          const r1 = (seg % 2 === 0 ? outerR : innerR) * s;
+          const r2 = (seg % 2 === 0 ? innerR : outerR) * s;
+          const x1 = cx + Math.cos(a1) * r1, y1 = cy + Math.sin(a1) * r1;
+          const x2 = cx + Math.cos(a2) * r2, y2 = cy + Math.sin(a2) * r2;
+          pos.push(clamp({ x: x1 + (x2 - x1) * segT, y: y1 + (y2 - y1) * segT }));
+          k++;
+        }
+      }
+    } else if (kind === 'flower') {
+      const petals = 5 + Math.floor(Math.random() * 3);
+      const petalLen = base * 0.4;
+      const layers = 3;
+      const perLayer = Math.ceil(N / layers);
+      const rotOff = Math.random() * Math.PI * 2;
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.3;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const rot = rotOff + L * 0.25;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * Math.PI * 2 + rot;
+          const r = petalLen * s * Math.abs(Math.sin(petals * t / 2));
+          pos.push(clamp({ x: cx + r * Math.cos(t), y: cy + r * Math.sin(t) }));
+          k++;
+        }
+      }
+    } else if (kind === 'heart') {
+      const scale = base * 0.03;
+      const baseOff = Math.random() * Math.PI * 0.2 - Math.PI * 0.1;
+      const layers = 4;
+      const perLayer = Math.ceil(N / layers);
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.22;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const off = baseOff + L * 0.14;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * Math.PI * 2 + off;
+          const x = 16 * Math.pow(Math.sin(t), 3);
+          const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+          pos.push(clamp({ x: cx + x * scale * s, y: cy + y * scale * s }));
+          k++;
+        }
+      }
+    } else if (kind === 'lissajous') {
+      const a = 2 + Math.floor(Math.random() * 3);
+      const b = a + 1;
+      const delta = Math.PI / 2;
+      const amp = base * 0.4;
+      const layers = 3;
+      const perLayer = Math.ceil(N / layers);
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.3;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const phase = L * 0.22;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * Math.PI * 2 + phase;
+          pos.push(clamp({ x: cx + amp * s * Math.sin(a * t + delta), y: cy + amp * s * Math.sin(b * t) }));
+          k++;
+        }
+      }
+    } else if (kind === 'figure8') {
+      const amp = base * 0.42;
+      const baseOff = Math.random() * Math.PI * 2;
+      const layers = 3;
+      const perLayer = Math.ceil(N / layers);
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.3;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const off = baseOff + L * 0.2;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * Math.PI * 2 + off;
+          const sv = Math.sin(t), cv = Math.cos(t);
+          pos.push(clamp({ x: cx + amp * s * cv, y: cy + amp * s * 1.4 * sv * cv }));
+          k++;
+        }
+      }
+    } else if (kind === 'rose') {
+      const kk = 2 + Math.floor(Math.random() * 4);
+      const amp = base * 0.4;
+      const baseOff = Math.random() * Math.PI * 2;
+      const layers = 3;
+      const perLayer = Math.ceil(N / layers);
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.3;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const off = baseOff + L * 0.15;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * Math.PI * 2 + off;
+          const r = amp * s * Math.abs(Math.cos(kk * t));
+          pos.push(clamp({ x: cx + r * Math.cos(t), y: cy + r * Math.sin(t) }));
+          k++;
+        }
+      }
+    } else if (kind === 'sunburst') {
+      const rays = 8 + Math.floor(Math.random() * 5);
+      const maxR = base * 0.42;
+      const off = Math.random() * Math.PI * 2;
+      const perRay = Math.ceil(N / rays);
+      let k = 0;
+      for (let r = 0; r < rays && k < N; r++) {
+        const a = off + (r / rays) * Math.PI * 2;
+        for (let p = 0; p < perRay && k < N; p++) {
+          const rr = maxR * ((p + 1) / perRay);
+          pos.push(clamp({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr }));
+          k++;
+        }
+      }
+    } else if (kind === 'waves') {
+      const rows = 4 + Math.floor(Math.random() * 3);
+      const perRow = Math.ceil(N / rows);
+      const rowSpacing = (maxY - mY) / (rows + 1);
+      const freq = 2 + Math.random() * 2;
+      const amp = rowSpacing * 0.4;
+      let k = 0;
+      for (let r = 0; r < rows && k < N; r++) {
+        const y0 = mY + (r + 1) * rowSpacing;
+        const phase = Math.random() * Math.PI * 2;
+        for (let i = 0; i < perRow && k < N; i++) {
+          const tt = i / Math.max(1, perRow - 1);
+          const x = mX + tt * (maxX - mX);
+          const y = y0 + Math.sin(tt * freq * Math.PI * 2 + phase) * amp;
+          pos.push(clamp({ x, y }));
+          k++;
+        }
+      }
+    } else if (kind === 'polygon') {
+      const sides = 5 + Math.floor(Math.random() * 4);
+      const outerR = base * 0.4;
+      const outlineN = Math.max(sides * 3, Math.floor(N * 0.55));
+      const interiorN = N - outlineN;
+      const off = Math.random() * Math.PI * 2 - Math.PI / 2;
+      for (let i = 0; i < outlineN; i++) {
+        const t = (i / outlineN) * sides;
+        const seg = Math.floor(t) % sides;
+        const segT = t - Math.floor(t);
+        const a1 = off + (seg / sides) * Math.PI * 2;
+        const a2 = off + ((seg + 1) / sides) * Math.PI * 2;
+        const x1 = cx + Math.cos(a1) * outerR, y1 = cy + Math.sin(a1) * outerR;
+        const x2 = cx + Math.cos(a2) * outerR, y2 = cy + Math.sin(a2) * outerR;
+        pos.push(clamp({ x: x1 + (x2 - x1) * segT, y: y1 + (y2 - y1) * segT }));
+      }
+      const innerRings = Math.max(1, Math.min(3, Math.floor(interiorN / sides)));
+      let leftInt = interiorN;
+      for (let r = 0; r < innerRings; r++) {
+        const cnt = r === innerRings - 1 ? leftInt : Math.round(interiorN / innerRings);
+        leftInt -= cnt;
+        const rr = outerR * (0.25 + r * 0.28);
+        const ro = Math.random() * Math.PI * 2;
+        for (let i = 0; i < cnt; i++) {
+          const a = ro + (i / cnt) * Math.PI * 2;
+          pos.push(clamp({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr }));
+        }
+      }
+    } else if (kind === 'dna') {
+      const half = Math.floor(N / 2);
+      const other = N - half;
+      const freq = 2.5 + Math.random() * 1.5;
+      const amp = base * 0.16;
+      for (let i = 0; i < half; i++) {
+        const t = half === 1 ? 0.5 : i / (half - 1);
+        const y = mY + t * (maxY - mY);
+        const x = cx + Math.sin(t * freq * Math.PI * 2) * amp;
+        pos.push(clamp({ x, y }));
+      }
+      for (let i = 0; i < other; i++) {
+        const t = other === 1 ? 0.5 : i / (other - 1);
+        const y = mY + t * (maxY - mY);
+        const x = cx + Math.sin(t * freq * Math.PI * 2 + Math.PI) * amp;
+        pos.push(clamp({ x, y }));
+      }
+    } else if (kind === 'gear') {
+      const teeth = 10 + Math.floor(Math.random() * 6);
+      const outerR = base * 0.4, innerR = outerR * 0.82;
+      const segs = teeth * 2;
+      const baseOff = Math.random() * Math.PI * 2;
+      const layers = 3;
+      const outlineN = Math.max(segs * 2, Math.floor(N * 0.55));
+      let k = 0;
+      for (let i = 0; i < outlineN && k < N; i++) {
+        const t = (i / outlineN) * segs;
+        const seg = Math.floor(t) % segs;
+        const segT = t - Math.floor(t);
+        const a1 = baseOff + (seg / segs) * Math.PI * 2;
+        const a2 = baseOff + ((seg + 1) / segs) * Math.PI * 2;
+        const r1 = seg % 2 === 0 ? outerR : innerR;
+        const r2 = seg % 2 === 0 ? innerR : outerR;
+        const x1 = cx + Math.cos(a1) * r1, y1 = cy + Math.sin(a1) * r1;
+        const x2 = cx + Math.cos(a2) * r2, y2 = cy + Math.sin(a2) * r2;
+        pos.push(clamp({ x: x1 + (x2 - x1) * segT, y: y1 + (y2 - y1) * segT }));
+        k++;
+      }
+      const interiorN = N - k;
+      if (interiorN > 0) {
+        const innerLayers = Math.min(3, Math.max(1, Math.floor(interiorN / Math.max(1, teeth))));
+        let leftInt = interiorN;
+        for (let L = 0; L < innerLayers && k < N; L++) {
+          const cnt = L === innerLayers - 1 ? leftInt : Math.round(interiorN / innerLayers);
+          leftInt -= cnt;
+          const rr = outerR * (0.55 - L * 0.18);
+          const ro = Math.random() * Math.PI * 2;
+          for (let i = 0; i < cnt && k < N; i++) {
+            const a = ro + (i / cnt) * Math.PI * 2;
+            pos.push(clamp({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr }));
+            k++;
+          }
+        }
+      }
+    } else { // cardioid
+      const amp = base * 0.22;
+      const baseOff = Math.random() * Math.PI * 2;
+      const layers = 4;
+      const perLayer = Math.ceil(N / layers);
+      let k = 0;
+      for (let L = 0; L < layers && k < N; L++) {
+        const s = 1 - L * 0.22;
+        const cnt = L === layers - 1 ? N - k : perLayer;
+        const off = baseOff + L * 0.18;
+        for (let i = 0; i < cnt && k < N; i++) {
+          const t = (i / cnt) * Math.PI * 2 + off;
+          const r = amp * s * (1 - Math.cos(t));
+          pos.push(clamp({ x: cx + r * Math.cos(t), y: cy + r * Math.sin(t) }));
+          k++;
+        }
+      }
     }
-    for (let i = 0; i < N; i++) {
-      const c = centers[i % clusters];
-      const spread = base * (0.14 + Math.random() * 0.16);
-      const a = Math.random() * Math.PI * 2;
-      const r = spread * Math.sqrt(Math.random());
-      pos.push({
-        x: Math.max(mX, Math.min(maxX, c.x + Math.cos(a) * r)),
-        y: Math.max(mY, Math.min(maxY, c.y + Math.sin(a) * r))
-      });
-    }
+
     return pos;
   }
 
@@ -1640,7 +2078,45 @@
         need--;
       }
     }
+    ensureConnected(pos, edg, seen);
     return edg;
+  }
+
+  function ensureConnected(pos, edg, seen) {
+    const N = pos.length;
+    const parent = new Int32Array(N);
+    for (let i = 0; i < N; i++) parent[i] = i;
+    function find(x) { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; }
+    function union(a, b) { const ra = find(a), rb = find(b); if (ra !== rb) { parent[ra] = rb; return true; } return false; }
+    for (const e of edg) union(e.from, e.to);
+    const groups = new Map();
+    for (let i = 0; i < N; i++) {
+      const r = find(i);
+      if (!groups.has(r)) groups.set(r, []);
+      groups.get(r).push(i);
+    }
+    if (groups.size <= 1) return;
+    let comps = [...groups.values()];
+    while (comps.length > 1) {
+      const main = comps[0];
+      let bestD = Infinity, bestA = -1, bestB = -1, bestK = 1;
+      for (let k = 1; k < comps.length; k++) {
+        const other = comps[k];
+        for (let ii = 0; ii < main.length; ii++) {
+          const a = main[ii], pa = pos[a];
+          for (let jj = 0; jj < other.length; jj++) {
+            const b = other[jj], pb = pos[b];
+            const dx = pa.x - pb.x, dy = pa.y - pb.y;
+            const d = dx * dx + dy * dy;
+            if (d < bestD) { bestD = d; bestA = a; bestB = b; bestK = k; }
+          }
+        }
+      }
+      const key = bestA < bestB ? bestA + '-' + bestB : bestB + '-' + bestA;
+      if (!seen.has(key)) { seen.add(key); edg.push({ from: bestA, to: bestB }); }
+      for (const n of comps[bestK]) main.push(n);
+      comps.splice(bestK, 1);
+    }
   }
 
   function apply(instant) {
@@ -1653,6 +2129,7 @@
       prevEdges = nextEdges.length ? nextEdges : edg;
       nextEdges = edg; fade = 0;
     }
+    adjacency = buildAdjacency(edg, config.N);
     pulses = [];
   }
 
@@ -1675,9 +2152,9 @@
           x: 0, y: 0, vx: 0, vy: 0,
           phx: Math.random() * Math.PI * 2,
           phy: Math.random() * Math.PI * 2,
-          fx: 0.0006 + Math.random() * 0.0009,
-          fy: 0.0006 + Math.random() * 0.0009,
-          amp: 7 + Math.random() * 7
+          fx: 0.0005 + Math.random() * 0.0007,
+          fy: 0.0005 + Math.random() * 0.0007,
+          amp: 3 + Math.random() * 4
         });
       }
     }
@@ -1713,35 +2190,50 @@
       n.x += n.vx; n.y += n.vy;
     }
 
-    const edgeList = fade >= 1 ? nextEdges : nextEdges;
+    const edgeList = nextEdges;
+    const maxPulses = Math.max(14, Math.floor(N * 0.18));
     spawnT += dt;
-    const spawnEvery = Math.max(35, 180 - N);
+    const spawnEvery = Math.max(90, 280 - N);
     while (spawnT > spawnEvery) {
       spawnT -= spawnEvery;
-      if (edgeList.length) {
-        const burst = 1 + Math.floor(Math.random() * 3);
-        for (let b = 0; b < burst; b++) {
-          const e = edgeList[Math.floor(Math.random() * edgeList.length)];
-          pulses.push({ from: e.from, to: e.to, p: 0, speed: 0.75 + Math.random() * 0.85 });
-        }
+      if (edgeList.length && pulses.length < maxPulses) {
+        const e = edgeList[Math.floor(Math.random() * edgeList.length)];
+        pulses.push(newPulse(e.from, e.to));
       }
     }
-    for (const p of pulses) p.p += (dt / 620) * p.speed;
-    for (let i = pulses.length - 1; i >= 0; i--) if (pulses[i].p >= 1) pulses.splice(i, 1);
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const p = pulses[i];
+      p.p += (dt / 620) * p.speed;
+      let alive = true;
+      while (alive && p.p >= 1) {
+        p.hops++;
+        if (p.hops >= p.maxHops) { alive = false; break; }
+        const neigh = adjacency[p.to];
+        if (!neigh || !neigh.length) { alive = false; break; }
+        const opts = neigh.length > 1 ? neigh.filter(n => n !== p.from) : neigh;
+        const pool = opts.length ? opts : neigh;
+        const overflow = p.p - 1;
+        p.from = p.to;
+        p.to = pool[Math.floor(Math.random() * pool.length)];
+        p.p = overflow;
+        p.speed = 0.75 + Math.random() * 0.85;
+      }
+      if (!alive) pulses.splice(i, 1);
+    }
   }
 
   function drawPulses() {
     const N = config.N;
-    const pr = N <= 60 ? 2.4 : N <= 110 ? 2.2 : N <= 170 ? 2 : 1.8;
+    const pr = N <= 60 ? 3.0 : N <= 110 ? 2.8 : N <= 170 ? 2.5 : 2.2;
     for (const pu of pulses) {
       const a = nodes[pu.from], b = nodes[pu.to];
       if (!a || !b) continue;
       const x = a.x + (b.x - a.x) * pu.p;
       const y = a.y + (b.y - a.y) * pu.p;
-      const fadeIn = Math.min(1, pu.p * 3.5);
-      const fadeOut = Math.pow(1 - pu.p, 1.3);
-      const al = fadeIn * fadeOut * 0.85;
-      ctx.fillStyle = `rgba(0,0,0,${al.toFixed(2)})`;
+      let al = 0.9;
+      if (pu.hops === 0) al *= Math.min(1, pu.p * 3.5);
+      if (pu.hops === pu.maxHops - 1) al *= Math.pow(1 - pu.p, 1.4);
+      ctx.fillStyle = `rgba(${nnFg()},${al.toFixed(2)})`;
       ctx.beginPath();
       ctx.arc(x, y, pr, 0, Math.PI * 2);
       ctx.fill();
@@ -1751,9 +2243,9 @@
   function drawEdges(list, alpha) {
     if (!alpha || !list.length) return;
     const N = config.N;
-    const lineW = N <= 50 ? 1.1 : N <= 100 ? 1 : 0.9;
-    const baseAlpha = N <= 50 ? 0.32 : N <= 100 ? 0.26 : 0.22;
-    ctx.strokeStyle = `rgba(0,0,0,${(alpha * baseAlpha).toFixed(3)})`;
+    const lineW = N <= 50 ? 1.7 : N <= 100 ? 1.5 : N <= 170 ? 1.3 : 1.15;
+    const baseAlpha = N <= 50 ? 0.48 : N <= 100 ? 0.4 : N <= 170 ? 0.34 : 0.3;
+    ctx.strokeStyle = `rgba(${nnFg()},${(alpha * baseAlpha).toFixed(3)})`;
     ctx.lineWidth = lineW;
     ctx.beginPath();
     for (const e of list) {
@@ -1776,8 +2268,8 @@
       drawEdges(nextEdges, nextA);
     }
     drawPulses();
-    ctx.fillStyle = '#fff';
-    ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+    ctx.fillStyle = nnNodeFill();
+    ctx.strokeStyle = `rgba(${nnFg()},0.85)`;
     ctx.lineWidth = 1;
     const R = config.R;
     for (const n of nodes) {
