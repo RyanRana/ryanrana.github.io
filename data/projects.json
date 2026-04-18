@@ -8,67 +8,67 @@
   {
     "title": "situational-intelligence",
     "url": "https://github.com/RyanRana/situational-intelligence",
-    "description": "Situational emergency monitoring using live camera frames, motion analysis, speech recognition, geolocation, and AI vision analysis to detect risk, escalate events, and simulate dispatch workflows.",
+    "description": "browser-based emergency monitoring (aegis) that fuses live camera frames, frame-differencing motion intensity, whisper speech, geolocation and claude vision to detect threats, escalate with voice/gesture confirmation, and simulate dispatch on a responder map.",
     "skills": ["YOLOv26", "Whisper", "Ollama", "Claude Vision", "Backtrack session storage"]
   },
   {
     "title": "fax",
     "url": "https://github.com/RyanRana/fax",
-    "description": "blockchain protocol for autonomous agents to discover, negotiate, and trade heterogeneous resources",
+    "description": "blockchain-anchored protocol where autonomous agents discover, negotiate, and atomically swap compute, tokens and knowledge via hash-locked escrow. off-chain websocket traffic, on-chain anchors in solidity, rust core, five security levels up to zero-knowledge trades.",
     "skills": ["Rust", "blockchain", "autonomous agents", "protocols"]
   },
   {
     "title": "DEF",
     "url": "https://github.com/RyanRana/def",
-    "description": "RL layer on any web game that tunes difficulty and engagement in real time using in-browser vitals (rPPG).",
+    "description": "drop-in rl layer for any web game that tunes difficulty, speed and rewards in real time using webcam rppg vitals and attention-weighted thompson sampling / ucb1 bandits. boosted engagement 29-38% across three test games without touching game code.",
     "skills": ["JavaScript", "RL", "rPPG", "engagement", "browser"]
   },
   {
     "title": "Minecraft Circuits",
     "url": "https://github.com/RyanRana/minecraft-circuts",
-    "description": "llm --> Verilog or netlist → Minecraft redstone layouts.",
+    "description": "node.js library that compiles verilog (via yosys) or raw netlists into buildable redstone block layouts with relative positioning, so an llm can emit a hardware spec and get a minecraft circuit out the other end.",
     "skills": ["JavaScript", "Verilog", "redstone", "LLM", "Node.js"]
   },
   {
     "title": "Cyphe",
     "url": "https://github.com/RyanRana/cyphe/",
-    "description": "horizonless encyclopedia that weaves llm content with wikipedia, twitter, reddit and memes while tracking engagement.",
+    "description": "infinite doomscroll knowledge agent built in an 8-hour hackathon sprint; weaves llm content with wikipedia, twitter, reddit and memes into a horizonless encyclopedia feed while tracking engagement.",
     "skills": ["GNN", "hallucination mitigation", "system design", "React"]
   },
   {
     "title": "Shoulders",
     "url": "https://github.com/RyanRana/shoulders",
-    "description": "low-latency security agents.",
+    "description": "security layer for ai agents that runs parallel embedding, behavioral, contextual and anomaly detectors to catch prompt injection, goal hijacking and code injection at 89-96% detection, 0.8% false positives and 34ms median latency; auto-reroutes compromised agents and scales via redis.",
     "skills": ["Python", "agents", "tool use", "orchestration", "low-latency"]
   },
   {
     "title": "Trace",
     "url": "https://github.com/RyanRana/trace",
-    "description": "24/7 supply chain and payment agent.",
+    "description": "24/7 retail procurement agent that turns user requests into webshop searches, pays by card or crypto, forecasts demand with holt smoothing, and schedules agentic restocks behind a transparent approval flow and live inventory dashboard.",
     "skills": ["Node.js", "supply chain APIs", "payment orchestration"]
   },
   {
     "title": "Excalidraw AI",
     "url": "https://excalidrawai2.vercel.app/",
-    "description": "generate and edit flowcharts with ai.",
+    "description": "web app that generates and edits flowcharts from natural language prompts and exports native .excalidraw files you can keep editing on the canvas.",
     "skills": ["LLM", "JSON schema", "canvas API", "Vercel"]
   },
   {
     "title": "Reforest NYC",
     "url": "https://github.com/RyanRana/reforest-nyc",
-    "description": "geospatial platform for urban reforestation in nyc with interactive mapping and impact visualization.",
+    "description": "geospatial platform for urban reforestation in nyc with interactive mapping, environmental simulation and impact forecasting, built for the columbia leap x nvidia hackathon.",
     "skills": ["Python", "GeoJSON", "Shapely", "Mapbox", "GIS"]
   },
   {
     "title": "Robot Deformables",
     "url": "https://github.com/RyanRana/robot-deformables",
-    "description": "multi-modal rl and haptic feedback for training robots to manipulate deformable objects.",
+    "description": "multi-modal rl for robot handovers of deformable objects: transformer fuses vision, proprioception and audio, diffusion policy pretrained on 125k+ expert frames (0.027 val mse) then fine-tuned with ppo. writeup documents reward-engineering pain at 3% task success.",
     "skills": ["Python", "PyTorch", "RL", "OpenCV", "simulation"]
   },
   {
     "title": "Really Cheap Flight Finder",
     "url": "https://github.com/RyanRana/reallycheapflightfinderbro",
-    "description": "graph-based flight search with multi-city route optimization and deal alerts.",
+    "description": "graph-based flight search that chains nearby airports, split tickets, hidden-city routes and award calcs over serpapi google flights data, curating 15-35 deals in 3-5 seconds while capping api calls at 7-15 per search for ~91-95% cost savings.",
     "skills": ["TypeScript", "graph algorithms", "REST APIs", "scraping", "optimization"]
   },
   {
@@ -80,133 +80,133 @@
   {
     "title": "Aura",
     "url": "https://github.com/RyanRana/Aura",
-    "description": "conversational ai analytics for retail with snowflake and predictive inventory forecasting.",
+    "description": "autonomous retail analytics agent: gemini 2.5 flash lite drafts multi-step investigation plans, translates nl to sql against snowflake and synthesizes findings in 10-30s behind a react chat + kpi dashboard. agentic rag over raw retrieval.",
     "skills": ["Python", "Snowflake", "LLM", "SQL", "time-series"]
   },
   {
     "title": "Mesh",
     "url": "https://www.joinmesh.today/",
-    "description": "knowledge graph platform with semantic search (1st place rutgers x fiserv).",
+    "description": "turns docs, threads, meetings and whiteboards into a dynamic knowledge graph you can semantically query across teams (1st place rutgers x fiserv). adopted by academic and research groups.",
     "skills": ["React", "OAuth2", "vector DB", "semantic search", "real-time sync"]
   },
   {
     "title": "Vault",
     "url": "https://github.com/RyanRana/vault",
-    "description": "encrypted team messaging with aes-256, rbac and audit logging for compliance.",
+    "description": "distributed, offline-first os for devs with encrypted team messaging, aes-256, rbac and audit logging for compliance use.",
     "skills": ["Python", "Flask", "AES-256-GCM", "RBAC", "audit logs"]
   },
   {
     "title": "Contextualized-Multi-Modal-RAG-Feedback-Loop",
     "url": "https://github.com/RyanRana/Contextualized-Multi-Modal-RAG-Feedback-Loop",
-    "description": "rag with self-healing feedback loops and gpt-4 for query optimization.",
+    "description": "multi-modal rag that returns relevant images alongside answers, with a personalization engine that learns from user patterns and a self-healing feedback loop that targets hallucinations via context-aware reranking.",
     "skills": ["Python", "GPT-4", "RAG", "fine-tuning", "NLP"]
   },
   {
     "title": "BATMAN: Protect your City",
     "url": "https://github.com/RyanRana/BATMAN-Protect-Your-City",
-    "description": "real-time crime mapping and incident reporting with sms alerts for public safety.",
+    "description": "community safety app on react/node/mongo where residents report crimes, suspicious activity and accidents with geolocation, view a live hotspot map, and get vonage/twilio sms alerts plus emergency resource links wired to local law enforcement.",
     "skills": ["Node.js", "MongoDB", "geospatial queries", "Twilio API", "WebSockets"]
   },
   {
     "title": "GIST",
     "url": "https://github.com/RyanRana/GIST-GitHub-Intelligent-Summary-Tool",
-    "description": "github repo analysis with openai for code analysis, dependency mapping and doc generation.",
+    "description": "streamlit + flask web app that pulls stars, collaborators and commit histories off the github api, visualizes them, and wraps a gpt-backed chatbox so you can ask questions about any repo.",
     "skills": ["Python", "GitHub API", "OpenAI API", "AST parsing", "NLP"]
   },
   {
     "title": "PLANA",
     "url": "https://github.com/RyanRana/PLANA",
-    "description": "business plan analysis with financial modeling, swot and predictive forecasting.",
+    "description": "business plan analyzer that grades executive summaries with bert sentiment, market clustering, financial forecasting and fraud detection. flask + postgres + docker stack with ner and text classification under the hood.",
     "skills": ["Python", "scikit-learn", "NLP", "financial modeling", "forecasting"]
   },
   {
     "title": "GPT 3.5 4 Devs",
     "url": "https://github.com/RyanRana/GPT-3.5-4-Devs",
-    "description": "modular gpt framework for task automation with scraping, doc processing and streamlit.",
+    "description": "open-source streamlit chat app that augments gpt-3.5 with google search, wikipedia, web browsing, youtube transcripts and file ops so one chat interface can scrape, look up, and manage docs.",
     "skills": ["Python", "OpenAI API", "Beautiful Soup", "Streamlit", "REST"]
   },
   {
     "title": "Helios",
     "url": "https://github.com/RyanRana/Helios",
-    "description": "haptic navigation device with computer vision and nlp for visually impaired users.",
+    "description": "wearable closed-circuit aid for the visually impaired that recognizes objects with cv, guides the wearer via wrist-mounted haptic buzzers, and speaks descriptions aloud in real time.",
     "skills": ["Python", "OpenCV", "NLP", "haptic drivers", "embedded"]
   },
   {
     "title": "ARGlasses",
     "url": "https://github.com/RyanRana/ARGlasses",
-    "description": "arkit ios app for virtual eyewear try-on with face tracking and 3d rendering.",
+    "description": "arkit ios app built in a weekend that lets users try on different pairs of glasses from home via face tracking and 3d rendering. hackathon submission with public demo and code.",
     "skills": ["Swift", "ARKit", "face tracking", "Metal", "iOS"]
   },
   {
     "title": "Cone",
     "url": "https://github.com/RyanRana/Cone",
-    "description": "php app for sharing social and contact info via qr codes with shareable links.",
+    "description": "php + mysql app that consolidates social profiles, contact info and external links into a single qr code and shareable link, with login/signup and qrcode.js for generation.",
     "skills": ["PHP", "QR generation", "REST"]
   },
   {
     "title": "Inexpensive Enhanced One Factor Authentication",
     "url": "https://github.com/RyanRana/Inexpensive-Enhanced-One-Factor-Authenication",
-    "description": "logistic regression model to predict malicious logins and enhance auth without 2fa.",
+    "description": "logistic regression model that scores login attempts across 14 behavioral and technical signals (device, ip reputation, geo shifts) to flag malicious logins without requiring mfa.",
     "skills": ["Python", "scikit-learn", "logistic regression", "auth APIs"]
   },
   {
     "title": "ELO Algorithm Based NFL Predictor",
     "url": "https://github.com/RyanRana/ELO-algoritham-based-NFL-predictor",
-    "description": "elo ranking on historical nfl data to rank teams and predict outcomes.",
+    "description": "adapts the chess elo ranking system to the nfl, pulling historical matchups via nflgame and friends to compute dynamic team ratings and predict game outcomes from competitive strength.",
     "skills": ["Python", "pandas", "ELO algorithm", "statistical modeling"]
   },
   {
     "title": "Congress Connect",
     "url": "https://github.com/RyanRana/Congress-Connect",
-    "description": "ios app using sentiment analysis on congressional tweets to surface politicians' views.",
+    "description": "ios/android app that scrapes congressional tweets on a user's policy keywords, runs an lstm sentiment classifier (95.43% accuracy) and synthesizes a stance statement per representative. react frontend, python ml backend.",
     "skills": ["Swift", "sentiment analysis", "Twitter API", "UIKit"]
   },
   {
     "title": "Around-The-Pipe Audio Based Water Tracker for Home Residents",
     "url": "https://www.researchsquare.com/article/rs-1328449/v1",
-    "description": "research on supervised ml and audio analysis for real-time water flow measurement in pipes.",
+    "description": "published research on supervised ml over pipe audio signals for non-invasive real-time water flow measurement in residential plumbing.",
     "skills": ["Python", "scikit-learn", "audio signal processing", "research"]
   },
   {
     "title": "CourseTurtle",
     "url": "https://courseturtle.com",
-    "description": "platform for course schedule analysis and sharing for students and teachers.",
+    "description": "php + mysql platform for students and teachers to analyze, compare and share course schedules with data visualizations.",
     "skills": ["PHP", "MySQL", "data viz"]
   },
   {
     "title": "QuickEstimate",
     "url": "https://github.com/RyanRana/QuickEstimate-2021",
-    "description": "ios app using computer vision to scan and price household items for insurance (3rd place 2021 congressional app challenge).",
+    "description": "ios app that uses core ml + vision to scan household items and generate insurance pricing estimates on the spot (3rd place 2021 congressional app challenge, nj-7; live demoed to rep. tom malinowski).",
     "skills": ["Swift", "Core ML", "Vision framework", "Python backend"]
   },
   {
     "title": "WHRHS New Tab Extension",
     "url": "https://chrome.google.com/webstore/detail/whrhs-new-tab-extension/dponcomikmfcehfdibimlemklifnlhgh",
-    "description": "chrome extension for custom new tab experience on 2000+ student chromebooks.",
+    "description": "chrome extension deployed to 2000+ student chromebooks that replaces the new tab page with a school-custom dashboard.",
     "skills": ["JavaScript", "Chrome Extension API", "DOM"]
   },
   {
     "title": "The Power of Artificial Intelligence",
     "url": "https://www.youtube.com/watch?v=xyKOGYZgiZU",
-    "description": "tedx talk on applications and future of artificial intelligence.",
+    "description": "tedx talk on real-world applications and the trajectory of artificial intelligence.",
     "skills": ["public speaking", "AI"]
   },
   {
     "title": "Virtual Note",
     "url": "https://github.com/RyanRana/Virtual-Note",
-    "description": "web-based music composition tool (3rd place 2019 repl.it).",
+    "description": "html-based music composition tool pairing a virtual piano with a note writer and mp3 playback for intuitive browser composition (3rd place 2019 repl.it jam, music category).",
     "skills": ["Web Audio API", "JavaScript", "canvas"]
   },
   {
     "title": "Business Meeting Summarizer",
     "url": "https://github.com/RyanRana/Buisness-Meeting-Summarizer",
-    "description": "nlp tool that transcribes meeting audio and generates extractive summaries.",
+    "description": "pipeline that takes meeting audio, transcribes it with speech-to-text and returns an extractive summary so notes write themselves.",
     "skills": ["Python", "speech-to-text", "NLP", "summarization"]
   },
   {
     "title": "Insem Camera Foot Traffic Counter",
     "url": "https://github.com/RyanRana/Insem-Camera-Foot-Traffic-Counter",
-    "description": "yolo-based person detection and counting from security camera feeds for foot traffic.",
+    "description": "scrapes public security camera directories and runs yolo person detection on each frame to count and track foot traffic across many live streams at once.",
     "skills": ["Python", "YOLO", "OpenCV", "real-time inference"]
   }
 ]
