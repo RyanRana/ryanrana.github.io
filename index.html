@@ -2377,5 +2377,232 @@
   requestAnimationFrame(loop);
 })();
 </script>
+
+<style id="edit-mode-styles">
+  #em-pill {
+    position: fixed; top: 12px; right: 12px; z-index: 10000;
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px; border-radius: 999px;
+    background: #111; color: #fff; font: 500 12px/1 -apple-system, sans-serif;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  #em-pill .em-dot { width: 8px; height: 8px; border-radius: 50%; background: #25c97a; display: inline-block; }
+  #em-pill button {
+    background: #2a2a2a; color: #fff; border: 1px solid #444;
+    padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px;
+  }
+  #em-pill button:hover { background: #3a3a3a; }
+  .em-edit-btn {
+    display: inline-block; margin-left: 8px;
+    padding: 2px 8px; border-radius: 999px;
+    background: #fff59d; color: #111; border: 1px solid #caa900;
+    font: 600 10px/1.6 -apple-system, sans-serif;
+    cursor: pointer; vertical-align: middle;
+  }
+  .em-edit-btn:hover { background: #fde047; }
+  #em-modal {
+    position: fixed; inset: 0; z-index: 10001;
+    background: rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  #em-modal .em-inner {
+    background: #fff; color: #111;
+    width: min(900px, 100%); height: min(80vh, 720px);
+    border-radius: 10px; display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+  #em-modal .em-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-bottom: 1px solid #e5e5e5;
+    font: 500 13px -apple-system, sans-serif;
+  }
+  #em-modal .em-head .em-path {
+    flex: 1; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #555;
+  }
+  #em-modal .em-head button {
+    padding: 5px 10px; border-radius: 6px; border: 1px solid #ccc;
+    background: #f5f5f5; cursor: pointer; font-size: 12px;
+  }
+  #em-modal .em-head .em-save { background: #111; color: #fff; border-color: #111; }
+  #em-modal .em-head .em-save:hover { background: #333; }
+  #em-modal textarea {
+    flex: 1; width: 100%; border: 0; outline: none; resize: none;
+    padding: 14px 16px; font-family: ui-monospace, Menlo, monospace; font-size: 12.5px;
+    line-height: 1.5; color: #111;
+  }
+  #em-modal .em-status {
+    padding: 8px 16px; font: 500 12px -apple-system, sans-serif;
+    border-top: 1px solid #e5e5e5; min-height: 20px;
+  }
+  @media (prefers-color-scheme: dark) {
+    #em-modal .em-inner { background: #161618; color: #f5f5f7; }
+    #em-modal .em-head { border-bottom-color: #2a2a2c; }
+    #em-modal .em-head .em-path { color: #999; }
+    #em-modal .em-head button { background: #232326; color: #f5f5f7; border-color: #3a3a3c; }
+    #em-modal .em-head .em-save { background: #f5f5f7; color: #111; border-color: #f5f5f7; }
+    #em-modal textarea { background: #161618; color: #f5f5f7; }
+    #em-modal .em-status { border-top-color: #2a2a2c; }
+  }
+</style>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const EDIT_FLAG = 'ryanrana_edit_mode';
+  const TOKEN_KEY = 'ryanrana_gh_token';
+  const REPO = 'RyanRana/ryanrana.github.io';
+  const BRANCH = 'main';
+
+  if (params.get('edit') === '1') localStorage.setItem(EDIT_FLAG, '1');
+  if (params.get('edit') === '0') { localStorage.removeItem(EDIT_FLAG); localStorage.removeItem(TOKEN_KEY); }
+  if (localStorage.getItem(EDIT_FLAG) !== '1') return;
+
+  const FILES = [
+    { label: 'bio', path: 'data/bio.json', anchor: '#bio-name' },
+    { label: 'experience', path: 'data/experience.json', anchor: '#experience-section .bio-section-title' },
+    { label: 'projects', path: 'data/projects.json', anchor: '#projects-section .bio-section-title' },
+    { label: 'articles', path: 'data/articles.json', anchor: '#articles-section .bio-section-title' },
+  ];
+
+  let token = localStorage.getItem(TOKEN_KEY) || '';
+
+  function setToken() {
+    const t = prompt(
+      'Paste GitHub fine-grained PAT\n' +
+      '(Repo: ryanrana.github.io, Permissions: Contents → Read and write)\n\n' +
+      'Leave empty to clear.',
+      token || ''
+    );
+    if (t === null) return;
+    token = t.trim();
+    if (token) localStorage.setItem(TOKEN_KEY, token);
+    else localStorage.removeItem(TOKEN_KEY);
+  }
+
+  function renderPill() {
+    const pill = document.createElement('div');
+    pill.id = 'em-pill';
+    pill.innerHTML = `
+      <span class="em-dot"></span>
+      <span>edit mode</span>
+      <button id="em-set-token">token</button>
+      <button id="em-exit">exit</button>
+    `;
+    document.body.appendChild(pill);
+    pill.querySelector('#em-set-token').onclick = setToken;
+    pill.querySelector('#em-exit').onclick = () => {
+      localStorage.removeItem(EDIT_FLAG);
+      location.href = location.pathname;
+    };
+  }
+
+  function renderEditButtons() {
+    for (const f of FILES) {
+      const el = document.querySelector(f.anchor);
+      if (!el) continue;
+      const btn = document.createElement('button');
+      btn.className = 'em-edit-btn';
+      btn.textContent = 'edit';
+      btn.title = f.path;
+      btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openEditor(f); };
+      el.appendChild(btn);
+    }
+  }
+
+  async function openEditor(f) {
+    if (!token) { setToken(); if (!token) return; }
+    const raw = await fetch(f.path + '?t=' + Date.now()).then(r => r.text());
+    showModal(f, raw);
+  }
+
+  function showModal(f, content) {
+    const modal = document.createElement('div');
+    modal.id = 'em-modal';
+    modal.innerHTML = `
+      <div class="em-inner">
+        <div class="em-head">
+          <span class="em-path">${f.path}</span>
+          <button class="em-format">format</button>
+          <button class="em-validate">validate</button>
+          <button class="em-cancel">cancel</button>
+          <button class="em-save">save</button>
+        </div>
+        <textarea spellcheck="false"></textarea>
+        <div class="em-status"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    const ta = modal.querySelector('textarea');
+    const status = modal.querySelector('.em-status');
+    ta.value = content;
+
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+    modal.querySelector('.em-cancel').onclick = () => modal.remove();
+
+    modal.querySelector('.em-validate').onclick = () => {
+      try { JSON.parse(ta.value); status.textContent = '✓ valid json'; status.style.color = '#25c97a'; }
+      catch (e) { status.textContent = '✗ ' + e.message; status.style.color = '#e0524a'; }
+    };
+
+    modal.querySelector('.em-format').onclick = () => {
+      try { ta.value = JSON.stringify(JSON.parse(ta.value), null, 2); status.textContent = '✓ formatted'; status.style.color = '#25c97a'; }
+      catch (e) { status.textContent = '✗ ' + e.message; status.style.color = '#e0524a'; }
+    };
+
+    modal.querySelector('.em-save').onclick = async () => {
+      try { JSON.parse(ta.value); } catch (e) {
+        status.textContent = '✗ invalid json: ' + e.message; status.style.color = '#e0524a'; return;
+      }
+      try {
+        status.textContent = 'saving...'; status.style.color = '';
+        await commitFile(f.path, ta.value, `edit ${f.path}`);
+        status.textContent = '✓ saved — pages typically redeploys in ~30s';
+        status.style.color = '#25c97a';
+      } catch (e) {
+        status.textContent = '✗ ' + e.message; status.style.color = '#e0524a';
+      }
+    };
+  }
+
+  async function commitFile(path, content, message) {
+    if (!token) throw new Error('no token set — click "token" in the edit pill');
+    const base = `https://api.github.com/repos/${REPO}/contents/${path}`;
+    const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
+    const getRes = await fetch(`${base}?ref=${BRANCH}`, { headers });
+    if (!getRes.ok) throw new Error('read sha: ' + getRes.status + ' ' + (await getRes.text()).slice(0, 200));
+    const { sha } = await getRes.json();
+    const body = {
+      message,
+      content: btoa(unescape(encodeURIComponent(content))),
+      sha,
+      branch: BRANCH
+    };
+    const putRes = await fetch(base, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!putRes.ok) {
+      const err = await putRes.json().catch(() => ({}));
+      throw new Error('commit: ' + (err.message || putRes.status));
+    }
+  }
+
+  function init() {
+    renderPill();
+    const tryButtons = () => {
+      let placed = 0;
+      for (const f of FILES) if (document.querySelector(f.anchor)) placed++;
+      if (placed >= 2) renderEditButtons();
+      else setTimeout(tryButtons, 200);
+    };
+    tryButtons();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
 </body>
 </html>
