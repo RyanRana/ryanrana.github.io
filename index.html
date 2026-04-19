@@ -265,6 +265,10 @@
       width: 100%;
       height: auto;
     }
+    @media (prefers-color-scheme: dark) {
+      .bio-header picture,
+      .bio-header .bio-avatar { display: none !important; }
+    }
     .bio-header .bio-name {
       flex: 1;
       text-align: left;
@@ -925,12 +929,21 @@
       <div id="bio-wrap">
         <div class="bio-intro" id="bio-intro">
           <div class="bio-header">
-            <picture>
-              <source srcset="image.png" media="(prefers-color-scheme: dark)">
+            <picture id="bio-pic">
               <img class="bio-avatar" src="Screenshot%202026-04-17%20at%2010.07.59%E2%80%AFAM%20copy.png" alt="Ryan Rana">
             </picture>
             <h1 class="bio-name" id="bio-name"></h1>
           </div>
+          <script>
+            (function () {
+              var pic = document.getElementById('bio-pic');
+              if (!pic) return;
+              var mq = window.matchMedia('(prefers-color-scheme: dark)');
+              var apply = function () { if (mq.matches && pic.parentNode) pic.parentNode.removeChild(pic); };
+              apply();
+              mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply);
+            })();
+          </script>
           <div id="bio-paras"></div>
           <p class="bio-ref-display" id="bio-ref-display" aria-live="polite"></p>
 
