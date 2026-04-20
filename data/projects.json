@@ -1,5 +1,17 @@
 [
   {
+    "title": "memories",
+    "url": "https://github.com/RyanRana/memories",
+    "description": "local embedded memory mcp (memvault) in ~5000 lines of rust. single-binary, encrypted, append-only log personal memory substrate for ai assistants. supports mcp protocol (remember, recall, search, related), hybrid semantic/fts search, optional llm consolidation, and full local sovereignty with zero cloud dependency.",
+    "skills": ["Rust", "MCP", "embedded memory", "encryption", "XChaCha20-Poly1305", "append-only log", "semantic search", "local-first"]
+  },
+  {
+    "title": "trade-the-knight",
+    "url": "https://github.com/RyanRana/trade-the-knight",
+    "description": "modular trading bot fleet built for an 8-hour competition on the fictional knight trader exchange (multi-asset: equities, forex, bonds, options, prediction markets). includes 24 single-strategy blocks, 9 tuned composite bots, event-replay backtester with random-search tuning, and a next.js visualizer dashboard for leaderboard, order book, tape, and timeseries.",
+    "skills": ["Python", "quantitative trading", "backtesting", "parameter tuning", "Next.js", "TypeScript", "strategy design", "fleet architecture"]
+  },
+  {
     "title": "AI Blocks",
     "url": "https://github.com/RyanRana/Scratch-for-AI-Dev",
     "description": "scratch for ai engineering, built in under 6 hours; 505 adaptive blocks in a graph db dag let you vibecode for 80% fewer tokens than opus 4.6, and import existing code or any github repo into the editor. open source.",
