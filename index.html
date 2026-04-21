@@ -32,7 +32,14 @@
       --t-comment: #c0c0c0;
       --key-border: #bbb;
       --btn-dark-hover: #222;
-      --shelf-plank: #1a1a1a;
+      --shelf-plank: #6b4a2e;
+      --shelf-plank-top: #8a6240;
+      --shelf-plank-mid: #6b4a2e;
+      --shelf-plank-bottom: #3e2a19;
+      --shelf-plank-grain: rgba(40,22,8,0.35);
+      --shelf-plank-highlight: rgba(255,220,180,0.28);
+      --book-pages-top: #f0f0f0;
+      --book-pages-bottom: #a8a8a8;
       --book-rest-bg: #e6e6e6;
       --book-rest-fg: #3a3a3a;
       --book-brand: #e8e8e8;
@@ -83,7 +90,14 @@
         --t-comment: #4a4a4d;
         --key-border: #555;
         --btn-dark-hover: #d4d4d4;
-        --shelf-plank: #d0d0d0;
+        --shelf-plank: #7a5536;
+        --shelf-plank-top: #96694a;
+        --shelf-plank-mid: #7a5536;
+        --shelf-plank-bottom: #4a3220;
+        --shelf-plank-grain: rgba(30,18,6,0.5);
+        --shelf-plank-highlight: rgba(255,220,180,0.35);
+        --book-pages-top: #d8d8dc;
+        --book-pages-bottom: #78787c;
         --book-rest-bg: #2a2a2c;
         --book-rest-fg: #c8c8cc;
         --book-brand: #3a3a3c;
@@ -431,26 +445,41 @@
       position: absolute;
       top: 22px;
       left: 50%;
-      margin-left: -28px;
-      width: 56px;
-      height: 0;
-      border-bottom: 46px solid #2a2a2a;
-      border-left: 22px solid transparent;
-      border-right: 22px solid transparent;
-      border-radius: 5px 5px 0 0;
+      margin-left: -50px;
+      width: 100px;
+      height: 46px;
+      background: linear-gradient(to bottom,
+        #4a4a4a 0%,
+        #2a2a2a 45%,
+        #151515 100%);
+      clip-path: polygon(22% 0%, 78% 0%, 100% 100%, 0% 100%);
       z-index: 3;
+    }
+    .shelf-lamp .lamp-shade::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(22% 0%, 78% 0%, 100% 100%, 0% 100%);
+      background: linear-gradient(to right,
+        rgba(255,255,255,0.18) 0%,
+        rgba(255,255,255,0.05) 25%,
+        rgba(0,0,0,0) 50%,
+        rgba(0,0,0,0.15) 80%,
+        rgba(0,0,0,0.3) 100%);
+      pointer-events: none;
     }
     .shelf-lamp .lamp-bulb {
       position: absolute;
-      top: 52px;
+      top: 50px;
       left: 50%;
-      margin-left: -13px;
-      width: 26px;
-      height: 26px;
-      background: #6b6b6b;
-      border-radius: 50%;
+      margin-left: -26px;
+      width: 52px;
+      height: 62px;
+      background: url('pics/pngtree-electric-light-bulb-ai-generated-png-image_11539180.png') no-repeat center/contain;
+      transform: scaleY(-1);
       z-index: 1;
-      transition: background 300ms, box-shadow 300ms;
+      filter: brightness(0.7) saturate(0.55) contrast(0.95);
+      transition: filter 320ms ease, box-shadow 320ms ease;
     }
     .shelf-lamp .lamp-pull {
       position: absolute;
@@ -532,11 +561,10 @@
     #shelf-lamp:target .lamp-pull-on { display: none; }
     #shelf-lamp:target .lamp-pull-off { display: block; }
     #shelf-lamp:target .lamp-bulb {
-      background: radial-gradient(circle at 40% 38%, #ffffff 0%, #FFF6C2 55%, #F5D76E 100%);
-      box-shadow:
-        0 0 6px 1px #ffffff,
-        0 0 16px 4px rgba(255, 240, 170, 0.95),
-        0 0 34px 10px rgba(255, 205, 80, 0.55);
+      filter: brightness(1.3) saturate(1.15) contrast(1.05)
+        drop-shadow(0 0 6px rgba(255, 240, 170, 0.95))
+        drop-shadow(0 0 18px rgba(255, 210, 120, 0.8))
+        drop-shadow(0 0 34px rgba(255, 190, 80, 0.5));
     }
     #shelf-lamp:target .lamp-light { opacity: 1; }
     #shelf-lamp:target .lamp-ambient { opacity: 1; }
@@ -561,11 +589,23 @@
       padding: 16px 0 0;
     }
     #bookshelf-section .shelf-plank {
-      height: 4px;
-      background: var(--shelf-plank);
-      border-radius: 1px;
-      box-shadow: 0 1px 2px var(--book-shadow);
+      position: relative;
+      height: 12px;
+      background-image: url('pics/close-up-view-of-a-wood-grain-texture-with-intricate-patterns-and-knots-photo.jpg');
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+      background-position: center 50%;
+      filter: grayscale(1);
+      border-radius: 1px 1px 3px 3px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,220,180,0.22),
+        inset 0 -1px 0 rgba(0,0,0,0.4),
+        0 4px 7px rgba(0,0,0,0.22),
+        0 8px 16px rgba(0,0,0,0.1);
       margin-top: -1px;
+    }
+    #bookshelf-section .bookshelf {
+      clip-path: inset(-200px 0 -200px 0);
     }
     #bookshelf-section .book {
       --book-bg: var(--book-rest-bg);
@@ -594,8 +634,19 @@
       user-select: none;
       will-change: transform;
       color: var(--book-fg);
-      background: var(--book-bg);
-      box-shadow: 0 1px 2px var(--book-shadow);
+      background:
+        linear-gradient(to right,
+          rgba(255,255,255,0.22) 0%,
+          rgba(255,255,255,0.08) 5%,
+          rgba(255,255,255,0) 14%,
+          rgba(0,0,0,0) 80%,
+          rgba(0,0,0,0.14) 94%,
+          rgba(0,0,0,0.28) 100%),
+        var(--book-bg);
+      box-shadow:
+        0 1px 2px var(--book-shadow),
+        inset 1px 0 0 rgba(255,255,255,0.08),
+        inset -1px 0 0 rgba(0,0,0,0.15);
     }
     #bookshelf-section .book.cloth {
       --book-border: var(--book-border-cloth);
@@ -646,9 +697,13 @@
       --book-bg: var(--book-brand);
       --book-fg: var(--book-contrast);
       --book-border: var(--book-border-hover);
-      transform: translateY(-12px) scale(1.04) rotate(0deg) !important;
+      transform: translateY(-10px) rotate(0deg) !important;
       z-index: 10;
-      box-shadow: 0 8px 18px var(--book-shadow-hover);
+      box-shadow:
+        0 10px 20px var(--book-shadow-hover),
+        0 4px 8px rgba(0,0,0,0.18),
+        inset 1px 0 0 rgba(255,255,255,0.14),
+        inset -1px 0 0 rgba(0,0,0,0.22);
     }
     #bookshelf-section .book:hover .title,
     #bookshelf-section .book:hover .icon { opacity: 1; }
@@ -658,6 +713,38 @@
     }
     #bookshelf-section .book.lean-right {
       transform: rotate(calc(var(--own-tilt) + 2.5deg));
+    }
+    #bookshelf-section .bookshelf .book:not(.image-book) {
+      z-index: 1;
+    }
+    #bookshelf-section .book.image-book {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      overflow: visible;
+      border-radius: 0;
+      transform: none !important;
+      z-index: 0;
+    }
+    #bookshelf-section .book.image-book:hover {
+      background: transparent;
+      box-shadow: none;
+      transform: translateY(-6px) !important;
+      z-index: 0;
+    }
+    #bookshelf-section .book.image-book > img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center bottom;
+      display: block;
+      filter: grayscale(1) brightness(1.25) contrast(0.95);
+      transition: filter 260ms ease;
+      pointer-events: none;
+    }
+    #bookshelf-section .book.image-book:hover > img {
+      filter: grayscale(0) brightness(1) contrast(1);
     }
 
     /* Shared list + item styles */
@@ -1388,18 +1475,19 @@
     list.appendChild(li);
   }
 
-  function setupSection(listId, moreBtnId, data) {
+  function setupSection(listId, moreBtnId, data, pageSize) {
     const list = document.getElementById(listId);
     const btn = document.getElementById(moreBtnId);
     if (!list || !btn || !data || !data.length) {
       if (btn) btn.classList.add('hidden');
       return;
     }
+    var step = pageSize || PAGE;
     var sortedData = data.slice();
     if (listId === 'articles-list') {
       sortedData.sort(function (a, b) { return parseYear(b.date) - parseYear(a.date) || 0; });
     }
-    var shown = Math.min(PAGE, sortedData.length);
+    var shown = Math.min(step, sortedData.length);
     function update() {
       var toShow = sortedData.slice(0, shown);
       list.innerHTML = '';
@@ -1444,7 +1532,7 @@
       else { btn.classList.remove('hidden'); btn.textContent = 'Show more'; }
     }
     btn.addEventListener('click', function () {
-      shown = Math.min(shown + PAGE, sortedData.length);
+      shown = Math.min(shown + step, sortedData.length);
       update();
     });
     update();
@@ -1464,7 +1552,7 @@
     var projects = Array.isArray(results[2]) ? results[2] : [];
     setupSection('articles-list', 'articles-more', articles);
     setupSection('experience-list', 'experience-more', experience);
-    setupSection('projects-list', 'projects-more', projects);
+    setupSection('projects-list', 'projects-more', projects, 3);
   });
 })();
 
@@ -1507,6 +1595,15 @@
     { name: 'React',        slug: 'react',             brand: '61dafb' },
     { name: 'Node.js',      slug: 'nodedotjs',         brand: '7ac767' }
   ];
+
+  var imageBooks = [
+    { name: '', image: 'pics/Untitled%203/Untitled%203.001.png', heightScale: 1.0 },
+    { name: '', image: 'pics/Untitled%203/Untitled%203.002.png', heightScale: 0.5 }
+  ];
+  imageBooks.forEach(function (ib) {
+    var idx = Math.floor(Math.random() * (books.length + 1));
+    books.splice(idx, 0, ib);
+  });
 
   var paperTones = ['#f2f2f2', '#ececec', '#e6e6e6', '#dfdfdf', '#d7d7d7', '#cfcfcf', '#c5c5c5'];
   var clothTones = ['#a8a8a8', '#999999', '#8a8a8a'];
@@ -1551,18 +1648,33 @@
 
   function makeBook(b) {
     var el = document.createElement('div');
-    var isCloth = Math.random() < 0.2;
-    el.className = 'book' + (isCloth ? ' cloth' : '');
+    var isImage = !!b.image;
+    var isCloth = !isImage && Math.random() < 0.2;
+    el.className = 'book' + (isCloth ? ' cloth' : '') + (isImage ? ' image-book' : '');
 
-    var isChunky = Math.random() < 0.22;
-    var w = Math.round(isChunky ? rand(38, 48) : rand(22, 36));
-    var h = Math.round(isChunky ? rand(170, 215) : rand(105, 185));
-    var tiltBase = rand(-3.2, 3.2);
-    if (Math.random() < 0.18) tiltBase *= 1.8;
+    var w, h, tiltBase, leanLeft, leanRight, effectiveW;
+    if (isImage) {
+      var baseH = rand(115, 155);
+      var heightScale = b.heightScale != null ? b.heightScale : 1;
+      h = Math.round(baseH * heightScale);
+      var aspect = b._aspect || 0.66;
+      w = Math.max(24, Math.round(h * aspect));
+      effectiveW = w;
+      tiltBase = 0;
+      leanLeft = 0;
+      leanRight = 0;
+    } else {
+      var isChunky = Math.random() < 0.22;
+      w = Math.round(isChunky ? rand(38, 48) : rand(22, 36));
+      h = Math.round(isChunky ? rand(170, 215) : rand(105, 185));
+      effectiveW = w;
+      tiltBase = rand(-3.2, 3.2);
+      if (Math.random() < 0.18) tiltBase *= 1.8;
+      var topShift = Math.abs(h * Math.sin(tiltBase * Math.PI / 180));
+      leanLeft = tiltBase < 0 ? topShift : 0;
+      leanRight = tiltBase > 0 ? topShift : 0;
+    }
     var tilt = tiltBase.toFixed(2);
-    var topShift = Math.abs(h * Math.sin(tiltBase * Math.PI / 180));
-    var leanLeft = tiltBase < 0 ? topShift : 0;
-    var leanRight = tiltBase > 0 ? topShift : 0;
     var weight = pick([500, 600, 600, 700]);
     var fontSize = rand(0.54, 0.7).toFixed(3);
     var tracking = rand(0.05, 0.1).toFixed(3);
@@ -1584,11 +1696,15 @@
     el.style.setProperty('--book-tracking', tracking + 'em');
     el.setAttribute('title', b.name);
 
-    el.innerHTML =
-      '<div class="icon">' + iconHtml(b, restFg, contrastHex) + '</div>' +
-      '<div class="title">' + escText(b.name) + '</div>' +
-      '<div class="foot"></div>';
-    el._w = w;
+    if (isImage) {
+      el.innerHTML = '<img src="' + escAttr(b.image) + '" alt="" loading="lazy">';
+    } else {
+      el.innerHTML =
+        '<div class="icon">' + iconHtml(b, restFg, contrastHex) + '</div>' +
+        '<div class="title">' + escText(b.name) + '</div>' +
+        '<div class="foot"></div>';
+    }
+    el._w = effectiveW;
     el._leanL = leanLeft;
     el._leanR = leanRight;
 
@@ -1638,6 +1754,7 @@
       shelfRow.appendChild(row);
       var plank = document.createElement('div');
       plank.className = 'shelf-plank';
+      plank.style.backgroundPositionY = (Math.random() * 100).toFixed(1) + '%';
       shelfRow.appendChild(plank);
       wrap.appendChild(shelfRow);
       rowsPlaced++;
@@ -1645,6 +1762,14 @@
 
     els.forEach(function (el, i) {
       var m = prevInRow ? pairGap(prevInRow, el) : 0;
+      if (prevInRow && (rowW + m + el._w) > containerW) {
+        flushRow();
+        row = document.createElement('div');
+        row.className = 'bookshelf';
+        rowW = 0;
+        prevInRow = null;
+        m = 0;
+      }
       el.style.marginLeft = m + 'px';
       row.appendChild(el);
       rowW += el._w + m;
@@ -1686,7 +1811,26 @@
     });
   }
 
-  build();
+  function preloadAspects() {
+    var pending = books.filter(function (b) { return b.image; });
+    if (!pending.length) { build(); return; }
+    var remaining = pending.length;
+    pending.forEach(function (b) {
+      var im = new Image();
+      im.onload = function () {
+        if (im.naturalWidth && im.naturalHeight) {
+          b._aspect = im.naturalWidth / im.naturalHeight;
+        }
+        if (--remaining === 0) build();
+      };
+      im.onerror = function () {
+        b._aspect = 0.66;
+        if (--remaining === 0) build();
+      };
+      im.src = b.image;
+    });
+  }
+  preloadAspects();
   var resizeTimer;
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
