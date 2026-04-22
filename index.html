@@ -116,12 +116,16 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
+      width: 100%;
       font-family: var(--sans);
       background: var(--white);
       color: var(--black);
       -webkit-font-smoothing: antialiased;
+    }
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      scroll-padding-top: 52px;
     }
 
     /* ── APP: nav + layout ── */
@@ -129,12 +133,15 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      position: relative;
     }
 
     /* NAV — full width, slides down after load */
     #nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       flex-shrink: 0;
       width: 100%;
       height: 52px;
@@ -143,6 +150,7 @@
       justify-content: space-between;
       padding: 0 44px;
       border-bottom: 1px solid var(--rule);
+      background: var(--white);
       transform: translateY(-100%);
       opacity: 0;
       transition: transform 0.6s cubic-bezier(0.22,1,0.36,1),
@@ -153,9 +161,8 @@
     /* ── TWO-PANEL LAYOUT ── */
     #layout {
       display: flex;
-      flex: 1;
-      min-height: 0;
       width: 100%;
+      min-height: calc(100vh - 52px);
     }
 
     /* LEFT */
@@ -164,7 +171,6 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      overflow: hidden;
     }
     .nav-name {
       font-size: 0.9rem; font-weight: 600;
@@ -182,12 +188,15 @@
     #content-area {
       flex: 1;
       position: relative;
-      overflow: hidden;
+      width: 100%;
+      min-height: calc(100vh - 52px);
     }
 
     /* TERMINAL */
     #terminal-wrap {
-      position: absolute; inset: 0;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: calc(100vh - 52px);
       display: flex; align-items: center; justify-content: flex-start;
       padding: 0 var(--space-8) 0 clamp(44px, 9%, 96px);
       transition: opacity 0.5s ease, transform 0.5s ease;
@@ -239,21 +248,28 @@
     .t-skip:hover { opacity: 0.8; }
     .t-skip.hide { display: none; }
 
-    /* BIO — full-height panels, scroll snap */
+    /* BIO — full-height panels in normal flow, page scroll snaps to them */
     #bio-wrap {
-      position: absolute; inset: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
+      position: relative;
+      width: 100%;
       opacity: 0; transform: translateY(12px);
       transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
       pointer-events: none;
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
     }
-    #bio-wrap.show { opacity: 1; transform: none; pointer-events: auto; }
+    #bio-wrap.show {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      visibility: visible;
+      height: auto;
+      overflow: visible;
+    }
 
     .bio-intro {
-      min-height: 100%;
+      min-height: calc(100vh - 52px);
       scroll-snap-align: start;
       scroll-snap-stop: always;
       display: flex;
@@ -326,7 +342,7 @@
 
     /* Section headings — same size/look as Ryan Rana (bio-name); full-height panels, vertically centered */
     .bio-section {
-      min-height: 100%;
+      min-height: calc(100vh - 52px);
       scroll-snap-align: start;
       scroll-snap-stop: always;
       margin-top: 0;
@@ -809,14 +825,17 @@
     .icon-btn:hover { background: var(--black); color: var(--white); }
     .icon-btn svg { width: 16px; height: 16px; display: block; }
 
-    /* RIGHT — neural net */
+    /* RIGHT — neural net; sticky so the graph stays pinned while bio sections snap-scroll past it */
     #right {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      position: relative;
+      position: sticky;
+      top: 52px;
+      align-self: flex-start;
+      height: calc(100vh - 52px);
       padding: 12px 18px;
     }
     #nn-wrap {
@@ -837,19 +856,36 @@
     #bio-wrap { scrollbar-width: none; }
     #bio-wrap::-webkit-scrollbar { display: none; }
 
-    /* Footer — at end of scrollable bio, short */
+    /* Bottom reveal — tight block just below the bio: footer above skyline, no extra gap.
+       Hidden while the terminal intro is up; revealed only once the bio mounts. */
+    #bottom-reveal {
+      width: 100%;
+      background: var(--white);
+      display: none;
+      flex-direction: column;
+      justify-content: flex-end;
+      scroll-snap-align: end;
+    }
+    #app.revealed #bottom-reveal { display: flex; }
+
     #site-footer {
-      margin-top: 0;
-      padding: var(--space-12) var(--space-8) var(--space-16) clamp(44px, 9%, 96px);
-      padding-top: var(--space-6);
-      border-top: 1px solid var(--rule);
-      scroll-snap-align: start;
+      width: 100%;
+      padding: var(--space-3) clamp(20px, 6%, 64px);
+      background: var(--white);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
     }
     .footer-line {
       font-size: 0.75rem;
       color: var(--gray);
-      margin-bottom: var(--space-2);
+      margin: 0;
+      flex: 1 1 0;
     }
+    .footer-line.footer-left { text-align: left; }
+    .footer-line.footer-right { text-align: right; }
     .footer-line a {
       color: var(--gray);
       text-decoration: none;
@@ -858,23 +894,36 @@
     }
     .footer-line a:hover { color: var(--black); border-bottom-color: var(--black); }
 
+    #skyline {
+      width: 100%;
+      display: block;
+      user-select: none;
+      background: var(--white);
+      line-height: 0;
+    }
+    #skyline img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+    }
+    @media (prefers-color-scheme: dark) {
+      #skyline img { filter: invert(1); }
+    }
+
     @media (max-width: 720px) {
-      html, body { overflow: auto; height: auto; }
-      #app { height: auto; min-height: 100vh; }
-      #layout {
-        flex-direction: column;
-        overflow: visible;
-      }
+      html { scroll-snap-type: none; }
+      #layout { flex-direction: column; }
       #right { display: none; }
       #left {
         order: 0;
         flex: 1 1 auto;
-        overflow: visible;
         min-height: calc(100vh - 52px);
       }
-      #content-area { overflow: visible; }
+      #content-area { min-height: calc(100vh - 52px); }
       #terminal-wrap {
         position: relative;
+        height: auto;
         min-height: calc(100vh - 52px);
         align-items: flex-start;
         padding: 32px 20px max(var(--space-12), env(safe-area-inset-bottom));
@@ -886,21 +935,13 @@
       #terminal-wrap.hide {
         position: absolute;
         height: 0;
+        min-height: 0;
         overflow: hidden;
         padding: 0;
       }
-      #bio-wrap {
-        position: absolute;
-        height: 0;
-        overflow: hidden;
-        pointer-events: none;
-      }
-      #bio-wrap.show {
-        position: relative;
-        height: auto;
-        overflow: visible;
-        pointer-events: auto;
-        scroll-snap-type: none;
+      #site-footer {
+        flex-direction: row;
+        padding: var(--space-3) 20px;
       }
       .bio-intro, .bio-section { min-height: 0; }
       .bio-intro {
@@ -935,7 +976,6 @@
         font-size: 0.98rem;
         margin-bottom: var(--space-6);
       }
-      #bio-wrap { padding-bottom: var(--space-10); }
       #terminal .t-line { white-space: pre-wrap; word-break: break-word; }
       #nav { padding: 0 16px; height: 48px; gap: 12px; }
       .nav-links { gap: 14px; flex-wrap: wrap; }
@@ -954,7 +994,7 @@
 
     /* Short viewport (e.g. landscape phone, small window): same scrollable terminal as mobile */
     @media (max-height: 560px) {
-      #left { overflow: hidden; }
+      #left { overflow: visible; }
       #content-area {
         overflow-y: auto;
         overflow-x: hidden;
@@ -1117,11 +1157,6 @@
           <ul class="bio-section-list" id="articles-list"></ul>
           <button type="button" class="show-more-btn" id="articles-more">Show more</button>
         </section>
-
-        <footer id="site-footer">
-          <p class="footer-line">&copy; 2026 Ryan Rana</p>
-          <p class="footer-line"><a href="https://github.com/RyanRana" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/ryanrana/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://ryanranas.medium.com/" target="_blank" rel="noopener">Medium</a> · <a href="mailto:ryanrana04@gmail.com">Email</a></p>
-        </footer>
       </div>
 
     </div><!-- /content-area -->
@@ -1135,6 +1170,17 @@
   </div>
 
   </div><!-- /layout -->
+
+  <div id="bottom-reveal">
+    <footer id="site-footer">
+      <p class="footer-line footer-left">&copy; 2026 Ryan Rana</p>
+      <p class="footer-line footer-right"><a href="https://github.com/RyanRana" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/ryanrana/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://ryanranas.medium.com/" target="_blank" rel="noopener">Medium</a> · <a href="mailto:ryanrana04@gmail.com">Email</a></p>
+    </footer>
+    <div id="skyline" aria-hidden="true">
+      <img src="pics/skyline.png" alt="" />
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <script>
@@ -1215,6 +1261,7 @@
     setTimeout(function () {
       document.getElementById('nav').classList.add('show');
       document.getElementById('bio-wrap').classList.add('show');
+      document.getElementById('app').classList.add('revealed');
     }, 260);
   }
 
@@ -1399,15 +1446,15 @@
 
 /* Nav: scroll to section when Experience / Projects / Articles clicked */
 (function () {
-  var wrap = document.getElementById('bio-wrap');
   var links = document.querySelectorAll('.nav-links a[href^="#"]');
   links.forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = a.getAttribute('href').slice(1);
       var el = document.getElementById(id);
-      if (el && wrap) {
+      if (el) {
         e.preventDefault();
-        wrap.scrollTo({ top: el.offsetTop - 24, behavior: 'smooth' });
+        var top = el.getBoundingClientRect().top + window.scrollY - 52;
+        window.scrollTo({ top: top, behavior: 'smooth' });
       }
     });
   });
@@ -1415,8 +1462,6 @@
 
 /* When scrolled to a new section, rearrange the neural net */
 (function () {
-  var wrap = document.getElementById('bio-wrap');
-  if (!wrap) return;
   var panels = [
     document.getElementById('bio-intro'),
     document.getElementById('experience-section'),
@@ -1424,6 +1469,7 @@
     document.getElementById('bookshelf-section'),
     document.getElementById('articles-section')
   ].filter(Boolean);
+  if (!panels.length) return;
   var lastActive = null;
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
@@ -1434,7 +1480,7 @@
       }
       lastActive = id;
     });
-  }, { root: wrap, threshold: [0.25, 0.4, 0.5, 0.75, 1] });
+  }, { threshold: [0.25, 0.4, 0.5, 0.75, 1] });
   panels.forEach(function (el) { if (el) observer.observe(el); });
 })();
 
@@ -1848,15 +1894,18 @@
 
   let W = 0, H = 0;
   const mouse = { x: -999, y: -999 };
+  const mouseE = { x: -999, y: -999, vx: 0, vy: 0 };
+  let prevMx = -999, prevMy = -999;
 
-  const PULL = 0.7, SPRING = 0.14, DRAG = 0.78, MAX_SPD = 22, FADE_MS = 440;
+  const PULL = 1.45, SPRING = 0.065, DRAG = 0.905, MAX_SPD = 34, FADE_MS = 560;
+  const MOUSE_EASE = 0.22, WAKE = 0.55;
 
   function getConfig(width) {
-    if (width < 520)  return { N: 50,  R: 4.2, MOUSE_R: 220, kMin: 3, kMax: 5, minDeg: 3 };
-    if (width < 900)  return { N: 90,  R: 4.0, MOUSE_R: 280, kMin: 3, kMax: 5, minDeg: 3 };
-    if (width < 1400) return { N: 140, R: 3.8, MOUSE_R: 340, kMin: 4, kMax: 6, minDeg: 3 };
-    if (width < 2000) return { N: 190, R: 3.6, MOUSE_R: 400, kMin: 4, kMax: 6, minDeg: 3 };
-    return              { N: 240, R: 3.4, MOUSE_R: 460, kMin: 4, kMax: 7, minDeg: 3 };
+    if (width < 520)  return { N: 50,  R: 4.2, MOUSE_R: 260, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 900)  return { N: 90,  R: 4.0, MOUSE_R: 320, kMin: 3, kMax: 5, minDeg: 3 };
+    if (width < 1400) return { N: 140, R: 3.8, MOUSE_R: 380, kMin: 4, kMax: 6, minDeg: 3 };
+    if (width < 2000) return { N: 190, R: 3.6, MOUSE_R: 440, kMin: 4, kMax: 6, minDeg: 3 };
+    return              { N: 240, R: 3.4, MOUSE_R: 500, kMin: 4, kMax: 7, minDeg: 3 };
   }
 
   let config = getConfig(400);
@@ -1865,8 +1914,6 @@
   let prevEdges = [], nextEdges = [];
   let adjacency = [];
   let fade = 1;
-  let pulses = [];
-  let spawnT = 0;
 
   function buildAdjacency(edg, N) {
     const adj = Array(N).fill(null).map(() => []);
@@ -1877,21 +1924,10 @@
     return adj;
   }
 
-  function newPulse(from, to) {
-    return {
-      from, to, p: 0,
-      speed: 0.75 + Math.random() * 0.85,
-      hops: 0,
-      maxHops: 5 + Math.floor(Math.random() * 6)
-    };
-  }
-
   const LAYOUTS = [
-    'rings', 'hex', 'spiral', 'wheel',
-    'grid', 'lissajous', 'figure8', 'rose',
-    'sunburst', 'waves', 'polygon',
-    'dna', 'gear', 'cardioid',
-    'phyllotaxis', 'layers', 'tree'
+    'blob', 'rings', 'spiral', 'lissajous',
+    'figure8', 'rose', 'sunburst', 'waves',
+    'phyllotaxis', 'cardioid'
   ];
   let lastLayout = null;
 
@@ -1912,7 +1948,35 @@
 
     const pos = [];
 
-    if (kind === 'rings') {
+    if (kind === 'blob') {
+      for (let i = 0; i < N; i++) {
+        pos.push({
+          x: mX + Math.random() * (maxX - mX),
+          y: mY + Math.random() * (maxY - mY)
+        });
+      }
+      const ideal = Math.sqrt(((maxX - mX) * (maxY - mY)) / N);
+      const minDist = ideal * 0.92;
+      const iters = 7;
+      for (let it = 0; it < iters; it++) {
+        const step = 0.55 * (1 - it / iters) + 0.25;
+        for (let i = 0; i < N; i++) {
+          let fx = 0, fy = 0;
+          for (let j = 0; j < N; j++) {
+            if (i === j) continue;
+            const dx = pos[i].x - pos[j].x;
+            const dy = pos[i].y - pos[j].y;
+            const d = Math.hypot(dx, dy) || 0.001;
+            if (d < minDist) {
+              const w = (minDist - d) / minDist;
+              fx += (dx / d) * w * minDist * step;
+              fy += (dy / d) * w * minDist * step;
+            }
+          }
+          pos[i] = clamp({ x: pos[i].x + fx, y: pos[i].y + fy });
+        }
+      }
+    } else if (kind === 'rings') {
       const rings = 3 + Math.floor(Math.random() * 3);
       const rMin = base * 0.08, rMax = base * 0.42;
       const radii = [];
@@ -2339,7 +2403,6 @@
       nextEdges = edg; fade = 0;
     }
     adjacency = buildAdjacency(edg, config.N);
-    pulses = [];
   }
 
   function resize() {
@@ -2361,9 +2424,12 @@
           x: 0, y: 0, vx: 0, vy: 0,
           phx: Math.random() * Math.PI * 2,
           phy: Math.random() * Math.PI * 2,
-          fx: 0.0005 + Math.random() * 0.0007,
-          fy: 0.0005 + Math.random() * 0.0007,
-          amp: 3 + Math.random() * 4
+          ph2: Math.random() * Math.PI * 2,
+          fx: 0.0004 + Math.random() * 0.0007,
+          fy: 0.0004 + Math.random() * 0.0007,
+          fz: 0.00018 + Math.random() * 0.00035,
+          amp: 7 + Math.random() * 7,
+          sens: 0.85 + Math.random() * 0.35
         });
       }
     }
@@ -2381,71 +2447,49 @@
     if (fade < 1) fade = Math.min(1, fade + dt / FADE_MS);
     clock += dt;
     const dn = Math.min(dt / 16, 2);
+
+    if (mouse.x > -500) {
+      if (mouseE.x < -500) {
+        mouseE.x = mouse.x; mouseE.y = mouse.y;
+        prevMx = mouse.x; prevMy = mouse.y;
+        mouseE.vx = 0; mouseE.vy = 0;
+      }
+      mouseE.x += (mouse.x - mouseE.x) * MOUSE_EASE;
+      mouseE.y += (mouse.y - mouseE.y) * MOUSE_EASE;
+      mouseE.vx = mouseE.vx * 0.82 + (mouse.x - prevMx) * 0.18;
+      mouseE.vy = mouseE.vy * 0.82 + (mouse.y - prevMy) * 0.18;
+      prevMx = mouse.x; prevMy = mouse.y;
+    } else {
+      mouseE.x = -999; mouseE.y = -999;
+      mouseE.vx *= 0.85; mouseE.vy *= 0.85;
+    }
+
     for (let i = 0; i < N; i++) {
       const n = nodes[i], t = targets[i];
-      const tx = t.x + Math.sin(clock * n.fx + n.phx) * n.amp;
-      const ty = t.y + Math.cos(clock * n.fy + n.phy) * n.amp;
+      const wob = Math.sin(clock * n.fz + n.ph2) * 0.5;
+      const tx = t.x + Math.sin(clock * n.fx + n.phx) * n.amp
+                     + Math.cos(clock * n.fz * 1.7 + n.ph2) * n.amp * 0.35 * wob;
+      const ty = t.y + Math.cos(clock * n.fy + n.phy) * n.amp
+                     + Math.sin(clock * n.fz * 1.3 + n.phx) * n.amp * 0.35 * wob;
       n.vx += (tx - n.x) * SPRING * dn;
       n.vy += (ty - n.y) * SPRING * dn;
-      const dx = mouse.x - n.x, dy = mouse.y - n.y;
-      const d  = Math.hypot(dx, dy) || 0.001;
-      if (d < R) {
-        const f = PULL * (1 - d / R) * dn;
-        n.vx += dx / d * f; n.vy += dy / d * f;
+      if (mouseE.x > -500) {
+        const dx = mouseE.x - n.x, dy = mouseE.y - n.y;
+        const d  = Math.hypot(dx, dy) || 0.001;
+        if (d < R) {
+          const k = 1 - d / R;
+          const f = PULL * k * k * n.sens * dn;
+          n.vx += dx / d * f;
+          n.vy += dy / d * f;
+          const wk = k * k * WAKE * n.sens * dn;
+          n.vx += mouseE.vx * wk;
+          n.vy += mouseE.vy * wk;
+        }
       }
       n.vx *= DRAG; n.vy *= DRAG;
       const spd = Math.hypot(n.vx, n.vy);
       if (spd > MAX_SPD) { n.vx = n.vx/spd*MAX_SPD; n.vy = n.vy/spd*MAX_SPD; }
       n.x += n.vx; n.y += n.vy;
-    }
-
-    const edgeList = nextEdges;
-    const maxPulses = Math.max(14, Math.floor(N * 0.18));
-    spawnT += dt;
-    const spawnEvery = Math.max(90, 280 - N);
-    while (spawnT > spawnEvery) {
-      spawnT -= spawnEvery;
-      if (edgeList.length && pulses.length < maxPulses) {
-        const e = edgeList[Math.floor(Math.random() * edgeList.length)];
-        pulses.push(newPulse(e.from, e.to));
-      }
-    }
-    for (let i = pulses.length - 1; i >= 0; i--) {
-      const p = pulses[i];
-      p.p += (dt / 620) * p.speed;
-      let alive = true;
-      while (alive && p.p >= 1) {
-        p.hops++;
-        if (p.hops >= p.maxHops) { alive = false; break; }
-        const neigh = adjacency[p.to];
-        if (!neigh || !neigh.length) { alive = false; break; }
-        const opts = neigh.length > 1 ? neigh.filter(n => n !== p.from) : neigh;
-        const pool = opts.length ? opts : neigh;
-        const overflow = p.p - 1;
-        p.from = p.to;
-        p.to = pool[Math.floor(Math.random() * pool.length)];
-        p.p = overflow;
-        p.speed = 0.75 + Math.random() * 0.85;
-      }
-      if (!alive) pulses.splice(i, 1);
-    }
-  }
-
-  function drawPulses() {
-    const N = config.N;
-    const pr = N <= 60 ? 3.0 : N <= 110 ? 2.8 : N <= 170 ? 2.5 : 2.2;
-    for (const pu of pulses) {
-      const a = nodes[pu.from], b = nodes[pu.to];
-      if (!a || !b) continue;
-      const x = a.x + (b.x - a.x) * pu.p;
-      const y = a.y + (b.y - a.y) * pu.p;
-      let al = 0.9;
-      if (pu.hops === 0) al *= Math.min(1, pu.p * 3.5);
-      if (pu.hops === pu.maxHops - 1) al *= Math.pow(1 - pu.p, 1.4);
-      ctx.fillStyle = `rgba(${nnFg()},${al.toFixed(2)})`;
-      ctx.beginPath();
-      ctx.arc(x, y, pr, 0, Math.PI * 2);
-      ctx.fill();
     }
   }
 
@@ -2476,7 +2520,6 @@
       drawEdges(prevEdges, prevA);
       drawEdges(nextEdges, nextA);
     }
-    drawPulses();
     ctx.fillStyle = nnNodeFill();
     ctx.strokeStyle = `rgba(${nnFg()},0.85)`;
     ctx.lineWidth = 1;
